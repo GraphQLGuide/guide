@@ -30,6 +30,8 @@ app.prepare()
   }))
 
   server.get('*', (req, res) => {
+    global.navigator = global.navigator || {}
+    global.navigator.userAgent = req.headers['user-agent'] || 'all'
     return handle(req, res)
   })
 
