@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
+import stylePropType from 'react-style-proptype'
 
 import Emoji from './emoji'
 
-const BookLI = ({ children }) => {
+const BookLI = ({ style, children }) => {
   return (
     <li
       style={{
         listStyle: 'none',
         marginBottom: 10,
+        ...style,
       }}
       >
       <span
@@ -31,7 +33,15 @@ const BookLI = ({ children }) => {
 }
 
 BookLI.propTypes = {
-  children: React.PropTypes.element.isRequired,
+  style: stylePropType,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.element,
+    React.PropTypes.string,
+  ]).isRequired,
+}
+
+BookLI.defaultProps = {
+  style: {},
 }
 
 export default BookLI

@@ -1,6 +1,6 @@
 import Document, { Head, Main, NextScript } from 'next/document'
 
-import { fontFamily, color } from '../lib/styles'
+import raw from '../css/raw'
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {
@@ -14,29 +14,7 @@ export default class MyDocument extends Document {
         <Head>
           <title>My page</title>
           <style
-            dangerouslySetInnerHTML={{ __html: `
-            body {
-              font-family: ${fontFamily};
-              color: #333;
-              font-size: 18px;
-              line-height: 1.7;
-            }
-
-            @media screen and (max-width: 760px) {
-              body {
-                font-size: 16px;
-              }
-            }
-
-            a {
-              color: ${color};
-              text-decoration: none;
-            }
-
-            a:hover {
-              text-decoration: underline;
-            }
-            ` }}
+            dangerouslySetInnerHTML={{ __html: raw }}
             />
           <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet" />
         </Head>

@@ -6,6 +6,8 @@ import Avatar from 'material-ui/Avatar'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import Head from 'next/head'
 import css from 'next/css'
+import { StaggeredMotion, spring } from 'react-motion'
+import _ from 'lodash'
 
 import Email from '../components/email'
 import BookLI from '../components/book-li'
@@ -35,6 +37,10 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  listAnimation: {
+    maxLeft: 200,
+    default: { opacity: 0, left: 200 },
+  },
 }
 
 const headerH = 280
@@ -43,6 +49,14 @@ const logo = css({
   width: 150,
   height: 150,
 })
+
+const bookTopics = [
+  'GraphQL beginner introduction',
+  'GraphQL concepts in depth',
+  'Frontend – using Apollo Client',
+  'Backend – writing a GraphQL server',
+  'React, React Native, Redux, Angular, and Node',
+]
 
 class Index extends Component {
   constructor(props) {
@@ -58,6 +72,7 @@ class Index extends Component {
               The GraphQL Book
             </title>
           </Head>
+          <div className="animation-target">
           <Paper
             zDepth={2}
             style={{
@@ -148,6 +163,7 @@ class Index extends Component {
 
             </div>
           </Paper>
+        </div>
           <div
             style={{
               display: 'flex',
@@ -186,23 +202,57 @@ class Index extends Component {
                 {` maintainer. We’re in the process of writing the best GraphQL
                 reference, which inclues:`}
               </p>
-              <ul>
-                <BookLI>
-                  GraphQL beginner introduction
-                </BookLI>
-                <BookLI>
-                  GraphQL concepts in depth
-                </BookLI>
-                <BookLI>
-                  Frontend – using Apollo Client
-                </BookLI>
-                <BookLI>
-                  Backend – writing a GraphQL server
-                </BookLI>
-                <BookLI>
-                  Examples with React, React Native, Redux, Angular, and Node
-                </BookLI>
-              </ul>
+              <StaggeredMotion
+                defaultStyles={_.times(bookTopics.length,
+                  _.constant(styles.listAnimation.default),
+                )}
+                styles={prevInterpolatedStyles => prevInterpolatedStyles.map((x, i) => {
+                  const prev = prevInterpolatedStyles[i - 1] || styles.listAnimation.default
+                  let left
+                  if (i === 0 || prev.left < 1) {
+                    left = 0
+                  } else {
+                    left = Math.min(
+                      prev.left * 1.2,
+                      styles.listAnimation.maxLeft,
+                    )
+                  }
+
+                  let opacity
+                  if (i === 0 || prev.opacity > 0.7) {
+                    opacity = 1
+                  } else {
+                    opacity = prev.opacity * 0.99
+                  }
+
+                  return {
+                    opacity: prev.opacity > 0.95 ? 1 : spring(opacity, {
+                      stiffness: 30,
+                      damping: 26,
+                    }),
+                    left: spring(left, {
+                      stiffness: 150,
+                      damping: 26,
+                    }),
+                  }
+                })}
+                >
+                {interpolatingStyles =>
+                  <ul>
+                    {interpolatingStyles.map((style, i) => (
+                      <BookLI
+                        key={i} // eslint-disable-line
+                        style={{
+                          transform: `translateX(-${style.left}px)`,
+                          opacity: style.opacity,
+                        }}
+                        >
+                        {bookTopics[i]}
+                      </BookLI>
+                    ))}
+                  </ul>
+                }
+              </StaggeredMotion>
               <div
                 style={{
                   display: 'flex',
