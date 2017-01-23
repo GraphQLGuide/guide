@@ -11,6 +11,7 @@ import _ from 'lodash'
 
 import Email from '../components/email'
 import BookLI from '../components/book-li'
+import Ripple from '../components/ripple'
 import muiTheme from '../lib/muitheme'
 import { white, color } from '../lib/styles'
 
@@ -66,11 +67,12 @@ class Index extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
+        <Ripple>
           <Head>
             <title>
               The GraphQL Book
             </title>
+
           </Head>
           <div className="animation-target">
           <Paper
@@ -296,7 +298,7 @@ class Index extends Component {
               </a>
             </Paper>
           </div>
-        </div>
+        </Ripple>
       </MuiThemeProvider>
     )
   }

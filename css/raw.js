@@ -23,5 +23,12 @@ a:hover {
   text-decoration: underline;
 }
 
-
+.ripple-ball {
+  width: 50px;
+  height: 50px;
+  border-radius: 99px;
+  position: absolute;
+  border: 1px solid #f3f3f3;
+  pointer-events: none;
+}
 `
