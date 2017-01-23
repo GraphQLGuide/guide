@@ -31,4 +31,27 @@ a:hover {
   border: 1px solid #f3f3f3;
   pointer-events: none;
 }
+
+#logo > svg {
+  width: 200px;
+  height: 200px;
+}
+#logo > svg * {
+  fill: #f2f2f2;
+}
+
+.logo-collection > svg {
+  width: 150px;
+  height: 150px;
+}
+
+.st0 {
+  fill: #DD0031;
+}
+.st1 {
+  fill: #C3002F;
+}
+.st2 {
+  fill:#FFFFFF;
+}
 `
