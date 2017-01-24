@@ -31,12 +31,17 @@ const styles = {
     // textDecoration: 'none',
   },
   paper: {
-    height: 400,
-    width: 400,
+    height: '45vh',
+    width: '45vh',
+    maxHeight: 400,
+    maxWidth: 400,
+    minHeight: 320,
+    minWidth: 320,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+
   },
   listAnimation: {
     maxLeft: 200,
@@ -123,6 +128,7 @@ class Index extends Component {
                   <Avatar
                     src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
                     style={styles.avatar}
+                    size={50}
                     />
                   Jonas Helfer
                 </a>
@@ -134,6 +140,7 @@ class Index extends Component {
                   <Avatar
                     src="http://lorensr.me/img/loren-sq.png"
                     style={styles.avatar}
+                    size={50}
                     />
                   Loren Sands-Ramshaw
                 </a>
@@ -160,7 +167,12 @@ class Index extends Component {
               height: `calc(100vh - ${headerH}px)`,
             }}
             >
-            <section>
+            <section
+              style={{
+                alignSelf: 'flex-start',
+                marginTop: 20,
+              }}
+              >
               <p
                 style={{
                   maxWidth: 500,
@@ -246,7 +258,7 @@ class Index extends Component {
                   display: 'flex',
                   width: 450,
                   justifyContent: 'space-between',
-                  marginLeft: 80,
+                  marginLeft: 30,
                 }}
                 className="logo-collection"
                 >
