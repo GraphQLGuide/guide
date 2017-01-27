@@ -131,6 +131,16 @@ export default class Email extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log(this.props, this.textHanlder)
+    if (this.props.autoFocus) {
+      // textHandler is undefined at time of mounting 
+      setTimeout(() => {
+        this.textHandler.focus()
+      }, 1000)
+    }
+  }
+
   // https://github.com/callemall/material-ui/issues/705
   render() {
     return (

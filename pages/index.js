@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper'
@@ -8,12 +9,18 @@ import Head from 'next/head'
 import css from 'next/css'
 import { StaggeredMotion, spring } from 'react-motion'
 import _ from 'lodash'
+import { TimelineLite, TweenLite, Power0, Power2 } from 'gsap'
 
+// https://github.com/greensock/GreenSock-JS/issues/193
+import CustomEase from '../vendor/gsap/CustomEase'
+// import CustomEase from '../vendor/CustomEase'
+
+import Delay from '../components/delay'
 import Email from '../components/email'
 import BookLI from '../components/book-li'
 import Ripple from '../components/ripple'
 import muiTheme from '../lib/muitheme'
-import { white, color } from '../lib/styles'
+import { white, color, grey } from '../lib/styles'
 
 // fixes "Warning: Unknown prop `onTouchTap` on <label> tag."
 if (typeof window !== 'undefined') injectTapEventPlugin()
@@ -41,7 +48,8 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-
+    opacity: 0,
+    willChange: 'opacity, transform',
   },
   listAnimation: {
     maxLeft: 200,
@@ -60,8 +68,64 @@ const bookTopics = [
 ]
 
 class Index extends Component {
-  constructor(props) {
-    super(props)
+  componentDidMount() {
+    const header = ReactDOM.findDOMNode(this.header)
+    const introPara = ReactDOM.findDOMNode(this.introPara)
+    const logos = ReactDOM.findDOMNode(this.logos)
+    const comingSoon = ReactDOM.findDOMNode(this.comingSoon)
+
+
+    const animation = new TimelineLite({ paused: true })
+
+    // timeline.to(header, 2, { rotationX: 0, scale: 1.3 })
+
+    const path = 'M0,0 C0.46,0 0.804,0.243 0.87,0.368 0.928,0.478 0.884,0.4 1,1'
+    const ease = CustomEase.create('steep-fall', path)
+    TweenLite.set(header, {
+      y: -headerH,
+    })
+    TweenLite.set(introPara, {
+      x: -50,
+      opacity: 0,
+    })
+    TweenLite.set(logos, {
+      opacity: 0,
+    })
+    TweenLite.set(comingSoon, {
+      x: -100,
+      y: 100,
+      scale: 0.5,
+      opacity: 0,
+      rotation: -180,
+    })
+
+    animation
+    .delay(0.6) // wait for browser to not be busy. todo requestIdleCallback
+    .to(header, 1.5, {
+      y: 0,
+      ease: Power2.easeIn,
+    })
+    .to(introPara, 1.5, {
+      x: 0,
+      opacity: 1,
+      ease: Power2.easeIn,
+      delay: 0.5,
+    })
+    .to(logos, 2, {
+      opacity: 1,
+      ease: Power2.easeIn,
+      delay: 0.8,
+    })
+    .to(comingSoon, 0.7, {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotation: 0,
+      ease: Power2.easeIn,
+    })
+
+    animation.play()
   }
 
   render() {
@@ -72,9 +136,7 @@ class Index extends Component {
             <title>
               The GraphQL Book
             </title>
-
           </Head>
-          <div className="animation-target">
           <Paper
             zDepth={2}
             style={{
@@ -85,7 +147,13 @@ class Index extends Component {
               height: headerH,
               backgroundColor: color,
               color: white,
+              willChange: 'transform',
+              transform: 'translateY(-100%)',
+              // transform: 'scale(.7) rotateX(90deg)',
+              // transformOrigin: '0 0',
+              // perspective: '1000px',
             }}
+            ref={(header) => { this.header = header }}
             >
             <div
               style={{
@@ -158,7 +226,6 @@ class Index extends Component {
 
             </div>
           </Paper>
-        </div>
           <div
             style={{
               display: 'flex',
@@ -176,7 +243,9 @@ class Index extends Component {
               <p
                 style={{
                   maxWidth: 500,
+                  opacity: 0,
                 }}
+                ref={(introPara) => { this.introPara = introPara }}
                 >
                 <b>
                   GraphQL: The New REST
@@ -202,65 +271,79 @@ class Index extends Component {
                 {` maintainer. We’re in the process of writing the best GraphQL
                 reference, which inclues:`}
               </p>
-              <StaggeredMotion
-                defaultStyles={_.times(bookTopics.length,
-                  _.constant(styles.listAnimation.default),
-                )}
-                styles={prevInterpolatedStyles => prevInterpolatedStyles.map((x, i) => {
-                  const prev = prevInterpolatedStyles[i - 1] || styles.listAnimation.default
-                  let left
-                  if (i === 0 || prev.left < 1) {
-                    left = 0
-                  } else {
-                    left = Math.min(
-                      prev.left * 1.2,
-                      styles.listAnimation.maxLeft,
-                    )
-                  }
-
-                  let opacity
-                  if (i === 0 || prev.opacity > 0.7) {
-                    opacity = 1
-                  } else {
-                    opacity = prev.opacity * 0.99
-                  }
-
-                  return {
-                    opacity: prev.opacity > 0.95 ? 1 : spring(opacity, {
-                      stiffness: 30,
-                      damping: 26,
-                    }),
-                    left: spring(left, {
-                      stiffness: 150,
-                      damping: 26,
-                    }),
-                  }
-                })}
+              <Delay
+                ms={4000}
+                initial={false}
+                value
                 >
-                {interpolatingStyles =>
-                  <ul>
-                    {interpolatingStyles.map((style, i) => (
-                      <BookLI
-                        key={i} // eslint-disable-line
-                        style={{
-                          transform: `translateX(-${style.left}px)`,
-                          opacity: style.opacity,
-                        }}
-                        >
-                        {bookTopics[i]}
-                      </BookLI>
-                    ))}
-                  </ul>
+                { ready =>
+                  <StaggeredMotion
+                    defaultStyles={_.times(bookTopics.length,
+                      _.constant(styles.listAnimation.default),
+                    )}
+                    styles={prevInterpolatedStyles => prevInterpolatedStyles.map((x, i) => {
+                      if (!ready) {
+                        return styles.listAnimation.default
+                      }
+
+                      const prev = prevInterpolatedStyles[i - 1] || styles.listAnimation.default
+                      let left
+                      if (i === 0 || prev.left < 1) {
+                        left = 0
+                      } else {
+                        left = Math.min(
+                          prev.left * 1.2,
+                          styles.listAnimation.maxLeft,
+                        )
+                      }
+
+                      let opacity
+                      if (i === 0 || prev.opacity > 0.7) {
+                        opacity = 1
+                      } else {
+                        opacity = prev.opacity * 0.99
+                      }
+
+                      return {
+                        opacity: prev.opacity > 0.95 ? 1 : spring(opacity, {
+                          stiffness: 30,
+                          damping: 26,
+                        }),
+                        left: spring(left, {
+                          stiffness: 150,
+                          damping: 26,
+                        }),
+                      }
+                    })}
+                    >
+                    {interpolatingStyles =>
+                      <ul>
+                        {interpolatingStyles.map((style, i) => (
+                          <BookLI
+                            key={i} // eslint-disable-line
+                            style={{
+                              transform: `translateX(-${style.left}px)`,
+                              opacity: style.opacity,
+                            }}
+                            >
+                            {bookTopics[i]}
+                          </BookLI>
+                        ))}
+                      </ul>
+                    }
+                  </StaggeredMotion>
                 }
-              </StaggeredMotion>
+              </Delay>
               <div
                 style={{
                   display: 'flex',
                   width: 450,
                   justifyContent: 'space-between',
                   marginLeft: 30,
+                  opacity: 0,
                 }}
                 className="logo-collection"
+                ref={(logos) => { this.logos = logos }}
                 >
                 { // eslint-disable-next-line
                 }<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600"><circle fill="#00D8FF" cx="299.529" cy="299.628" r="50.167"/><path fill="none" stroke="#00D8FF" strokeWidth="24" strokeMiterlimit="10" d="M299.53 197.628c67.355 0 129.927 9.665 177.106 25.907 56.844 19.57 91.794 49.233 91.794 76.093 0 27.99-37.04 59.503-98.083 79.728-46.15 15.29-106.88 23.272-170.818 23.272-65.555 0-127.63-7.492-174.29-23.44-59.047-20.183-94.612-52.104-94.612-79.56 0-26.642 33.37-56.076 89.415-75.616 47.355-16.51 111.472-26.384 179.486-26.384z"/><path fill="none" stroke="#00D8FF" strokeWidth="24" strokeMiterlimit="10" d="M210.736 248.922c33.65-58.348 73.28-107.724 110.92-140.48 45.35-39.466 88.507-54.923 111.775-41.505 24.25 13.983 33.043 61.814 20.068 124.796-9.81 47.618-33.234 104.212-65.176 159.6-32.75 56.79-70.25 106.82-107.377 139.273-46.98 41.068-92.4 55.93-116.185 42.213-23.08-13.31-31.906-56.922-20.834-115.234 9.355-49.27 32.832-109.745 66.81-168.664z"/><path fill="none" stroke="#00D8FF" strokeWidth="24" strokeMiterlimit="10" d="M210.82 351.482c-33.745-58.292-56.73-117.287-66.31-166.255-11.545-59-3.383-104.11 19.863-117.566 24.224-14.023 70.055 2.245 118.14 44.94 36.356 32.28 73.688 80.838 105.723 136.174 32.844 56.733 57.46 114.21 67.036 162.582 12.117 61.213 2.31 107.984-21.453 121.74-23.058 13.348-65.25-.784-110.24-39.5-38.013-32.71-78.682-83.252-112.76-142.114z"/></svg>
@@ -273,24 +356,54 @@ class Index extends Component {
                 </svg>
               </div>
             </section>
-            <Paper style={styles.paper} zDepth={2} circle>
+            <Paper
+              style={styles.paper}
+              zDepth={2}
+              circle
+              ref={(comingSoon) => { this.comingSoon = comingSoon }}
+              >
               <h2
                 style={{
                   margin: 0,
+                  fontSize: '1.7em',
                 }}
                 >
                 Coming soon
               </h2>
               <form
                 style={{
-                  margin: '20px 0 40px 0',
+                  margin: '10px 0 40px 0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
                 }}
                 >
-                <Email className="form-control" />
-                <RaisedButton label="Get early access" primary type="submit" />
+                <Email
+                  className="form-control"
+                  autoFocus
+                  />
+                <RaisedButton
+                  label="Get early access"
+                  primary
+                  type="submit"
+                  style={{
+                    marginTop: 20,
+                  }}
+                  />
               </form>
-              <a href="https://twitter.com/graphqlguide">
-                Follow @graphqlguide
+              <a
+                href="https://twitter.com/graphqlguide"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: grey,
+                }}
+                className="-grey"
+                >
+                @graphqlguide
+                <svg className="twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+                  <path d="M153.62 301.59c94.34 0 145.94-78.16 145.94-145.94 0-2.22 0-4.43-.15-6.63A104.36 104.36 0 0 0 325 122.47a102.38 102.38 0 0 1-29.46 8.07 51.47 51.47 0 0 0 22.55-28.37 102.79 102.79 0 0 1-32.57 12.45 51.34 51.34 0 0 0-87.41 46.78A145.62 145.62 0 0 1 92.4 107.81a51.33 51.33 0 0 0 15.88 68.47A50.91 50.91 0 0 1 85 169.86v.65a51.31 51.31 0 0 0 41.15 50.28 51.21 51.21 0 0 1-23.16.88 51.35 51.35 0 0 0 47.92 35.62 102.92 102.92 0 0 1-63.7 22 104.41 104.41 0 0 1-12.21-.74 145.21 145.21 0 0 0 78.62 23" />
+                </svg>
               </a>
             </Paper>
           </div>

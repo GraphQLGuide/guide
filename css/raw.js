@@ -1,9 +1,14 @@
-import { fontFamily, color } from '../lib/styles'
+import { grey200 } from 'material-ui/styles/colors'
+
+import { fontFamily, color, white, black, grey } from '../lib/styles'
+
+const background = '#f2f2f2'
 
 export default `
 body {
   font-family: ${fontFamily};
-  color: #333;
+  color: ${black};
+  background-color: ${background};
   font-size: 18px;
   line-height: 1.7;
 }
@@ -30,6 +35,8 @@ a:hover {
   position: absolute;
   border: 1px solid #f3f3f3;
   pointer-events: none;
+  z-index: 1;
+  will-change: opacity, transform;
 }
 
 #logo > svg {
@@ -37,7 +44,7 @@ a:hover {
   height: 200px;
 }
 #logo > svg * {
-  fill: #f2f2f2;
+  fill: ${white};
 }
 
 .logo-collection > svg {
@@ -53,5 +60,19 @@ a:hover {
 }
 .st2 {
   fill:#FFFFFF;
+}
+
+svg.twitter {
+  width: 30px;
+  height: 30px;
+  margin-left: 6px;
+}
+svg.twitter * {
+  fill: ${grey};
+}
+
+a.-grey:hover {
+  text-decoration: none;
+  color: ${grey200};
 }
 `

@@ -11,6 +11,7 @@
     "arrow-body-style": 0,
     "react/jsx-filename-extension": 0,
     "react/react-in-jsx-scope": 0,
-    "react/jsx-closing-bracket-location": [1, "props-aligned"]
+    "react/jsx-closing-bracket-location": [1, "props-aligned"],
+    "react/no-find-dom-node": 0
   }
 }
