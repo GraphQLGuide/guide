@@ -7,7 +7,7 @@
     "dev": "babel-node server.js",
     "build": "next build",
     "start": "NODE_ENV=production babel-node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "private": true,
   "dependencies": {
     "apollo-client": "^0.8.0",
+    "apollo-errors": "^1.2.1",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "graphql": "^0.8.2",
@@ -45,10 +46,29 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
-    "eslint": "^3.13.1",
+    "babel-jest": "^18.0.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^6.9.0"
+    "eslint-plugin-react": "^6.9.0",
+    "jest": "^18.1.0",
+    "react-test-renderer": "^15.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "./dist"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "html"
+    ],
+    "moduleNameMapper": {
+      "^mongoose$": "<rootDir>/node_modules/mongoose"
+    },
+    "setupTestFrameworkScriptFile": "./test/mongooseConnection.js"
   }
 }

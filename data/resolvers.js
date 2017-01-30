@@ -1,4 +1,9 @@
+import { createError } from 'apollo-errors'
 import { Subscriber } from './connectors';
+
+const DbError = createError('DbError', {
+  message: 'An error occured when saving to the database',
+});
 
 export default {
   Query: {
@@ -21,12 +26,29 @@ export default {
         throw err;
       }
 
+      // validating email
       if (subscriberExists) {
-        throw new Error(`A subscriber with this email already exists`);
+        throw new DbError({
+          data: {
+            reason: 'A subscriber with this email already exists',
+          },
+        });
+      } else if (args.email.length === 0) {
+        throw new DbError({
+          data: {
+            reason: 'The email provided should not be empty',
+          },
+        });
+      } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(args.email)) {
+        throw new DbError({
+          data: {
+            reason: 'Provide a valid email',
+          },
+        });
       }
 
       const subscriber = new Subscriber({
-        email: args.email
+        email: args.email,
       });
 
       try {
