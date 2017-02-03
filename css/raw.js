@@ -73,6 +73,6 @@ svg.twitter * {
 
 a.-grey:hover {
   text-decoration: none;
-  color: ${grey200};
+  opacity: 0.5;
 }
 `
