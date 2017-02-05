@@ -65,7 +65,10 @@ class SubscribeForm extends React.Component {
     return (
       <form
         style={{
-          margin: '20px 0 40px 0',
+          margin: '10px 0 40px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
         >
         <div>
@@ -76,8 +79,16 @@ class SubscribeForm extends React.Component {
           ref={(email) => {
             this.formEmail = email;
           }}
+          autoFocus
           />
-        <RaisedButton onClick={this.onClick} label="Get early access" primary />
+        <RaisedButton
+          label="Get early access"
+          onClick={this.onClick}
+          primary
+          style={{
+            marginTop: 20,
+          }}
+          />
         <Dialog
           title="You will hear from us soon!"
           modal={false}

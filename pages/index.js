@@ -154,77 +154,25 @@ class Index extends Component {
               // transform: 'scale(.7) rotateX(90deg)',
               // transformOrigin: '0 0',
               // perspective: '1000px',
-
-          }}
-          >
-          <div
-            style={{
-              marginRight: '10vw',
-            }}
-            id="logo"
-            >
-            { // eslint-disable-next-line
-            }<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><path fill="#E10098" d="M57.468 302.66l-14.376-8.3 160.15-277.38 14.376 8.3z"/><path fill="#E10098" d="M39.8 272.2h320.3v16.6H39.8z"/><path fill="#E10098" d="M206.348 374.026l-160.21-92.5 8.3-14.376 160.21 92.5zM345.522 132.947l-160.21-92.5 8.3-14.376 160.21 92.5z"/><path fill="#E10098" d="M54.482 132.883l-8.3-14.375 160.21-92.5 8.3 14.376z"/><path fill="#E10098" d="M342.568 302.663l-160.15-277.38 14.376-8.3 160.15 277.38zM52.5 107.5h16.6v185H52.5zM330.9 107.5h16.6v185h-16.6z"/><path fill="#E10098" d="M203.522 367l-7.25-12.558 139.34-80.45 7.25 12.557z"/><path fill="#E10098" d="M369.5 297.9c-9.6 16.7-31 22.4-47.7 12.8-16.7-9.6-22.4-31-12.8-47.7 9.6-16.7 31-22.4 47.7-12.8 16.8 9.7 22.5 31 12.8 47.7M90.9 137c-9.6 16.7-31 22.4-47.7 12.8-16.7-9.6-22.4-31-12.8-47.7 9.6-16.7 31-22.4 47.7-12.8 16.7 9.7 22.4 31 12.8 47.7M30.5 297.9c-9.6-16.7-3.9-38 12.8-47.7 16.7-9.6 38-3.9 47.7 12.8 9.6 16.7 3.9 38-12.8 47.7-16.8 9.6-38.1 3.9-47.7-12.8M309.1 137c-9.6-16.7-3.9-38 12.8-47.7 16.7-9.6 38-3.9 47.7 12.8 9.6 16.7 3.9 38-12.8 47.7-16.7 9.6-38.1 3.9-47.7-12.8M200 395.8c-19.3 0-34.9-15.6-34.9-34.9 0-19.3 15.6-34.9 34.9-34.9 19.3 0 34.9 15.6 34.9 34.9 0 19.2-15.6 34.9-34.9 34.9M200 74c-19.3 0-34.9-15.6-34.9-34.9 0-19.3 15.6-34.9 34.9-34.9 19.3 0 34.9 15.6 34.9 34.9 0 19.3-15.6 34.9-34.9 34.9"/></svg>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-            >
-
-          <h1
-            style={{
-              textAlign: 'center',
-              fontSize: 70,
-              fontWeight: 400,
-              margin: '0 0 10px 0',
-            }}
-            >
-            GraphQL: The New REST
-          </h1>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
             }}
             ref={(header) => { this.header = header }}
             >
-            By
-            <a
-              href="https://twitter.com/helferjs"
-              style={styles.avatarLink}
+            <div
+              style={{
+                marginRight: '10vw',
+              }}
+              id="logo"
               >
-              <Avatar
-                src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
-                style={styles.avatar}
-                />
-              Jonas Helfer
-            </a>
-            and
-            <a
-              href="https://twitter.com/lorendsr"
-              style={styles.avatarLink}
+              { // eslint-disable-next-line
+              }<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><path fill="#E10098" d="M57.468 302.66l-14.376-8.3 160.15-277.38 14.376 8.3z"/><path fill="#E10098" d="M39.8 272.2h320.3v16.6H39.8z"/><path fill="#E10098" d="M206.348 374.026l-160.21-92.5 8.3-14.376 160.21 92.5zM345.522 132.947l-160.21-92.5 8.3-14.376 160.21 92.5z"/><path fill="#E10098" d="M54.482 132.883l-8.3-14.375 160.21-92.5 8.3 14.376z"/><path fill="#E10098" d="M342.568 302.663l-160.15-277.38 14.376-8.3 160.15 277.38zM52.5 107.5h16.6v185H52.5zM330.9 107.5h16.6v185h-16.6z"/><path fill="#E10098" d="M203.522 367l-7.25-12.558 139.34-80.45 7.25 12.557z"/><path fill="#E10098" d="M369.5 297.9c-9.6 16.7-31 22.4-47.7 12.8-16.7-9.6-22.4-31-12.8-47.7 9.6-16.7 31-22.4 47.7-12.8 16.8 9.7 22.5 31 12.8 47.7M90.9 137c-9.6 16.7-31 22.4-47.7 12.8-16.7-9.6-22.4-31-12.8-47.7 9.6-16.7 31-22.4 47.7-12.8 16.7 9.7 22.4 31 12.8 47.7M30.5 297.9c-9.6-16.7-3.9-38 12.8-47.7 16.7-9.6 38-3.9 47.7 12.8 9.6 16.7 3.9 38-12.8 47.7-16.8 9.6-38.1 3.9-47.7-12.8M309.1 137c-9.6-16.7-3.9-38 12.8-47.7 16.7-9.6 38-3.9 47.7 12.8 9.6 16.7 3.9 38-12.8 47.7-16.7 9.6-38.1 3.9-47.7-12.8M200 395.8c-19.3 0-34.9-15.6-34.9-34.9 0-19.3 15.6-34.9 34.9-34.9 19.3 0 34.9 15.6 34.9 34.9 0 19.2-15.6 34.9-34.9 34.9M200 74c-19.3 0-34.9-15.6-34.9-34.9 0-19.3 15.6-34.9 34.9-34.9 19.3 0 34.9 15.6 34.9 34.9 0 19.3-15.6 34.9-34.9 34.9"/></svg>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
               >
-              <Avatar
-                src="http://lorensr.me/img/loren-sq.png"
-                style={styles.avatar}
-                />
-              Loren Sands-Ramshaw
-            </a>
-          </div>
-          <h2
-            style={{
-              margin: '40px 0 0 0',
-              fontWeight: 300,
-              fontSize: 30,
-              color: white,
-            }}
-            >
-            Book and online companion course
-          </h2>
-
               <h1
                 style={{
                   textAlign: 'center',
@@ -249,7 +197,6 @@ class Index extends Component {
                   <Avatar
                     src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
                     style={styles.avatar}
-                    size={50}
                     />
                   Jonas Helfer
                 </a>
@@ -261,7 +208,6 @@ class Index extends Component {
                   <Avatar
                     src="http://lorensr.me/img/loren-sq.png"
                     style={styles.avatar}
-                    size={50}
                     />
                   Loren Sands-Ramshaw
                 </a>
@@ -276,18 +222,21 @@ class Index extends Component {
                 >
                 Book and online companion course
               </h2>
-
             </div>
           </Paper>
           <div
             style={{
-              maxWidth: 500,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              height: `calc(100vh - ${headerH}px)`,
             }}
             >
             <section
               style={{
                 alignSelf: 'flex-start',
                 marginTop: 20,
+                maxWidth: 500,
               }}
               >
               <p
@@ -420,27 +369,7 @@ class Index extends Component {
                 >
                 Coming soon
               </h2>
-              <form
-                style={{
-                  margin: '10px 0 40px 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-                >
-                <Email
-                  className="form-control"
-                  autoFocus
-                  />
-                <RaisedButton
-                  label="Get early access"
-                  primary
-                  type="submit"
-                  style={{
-                    marginTop: 20,
-                  }}
-                  />
-              </form>
+              <SubscribeForm />
               <a
                 href="https://twitter.com/graphqlguide"
                 style={{
@@ -457,23 +386,10 @@ class Index extends Component {
               </a>
             </Paper>
           </div>
-        </section>
-        <Paper style={styles.paper} zDepth={2} circle>
-          <h2
-            style={{
-              margin: 0,
-            }}
-            >
-            Coming soon
-          </h2>
-          <SubscribeForm />
-          <a href="https://twitter.com/graphqlguide">
-            Follow @graphqlguide
-          </a>
-        </Paper>
-      </div>
-    </Ripple>
-  </MuiThemeProvider>
-))
+        </Ripple>
+      </MuiThemeProvider>
+    )
+  }
+}
 
 export default withData(Index)
