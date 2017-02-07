@@ -22,8 +22,8 @@ class SubscribeForm extends React.Component {
   }
 
   onClick() {
-    const address = this.formEmail.state.value
-    this.props.mutate({ variables: { email: address } })
+    const email = this.formEmail.state.value
+    this.props.mutate({ variables: { email } })
       .then(({ data }) => {
         this.formEmail.setState({ value: '' })
         this.setState({ error: '' })

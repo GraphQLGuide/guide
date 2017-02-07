@@ -40,8 +40,8 @@ const styles = {
     // textDecoration: 'none',
   },
   paper: {
-    height: '60vh',
-    width: '60vh',
+    height: '55vh',
+    width: '55vh',
     maxHeight: 400,
     maxWidth: 400,
     minHeight: 320,
