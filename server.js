@@ -4,6 +4,7 @@ import next from 'next'
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import bodyParser from 'body-parser'
+import { formatError } from 'apollo-errors';
 
 import typeDefs from './data/schema'
 import resolvers from './data/resolvers'
@@ -23,6 +24,7 @@ app.prepare()
 
   server.use('/graphql', bodyParser.json(), graphqlExpress({
     schema: executableSchema,
+    formatError,
   }))
 
   server.use('/graphiql', graphiqlExpress({

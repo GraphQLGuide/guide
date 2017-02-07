@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper'
 import Avatar from 'material-ui/Avatar'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -17,10 +16,13 @@ import CustomEase from '../vendor/gsap/CustomEase'
 
 import Delay from '../components/delay'
 import Email from '../components/email'
+import SubscribeForm from '../components/SubscribeForm.js'
 import BookLI from '../components/book-li'
 import Ripple from '../components/ripple'
+
 import muiTheme from '../lib/muitheme'
 import { white, color, grey } from '../lib/styles'
+import withData from '../lib/withData'
 
 // fixes "Warning: Unknown prop `onTouchTap` on <label> tag."
 if (typeof window !== 'undefined') injectTapEventPlugin()
@@ -38,8 +40,8 @@ const styles = {
     // textDecoration: 'none',
   },
   paper: {
-    height: '45vh',
-    width: '45vh',
+    height: '55vh',
+    width: '55vh',
     maxHeight: 400,
     maxWidth: 400,
     minHeight: 320,
@@ -171,7 +173,6 @@ class Index extends Component {
                 alignItems: 'center',
               }}
               >
-
               <h1
                 style={{
                   textAlign: 'center',
@@ -196,7 +197,6 @@ class Index extends Component {
                   <Avatar
                     src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
                     style={styles.avatar}
-                    size={50}
                     />
                   Jonas Helfer
                 </a>
@@ -208,7 +208,6 @@ class Index extends Component {
                   <Avatar
                     src="http://lorensr.me/img/loren-sq.png"
                     style={styles.avatar}
-                    size={50}
                     />
                   Loren Sands-Ramshaw
                 </a>
@@ -223,7 +222,6 @@ class Index extends Component {
                 >
                 Book and online companion course
               </h2>
-
             </div>
           </Paper>
           <div
@@ -238,6 +236,7 @@ class Index extends Component {
               style={{
                 alignSelf: 'flex-start',
                 marginTop: 20,
+                maxWidth: 500,
               }}
               >
               <p
@@ -370,27 +369,7 @@ class Index extends Component {
                 >
                 Coming soon
               </h2>
-              <form
-                style={{
-                  margin: '10px 0 40px 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-                >
-                <Email
-                  className="form-control"
-                  autoFocus
-                  />
-                <RaisedButton
-                  label="Get early access"
-                  primary
-                  type="submit"
-                  style={{
-                    marginTop: 20,
-                  }}
-                  />
-              </form>
+              <SubscribeForm />
               <a
                 href="https://twitter.com/graphqlguide"
                 style={{
@@ -413,4 +392,4 @@ class Index extends Component {
   }
 }
 
-export default Index
+export default withData(Index)

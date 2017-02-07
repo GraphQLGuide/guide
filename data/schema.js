@@ -1,9 +1,20 @@
 export default [`
+type Subscriber {
+  email: String,
+  createdAt: String,
+  source: String,
+}
+
 type Query {
-  foo: String
+  subscriber (email: String!): Subscriber
+}
+
+type Mutation {
+  subscribe(email: String!): Subscriber
 }
 
 schema {
   query: Query
+  mutation: Mutation
 }
 `]
