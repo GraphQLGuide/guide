@@ -1,14 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import Email from '../components/email'
-
-const customContentStyle = {
-
-};
+import Email from './email'
 
 class SubscribeForm extends React.Component {
   static propTypes = {
@@ -18,11 +14,11 @@ class SubscribeForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.onClick = this.onClick.bind(this);
+    this.onClick = this.onClick.bind(this)
     this.state = {
       open: false,
       error: '',
-    };
+    }
   }
 
   onClick() {
@@ -39,29 +35,14 @@ class SubscribeForm extends React.Component {
   }
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true })
   }
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false })
   }
 
-
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleClose}
-      />,
-    ];
-
     return (
       <form
         style={{
@@ -77,7 +58,7 @@ class SubscribeForm extends React.Component {
         <Email
           className="form-control"
           ref={(email) => {
-            this.formEmail = email;
+            this.formEmail = email
           }}
           autoFocus
           />
@@ -94,11 +75,9 @@ class SubscribeForm extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          contentStyle={customContentStyle}
-          >
-        </Dialog>
+          />
       </form>
-    );
+    )
   }
 }
 
@@ -108,6 +87,6 @@ const subscribe = gql`
       email
     }
   }
-`;
+`
 
-export default graphql(subscribe)(SubscribeForm);
+export default graphql(subscribe)(SubscribeForm)

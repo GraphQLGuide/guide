@@ -1,11 +1,12 @@
 export default [`
 type Subscriber {
-  email: String
+  email: String,
+  createdAt: String,
+  source: String,
 }
 
 type Query {
   subscriber (email: String!): Subscriber
-  allSubscribers: [Subscriber]
 }
 
 type Mutation {
