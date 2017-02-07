@@ -14,14 +14,15 @@ class SubscribeForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.onClick = this.onClick.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
     this.state = {
       open: false,
       error: '',
     }
   }
 
-  onClick() {
+  onSubmit(event) {
+    event.preventDefault()
     const email = this.formEmail.state.value
     this.props.mutate({ variables: { email } })
       .then(({ data }) => {
@@ -51,6 +52,7 @@ class SubscribeForm extends React.Component {
           flexDirection: 'column',
           alignItems: 'center',
         }}
+        onSubmit={this.onSubmit}
         >
         <div>
           <p>{this.state.error}</p>
@@ -64,11 +66,11 @@ class SubscribeForm extends React.Component {
           />
         <RaisedButton
           label="Get early access"
-          onClick={this.onClick}
           primary
           style={{
             marginTop: 20,
           }}
+          type="submit"
           />
         <Dialog
           title="You will hear from us soon!"
