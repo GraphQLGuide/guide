@@ -7,7 +7,8 @@
     "dev": "babel-node server.js",
     "build": "next build",
     "start": "NODE_ENV=production babel-node server.js",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "now -e MONGO_URL=@mongo-url"
   },
   "repository": {
     "type": "git",

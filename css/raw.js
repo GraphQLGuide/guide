@@ -43,7 +43,10 @@ a:hover {
   width: 200px;
   height: 200px;
 }
-#logo > svg * {
+#logo > svg path:not(#logo-outline) {
+  fill: rgba(0,0,0,0);
+}
+#logo-outline {
   fill: ${white};
 }
 
