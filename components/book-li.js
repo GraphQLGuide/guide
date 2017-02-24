@@ -11,6 +11,7 @@ const BookLI = ({ style, children }) => {
         marginBottom: 10,
         ...style,
       }}
+      className="hvr-grow-shadow"
       >
       <span
         style={{
@@ -18,8 +19,9 @@ const BookLI = ({ style, children }) => {
           alignItems: 'center',
         }}
         >
-        <Emoji name="white_check_mark" />
-        { /* <Emoji name="heavy_check_mark" /> */ }
+        <Emoji
+          name="white_check_mark"
+          />
         <span
           style={{
             marginLeft: 15,
