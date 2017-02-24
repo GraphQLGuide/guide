@@ -47,7 +47,7 @@ class SubscribeForm extends React.Component {
     return (
       <form
         style={{
-          margin: '10px 0 40px 0',
+          margin: '5px 0 20px 0',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
