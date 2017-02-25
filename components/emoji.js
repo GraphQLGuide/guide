@@ -2,7 +2,7 @@
 // http://www.webpagefx.com/tools/emoji-cheat-sheet/
 import React from 'react'
 
-const Emoji = ({ name, size }) => {
+const Emoji = ({ name, size, ...props }) => {
   const src = `https://github.global.ssl.fastly.net/images/icons/emoji/${name}.png?v5`
 
   return (
@@ -13,6 +13,8 @@ const Emoji = ({ name, size }) => {
         width: size,
         height: size,
       }}
+      className="emoji"
+      {...props}
       />
   )
 }
