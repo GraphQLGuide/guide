@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import stylePropType from 'react-style-proptype'
 
 import Emoji from './emoji'
@@ -36,9 +36,9 @@ const BookLI = ({ style, children }) => {
 
 BookLI.propTypes = {
   style: stylePropType,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.element,
-    React.PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
   ]).isRequired,
 }
 
