@@ -50,6 +50,10 @@ a:hover {
   fill: ${white};
 }
 
+#apple-logo * {
+  fill: #aaaaaa;
+}
+
 .logo-collection .svg-wrapper {
   width: 100px;
   height: 100px;
@@ -59,7 +63,7 @@ a:hover {
   height: 100%;
 }
 .logo-collection > .logo:hover {
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: white;
 }
 .logo-collection > .logo:hover svg {
   animation: spin 3s linear infinite;
@@ -115,7 +119,7 @@ a.-grey:hover {
   transform: scale(1.3);
 }
 .hvr-grow-shadow:hover {
-  background-color: rgba(255, 255, 0, 0.3);
+  background-color: white;
 }
 
 .hvr-float-shadow {
