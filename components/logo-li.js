@@ -3,17 +3,24 @@ import { PropTypes } from 'react'
 const LogoLI = ({ name, children }) => (
   <div
     style={{
-      flex: 1,
-      height: '100%',
-      margin: 10,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       textAlign: 'center',
-      padding: 10,
+      padding: 20,
+      borderRadius: 20,
     }}
+    className="logo"
     >
-    <div className="logo">
+    <div className="svg-wrapper">
       {children}
     </div>
-    <div>
+    <div
+      style={{
+        color: '#737373',
+        marginTop: 10,
+      }}
+      >
       {name}
     </div>
   </div>
