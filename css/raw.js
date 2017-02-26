@@ -50,16 +50,22 @@ a:hover {
   fill: ${white};
 }
 
-.logo-collection > .logo {
-  position: relative;
-  width: 150px;
-  height: 150px;
+#apple-logo * {
+  fill: #aaaaaa;
 }
-.logo-collection > .logo > svg {
+
+.logo-collection .svg-wrapper {
+  width: 100px;
+  height: 100px;
+}
+.logo-collection svg {
   width: 100%;
   height: 100%;
 }
-.logo-collection > .logo:hover > svg {
+.logo-collection > .logo:hover {
+  background-color: white;
+}
+.logo-collection > .logo:hover svg {
   animation: spin 3s linear infinite;
 }
 @keyframes spin {
@@ -111,6 +117,9 @@ a.-grey:hover {
   box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
   -webkit-transform: scale(1.3);
   transform: scale(1.3);
+}
+.hvr-grow-shadow:hover {
+  background-color: white;
 }
 
 .hvr-float-shadow {

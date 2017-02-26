@@ -1,8 +1,9 @@
 // https://developer.github.com/v3/emojis/
 // http://www.webpagefx.com/tools/emoji-cheat-sheet/
-import React from 'react'
+import { PropTypes } from 'react'
+import stylePropType from 'react-style-proptype'
 
-const Emoji = ({ name, size, ...props }) => {
+const Emoji = ({ name, size, style, ...props }) => {
   const src = `https://github.global.ssl.fastly.net/images/icons/emoji/${name}.png?v5`
 
   return (
@@ -12,6 +13,7 @@ const Emoji = ({ name, size, ...props }) => {
       style={{
         width: size,
         height: size,
+        ...style,
       }}
       className="emoji"
       {...props}
@@ -21,13 +23,15 @@ const Emoji = ({ name, size, ...props }) => {
 
 Emoji.defaultProps = {
   size: '1.5em',
+  style: {},
 }
 
 Emoji.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  size: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  name: PropTypes.string.isRequired,
+  style: stylePropType,
+  size: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]),
 }
 
