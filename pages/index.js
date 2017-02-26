@@ -62,7 +62,6 @@ class Index extends Component {
     const logos = ReactDOM.findDOMNode(this.logos)
     const comingSoon = ReactDOM.findDOMNode(this.comingSoon)
 
-
     const animation = new TimelineLite({ paused: true })
 
     // timeline.to(header, 2, { rotationX: 0, scale: 1.3 })
@@ -70,7 +69,7 @@ class Index extends Component {
     const path = 'M0,0 C0.46,0 0.804,0.243 0.87,0.368 0.928,0.478 0.884,0.4 1,1'
     const ease = CustomEase.create('steep-fall', path)
     TweenLite.set(header, {
-      y: -headerH,
+      x: -header.offsetWidth, // '-100%' percentage not supported
     })
     TweenLite.set(introPara, {
       x: -50,
@@ -90,7 +89,7 @@ class Index extends Component {
     animation
     .delay(0.6) // wait for browser to not be busy. todo requestIdleCallback
     .to(header, 1.5, {
-      y: 0,
+      x: 0,
       ease: Power2.easeIn,
     })
     .to(introPara, 1.5, {
@@ -131,14 +130,15 @@ class Index extends Component {
               flexDirection: 'row wrap',
               width: '100%',
               height: '100%',
-              position: 'fixed',
+              minHeight: '100vh',
             }}
-          >
+            >
             <Paper
               zDepth={2}
               style={{
-                flex: 1,
-                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '40vw',
                 textAlign: 'center',
                 padding: 10,
                 justifyContent: 'center',
@@ -146,10 +146,7 @@ class Index extends Component {
                 color: white,
                 paddingTop: 70,
                 willChange: 'transform',
-                transform: 'translateY(-100%)',
-                // transform: 'scale(.7) rotateX(90deg)',
-                // transformOrigin: '0 0',
-                // perspective: '1000px',
+                transform: 'translateX(-100%)',
               }}
               ref={(header) => { this.header = header }}
               >
