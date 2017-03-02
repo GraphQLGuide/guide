@@ -153,7 +153,6 @@ class Index extends Component {
               <div className="book-title">
                 <h1
                   style={{
-                    fontSize: '4vw',
                     fontWeight: 400,
                     margin: '0 0 20px 0',
                     textAlign: 'center',
@@ -167,7 +166,6 @@ class Index extends Component {
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontWeight: 300,
-                    fontSize: '2.5vw',
                     color: white,
                   }}
                   >
@@ -175,10 +173,6 @@ class Index extends Component {
                   <Emoji
                     name="sparkles"
                     size={50}
-                    style={{
-                      marginLeft: 15,
-                      marginBottom: 3,
-                    }}
                     />
                 </h2>
               </div>
@@ -187,35 +181,38 @@ class Index extends Component {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  fontSize: '1.3vw',
                 }}
                 >
                 By
-                <a
-                  href="https://twitter.com/helferjs"
-                  style={styles.avatarLink}
-                  className="author-link"
-                  >
-                  <Avatar
-                    src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
-                    style={styles.avatar}
-                    size={50}
-                    />
-                  Jonas Helfer
-                </a>
-                and
-                <a
-                  href="https://twitter.com/lorendsr"
-                  style={styles.avatarLink}
-                  className="author-link"
-                  >
-                  <Avatar
-                    src="http://lorensr.me/img/loren-sq.png"
-                    style={styles.avatar}
-                    size={50}
-                    />
-                  Loren Sands-Ramshaw
-                </a>
+                <div className="authors">
+                  <a
+                    href="https://twitter.com/helferjs"
+                    style={styles.avatarLink}
+                    className="author-link"
+                    >
+                    <Avatar
+                      src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
+                      style={styles.avatar}
+                      size={50}
+                      />
+                    Jonas Helfer
+                  </a>
+                  <span className="-and">
+                    and
+                  </span>
+                  <a
+                    href="https://twitter.com/lorendsr"
+                    style={styles.avatarLink}
+                    className="author-link"
+                    >
+                    <Avatar
+                      src="http://lorensr.me/img/loren-sq.png"
+                      style={styles.avatar}
+                      size={50}
+                      />
+                    Loren Sands-Ramshaw
+                  </a>
+                </div>
               </div>
             </Paper>
             <section
@@ -377,7 +374,6 @@ class Index extends Component {
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: 500,
                   opacity: 0,
                   paddingTop: 10,
                   paddingBottom: 10,

@@ -30,10 +30,16 @@ a:hover {
 
 .form-container {
   margin-top: 30px;
+  width: 500px;
 }
 @media (max-height: 825px) {
   .form-container {
     margin-top: 10px;
+  }
+}
+@media (max-width: ${iPadMaxW}px) {
+  .form-container {
+    width: 90vw;
   }
 }
 
@@ -49,6 +55,10 @@ main.-landing {
 }
 .book-title {
   margin: 5vh 0 15vh 0;
+}
+.by-authors .authors {
+  display: flex;
+  align-items: center;
 }
 @media (max-width: ${iPadMaxW}px) {
   .landing-header {
@@ -72,6 +82,22 @@ main.-landing {
   .landing-main {
     padding-top: 20px;
   }
+
+  .landing-main > p {
+    margin-left: 2vw;
+  }
+
+  .by-authors .authors {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 20px;
+    height: 27vw;
+    justify-content: space-around;
+  }
+
+  .by-authors span.-and {
+    display: none
+  }
 }
 
 .ripple-ball {
@@ -89,12 +115,58 @@ main.-landing {
   width: 200px;
   height: 200px;
 }
+@media (max-width: ${iPadMaxW}px) {
+  #logo > svg {
+    width: 40vw;
+    height: 40vw;
+    margin-top: 10vw;
+  }
+}
+
 #logo > svg path:not(#logo-outline) {
   fill: rgba(0,0,0,0);
 }
 #logo-outline {
   fill: ${white};
 }
+
+.book-title > h1 {
+  font-size: 4vw;
+}
+.book-title > h2 {
+  font-size: 2.5vw;
+}
+.book-title > h2 > img {
+  margin: 0 0 3px 15px;
+}
+.by-authors {
+  font-size: 1.3vw;
+}
+@media (max-width: ${iPadMaxW}px) {
+  .book-title > h1 {
+    font-size: 8vw;
+  }
+
+  .book-title > h2 {
+    font-size: 5vw;
+  }
+
+  .book-title > h2 > img {
+    margin: 0 0 0 5px;
+    width: 7vw !important;
+    height: 7vw !important;
+  }
+
+  .by-authors {
+    font-size: 4vw;
+  }
+
+  .by-authors img {
+    width: 10vw !important;
+    height: 10vw !important;
+  }
+}
+
 
 #apple-logo * {
   fill: #aaaaaa;
