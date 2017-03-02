@@ -192,7 +192,9 @@ main.-landing {
 .logo-collection > .logo:hover {
   background-color: white;
 }
-.logo-collection > .logo:hover svg {
+.logo-collection > .logo:hover svg,
+.logo-collection > .logo:active svg,
+.logo-collection > .logo:focus svg {
   animation: spin 3s linear infinite;
 }
 @keyframes spin {
@@ -201,7 +203,9 @@ main.-landing {
   }
 }
 
-.author-link:hover > img {
+.author-link:hover > img,
+.author-link:active > img,
+.author-link:focus > img {
   animation: spin 3s linear infinite;
 }
 
