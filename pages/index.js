@@ -242,6 +242,7 @@ class Index extends Component {
                 style={{
                   opacity: 0,
                   padding: '20px 20px 0 20px',
+                  marginTop: 0,
                   marginBottom: 0,
                   maxWidth: '600px',
                 }}
@@ -250,8 +251,8 @@ class Index extends Component {
                 <b>
                   The GraphQL Guide
                 </b>
-                {` is an upcoming book on GraphQL, the best way to write an API or
-                fetch data for your app. `}
+                {` is an upcoming book on GraphQL (which is the best way to write an API or
+                fetch data for your app). `}
                 <a href="https://twitter.com/helferjs">
                   Jonas
                 </a>
@@ -263,12 +264,15 @@ class Index extends Component {
                 <a href="https://twitter.com/lorendsr">
                   Loren
                 </a>
-                {' is a full-stack freelancer and '}
+                {' is a freelancer and '}
                 <a href="https://www.meteor.com/">
                   Meteor
                 </a>
-                {` maintainer. We’re in the process of writing the best GraphQL
-                reference, which includes:`}
+                {' maintainer. We’re in the process of writing '}
+                <em>
+                  the best
+                </em>
+                {' GraphQL reference, which includes:'}
               </p>
               <Delay
                 ms={3500}
@@ -375,6 +379,7 @@ class Index extends Component {
                 </LogoLI>
               </section>
               <Paper
+                className="form-container"
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -382,9 +387,9 @@ class Index extends Component {
                   justifyContent: 'center',
                   width: 500,
                   opacity: 0,
-                  marginTop: 30,
                   paddingTop: 10,
                   paddingBottom: 10,
+                  marginBottom: 20,
                   willChange: 'opacity, transform',
                 }}
                 zDepth={2}

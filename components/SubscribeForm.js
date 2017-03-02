@@ -21,6 +21,14 @@ class SubscribeForm extends React.Component {
     }
   }
 
+  componentDidMount() {
+    // when focusing on small screens, browser sets scrollTop to make sure
+    // input is in view, which we don't want
+    if (window.screen.height >= 768) {
+      this.formEmail.textHandler.focus()
+    }
+  }
+
   onSubmit(event) {
     event.preventDefault()
     const email = this.formEmail.state.value
@@ -62,7 +70,6 @@ class SubscribeForm extends React.Component {
           ref={(email) => {
             this.formEmail = email
           }}
-          autoFocus
           />
         <RaisedButton
           label="Get early access"

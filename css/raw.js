@@ -12,7 +12,6 @@ body {
   font-size: 18px;
   line-height: 1.7;
 }
-
 @media screen and (max-width: 760px) {
   body {
     font-size: 16px;
@@ -26,6 +25,15 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+.form-container {
+  margin-top: 30px;
+}
+@media (max-height: 825px) {
+  .form-container {
+    margin-top: 10px;
+  }
 }
 
 .ripple-ball {
@@ -55,8 +63,14 @@ a:hover {
 }
 
 .logo-collection .svg-wrapper {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
+}
+@media (max-height: 799px) {
+  .logo-collection .svg-wrapper {
+    width: 50px;
+    height: 50px;
+  }
 }
 .logo-collection svg {
   width: 100%;
