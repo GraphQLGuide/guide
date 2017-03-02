@@ -19,7 +19,6 @@ const Ripple = React.createClass({
   },
 
   handleTouchMove(e) {
-    e.preventDefault();
     this.handleMouseMove(e.touches[0]);
   },
 
