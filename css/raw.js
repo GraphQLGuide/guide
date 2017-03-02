@@ -37,6 +37,13 @@ a:hover {
   }
 }
 
+main.-landing {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100%;
+  min-height: 100vh;
+}
 .landing-header {
   width: 43vw;
 }
@@ -50,6 +57,20 @@ a:hover {
 
   .book-title {
     margin: 10px 0 20px 0;
+  }
+
+  main.-landing {
+    display: block;
+    height: auto;
+    min-height: auto;
+  }
+
+  .by-authors {
+    margin-bottom: 10px;
+  }
+
+  .landing-main {
+    padding-top: 20px;
   }
 }
 

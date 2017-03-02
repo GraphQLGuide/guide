@@ -122,15 +122,7 @@ class Index extends Component {
               The GraphQL Guide
             </title>
           </Head>
-          <main
-            className="-landing"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              width: '100vw',
-            }}
-            >
+          <main className="-landing">
             <Paper
               className="landing-header"
               zDepth={2}
@@ -191,6 +183,7 @@ class Index extends Component {
                 </h2>
               </div>
               <div
+                className="by-authors"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -226,6 +219,7 @@ class Index extends Component {
               </div>
             </Paper>
             <section
+              className="landing-main"
               style={{
                 display: 'flex',
                 flex: '1',
