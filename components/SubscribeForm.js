@@ -4,7 +4,10 @@ import gql from 'graphql-tag'
 import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
+
 import Email from './email'
+
+import { iPadMaxW } from '../lib/styles'
 
 class SubscribeForm extends React.Component {
   static propTypes = {
@@ -24,7 +27,7 @@ class SubscribeForm extends React.Component {
   componentDidMount() {
     // when focusing on small screens, browser sets scrollTop to make sure
     // input is in view, which we don't want
-    if (window.screen.height >= 768) {
+    if (window.screen.height >= 768 && window.screen.width > iPadMaxW) {
       this.formEmail.textHandler.focus()
     }
   }

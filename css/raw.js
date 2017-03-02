@@ -1,8 +1,10 @@
 import { grey200 } from 'material-ui/styles/colors'
 
-import { fontFamily, color, white, black, grey } from '../lib/styles'
+import { fontFamily, color, white, black, grey, iPadMaxW } from '../lib/styles'
 
 const background = '#f2f2f2'
+
+const macbookAirMaxW = 1279
 
 export default `
 body {
@@ -22,7 +24,6 @@ a {
   color: ${color};
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
 }
@@ -33,6 +34,22 @@ a:hover {
 @media (max-height: 825px) {
   .form-container {
     margin-top: 10px;
+  }
+}
+
+.landing-header {
+  width: 43vw;
+}
+.book-title {
+  margin: 5vh 0 15vh 0;
+}
+@media (max-width: ${iPadMaxW}px) {
+  .landing-header {
+    width: 100vw;
+  }
+
+  .book-title {
+    margin: 10px 0 20px 0;
   }
 }
 
@@ -66,12 +83,13 @@ a:hover {
   width: 80px;
   height: 80px;
 }
-@media (max-height: 799px) {
+@media (max-height: 799px), (max-width: 1425px) {
   .logo-collection .svg-wrapper {
     width: 50px;
     height: 50px;
   }
 }
+
 .logo-collection svg {
   width: 100%;
   height: 100%;
