@@ -52,6 +52,7 @@ main.-landing {
 }
 .landing-header {
   width: 43vw;
+  transform: translateX(-100%);
 }
 .book-title {
   margin: 5vh 0 15vh 0;
@@ -63,6 +64,7 @@ main.-landing {
 @media (max-width: ${iPadMaxW}px) {
   .landing-header {
     width: 100vw;
+    transform: translateY(-100%);
   }
 
   .book-title {
