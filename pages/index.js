@@ -201,22 +201,7 @@ class Index extends Component {
                 By
                 <div className="authors">
                   <a
-                    href="https://twitter.com/helferjs"
-                    style={styles.avatarLink}
-                    className="author-link"
-                    >
-                    <Avatar
-                      src="https://pbs.twimg.com/profile_images/705848506536210432/Gonh3JNx.jpg"
-                      style={styles.avatar}
-                      size={50}
-                      />
-                    Jonas Helfer
-                  </a>
-                  <span className="-and">
-                    and
-                  </span>
-                  <a
-                    href="https://twitter.com/lorendsr"
+                    href="http://lorensr.me"
                     style={styles.avatarLink}
                     className="author-link"
                     >
@@ -254,23 +239,23 @@ class Index extends Component {
                   The GraphQL Guide
                 </b>
                 {` is an upcoming book on GraphQL (which is the best way to write an API or
-                fetch data for your app). `}
-                <a href="https://twitter.com/helferjs">
-                  Jonas
+                fetch data for your app). Loren is a `}
+                <a href="http://lorensr.me">
+                  freelance dev
                 </a>
-                {' works on the team behind the '}
+                {" who loves teaching and writing. He's a community maintainer of the "}
                 <a href="http://dev.apollodata.com/">
-                  Apollo
+                  Apollo project
                 </a>
-                {' GraphQL client, and '}
-                <a href="https://twitter.com/lorendsr">
-                  Loren
+                {' (the #1 GraphQL client) as well as the Meteor '}
+                <a href="https://guide.meteor.com/">
+                  Guide
                 </a>
-                {' is a freelancer and '}
-                <a href="https://www.meteor.com/">
-                  Meteor
+                {' and '}
+                <a href="https://docs.meteor.com/">
+                  Docs
                 </a>
-                {' maintainer. We’re in the process of writing '}
+                {". He's in the process of writing "}
                 <em>
                   the best
                 </em>
