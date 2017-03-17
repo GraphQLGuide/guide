@@ -63,6 +63,7 @@ class Index extends Component {
     const introPara = ReactDOM.findDOMNode(this.introPara)
     const logos = ReactDOM.findDOMNode(this.logos)
     const comingSoon = ReactDOM.findDOMNode(this.comingSoon)
+    const links = ReactDOM.findDOMNode(this.links)
 
     const headerStart = (window.screen.width > iPadMaxW
       ? {
@@ -101,6 +102,9 @@ class Index extends Component {
       scale: 0.3,
       opacity: 0,
     })
+    TweenLite.set(links, {
+      opacity: 0,
+    })
 
     animation
     .delay(0.6) // wait for browser to not be busy. todo requestIdleCallback
@@ -124,6 +128,10 @@ class Index extends Component {
       x: 0,
       scale: 1,
       ease: Power2.easeIn,
+    })
+    .to(links, 5, {
+      opacity: 1,
+      delay: 2,
     })
 
     animation.play()
@@ -393,6 +401,27 @@ class Index extends Component {
                 </h2>
                 <SubscribeForm />
               </Paper>
+              <div
+                style={{
+                  textAlign: 'center',
+                  marginTop: 20,
+                  marginBottom: 15,
+                  opacity: 0,
+                }}
+                ref={(links) => { this.links = links }}
+                >
+                <a
+                  href="https://blog.graphql.guide/"
+                  style={{ marginRight: 30 }}
+                  >
+                  Blog
+                </a>
+                <a
+                  href="https://twitter.com/graphqlguide"
+                  >
+                  Twitter
+                </a>
+              </div>
             </section>
           </main>
         </Ripple>

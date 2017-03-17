@@ -92,7 +92,6 @@ main.-landing {
   .by-authors .authors {
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 20px;
     height: 27vw;
     justify-content: space-around;
   }
