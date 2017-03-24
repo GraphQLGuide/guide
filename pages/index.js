@@ -216,7 +216,7 @@ class Index extends Component {
                     className="author-link"
                     >
                     <Avatar
-                      src="http://lorensr.me/img/loren-sq.png"
+                      src="/static/img/loren-sq.png"
                       style={styles.avatar}
                       size={50}
                       />
