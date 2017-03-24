@@ -2,6 +2,10 @@ import Document, { Head, Main, NextScript } from 'next/document'
 
 import raw from '../css/raw'
 
+const gaScriptFile = process.env.NODE_ENV === 'production'
+? 'analytics.js'
+: 'analytics_debug.js'
+
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {
     const page = renderPage()
@@ -38,6 +42,10 @@ export default class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#FFFFFF" />
           <meta name="msapplication-TileImage" content="/static/favicon/favicon-144.png" />
           <meta name="msapplication-config" content="/static/browserconfig.xml" />
+
+          <script dangerouslySetInnerHTML={{ __html: "addEventListener('error', window.__e=function f(e){f.q=f.q||[];f.q.push(e)});" }} />
+          <script async src={`https://www.google-analytics.com/${gaScriptFile}`} />
+          <script async src="/static/autotrack.js" />
         </Head>
         <body>
           <Main />

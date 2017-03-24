@@ -14,6 +14,7 @@ import { TimelineLite, TweenLite, Power0, Power2 } from 'gsap'
 import CustomEase from '../vendor/gsap/CustomEase'
 // import CustomEase from '../vendor/CustomEase'
 
+import Init from '../components/init'
 import Delay from '../components/delay'
 import Email from '../components/email'
 import SubscribeForm from '../components/SubscribeForm'
@@ -141,6 +142,7 @@ class Index extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <Ripple>
+          <Init />
           <Head>
             <title>
               The GraphQL Guide
