@@ -28,7 +28,7 @@ import { white, color, grey, iPadMaxW } from '../lib/styles'
 import withData from '../lib/withData'
 
 const DEVELOPING_ANIMATIONS = false
-const showAnimations = (process.env.NODE_ENV !== 'production' && DEVELOPING_ANIMATIONS)
+const showAnimations = (process.env.NODE_ENV === 'production' || DEVELOPING_ANIMATIONS)
 
 let Ripple = RippleComponent
 const Noop = ({ children }) => <div>{children}</div>
