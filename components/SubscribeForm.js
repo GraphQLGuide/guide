@@ -12,6 +12,11 @@ import { iPadMaxW } from '../lib/styles'
 class SubscribeForm extends React.Component {
   static propTypes = {
     mutate: React.PropTypes.func.isRequired,
+    onSubmit: React.PropTypes.func,
+  }
+
+  static defaultProps = {
+    onSubmit: Function.prototype,
   }
 
   constructor(props) {
@@ -33,17 +38,23 @@ class SubscribeForm extends React.Component {
   }
 
   onSubmit(event) {
+    this.props.onSubmit()
     event.preventDefault()
     const email = this.formEmail.state.value
-    this.props.mutate({ variables: { email } })
-      .then(({ data }) => {
-        this.formEmail.setState({ value: '' })
-        this.setState({ error: '' })
-        this.handleOpen()
-      })
-      .catch((error) => {
-        this.setState({ error: error.graphQLErrors[0].data.reason })
-      })
+    if (email.length === 0) {
+      return
+    }
+
+    this.props
+    .mutate({ variables: { email } })
+    .then(({ data }) => {
+      this.formEmail.setState({ value: '' })
+      this.setState({ error: '' })
+      this.handleOpen()
+    })
+    .catch((error) => {
+      this.setState({ error: error.graphQLErrors[0].data.reason })
+    })
   }
 
   handleOpen = () => {

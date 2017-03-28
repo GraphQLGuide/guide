@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Paper from 'material-ui/Paper'
@@ -20,12 +20,24 @@ import Email from '../components/email'
 import SubscribeForm from '../components/SubscribeForm'
 import BookLI from '../components/book-li'
 import LogoLI from '../components/logo-li'
-import Ripple from '../components/ripple'
+import RippleComponent from '../components/ripple'
 import Emoji from '../components/emoji'
 
 import muiTheme from '../lib/muitheme'
 import { white, color, grey, iPadMaxW } from '../lib/styles'
 import withData from '../lib/withData'
+
+const DEVELOPING_ANIMATIONS = false
+const showAnimations = (process.env.NODE_ENV !== 'production' && DEVELOPING_ANIMATIONS)
+
+let Ripple = RippleComponent
+const Noop = ({ children }) => <div>{children}</div>
+Noop.propTypes = {
+  children: PropTypes.element.isRequired,
+}
+if (!showAnimations) {
+  Ripple = Noop
+}
 
 // fixes "Warning: Unknown prop `onTouchTap` on <label> tag."
 if (typeof window !== 'undefined') injectTapEventPlugin()
@@ -59,6 +71,14 @@ const bookTopics = [
 ]
 
 class Index extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      subscribed: false,
+    }
+  }
+
   componentDidMount() {
     const header = ReactDOM.findDOMNode(this.header)
     const introPara = ReactDOM.findDOMNode(this.introPara)
@@ -135,7 +155,11 @@ class Index extends Component {
       delay: 2,
     })
 
-    animation.play()
+    if (showAnimations) {
+      animation.play()
+    } else {
+      animation.time(animation.endTime())
+    }
   }
 
   render() {
@@ -233,6 +257,7 @@ class Index extends Component {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
+                perspective: 1400,
               }}
               >
               <p
@@ -380,28 +405,67 @@ class Index extends Component {
               <Paper
                 className="form-container"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  position: 'relative',
                   opacity: 0,
                   paddingTop: 10,
                   paddingBottom: 10,
                   marginBottom: 20,
                   willChange: 'opacity, transform',
+                  transition: this.state.subscribed ? 'transform 1s ease-in-out' : null,
+                  transform: this.state.subscribed ? 'rotateY( 180deg )' : null,
                 }}
                 zDepth={2}
                 ref={(comingSoon) => { this.comingSoon = comingSoon }}
                 >
-                <h2
+                <div className="card-face">
+                  <h2
+                    style={{
+                      margin: 0,
+                      textAlign: 'center',
+                      fontSize: '1.7em',
+                    }}
+                    >
+                    Coming soon
+                  </h2>
+                  <SubscribeForm
+                    onSubmit={() => this.setState({ subscribed: true })}
+                    />
+                </div>
+                <div
+                  className="card-face"
                   style={{
-                    margin: 0,
-                    fontSize: '1.7em',
+                    position: 'absolute',
+                    top: 0,
+                    transform: 'rotateY( 180deg )',
+                    backgroundColor: 'red',
                   }}
                   >
-                  Coming soon
-                </h2>
-                <SubscribeForm />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    >
+                    <Emoji
+                      name="pray"
+                      />
+                    {'Thank you'}
+                    <Emoji
+                      name="relaxed"
+                      />
+                  </div>
+                </div>
+                <style jsx>{`
+                  .card-face {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    backface-visibility: hidden;
+                  }
+                `}</style>
               </Paper>
               <div
                 style={{

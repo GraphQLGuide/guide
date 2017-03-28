@@ -19,13 +19,13 @@ export default {
       let error
 
       if (subscriberExists) {
-        error = 'A subscriber with this email already exists'
+        error = 'Your email has already been submitted'
       } else if (args.email.length === 0) {
-        error = 'The email provided should not be empty'
+        error = 'Empty email address'
       } else {
         const isValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(args.email)
         if (!isValid) {
-          error = 'Provide a valid email'
+          error = 'Invalid email address'
         }
       }
 
