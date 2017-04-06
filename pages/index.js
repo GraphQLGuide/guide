@@ -402,71 +402,84 @@ class Index extends Component {
                   }<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><path fill="#9FBF3B" d="M301.314 83.298l20.16-29.272c1.196-1.74.898-4.024-.667-5.104-1.563-1.074-3.805-.543-4.993 1.2l-20.95 30.408c-13.808-5.44-29.14-8.47-45.3-8.47-16.16 0-31.496 3.028-45.302 8.47l-20.948-30.41c-1.2-1.74-3.44-2.273-5.003-1.2-1.563 1.078-1.86 3.363-.663 5.105l20.166 29.272c-32.063 14.916-54.548 43.26-57.413 76.34h218.316c-2.855-33.08-25.34-61.423-57.402-76.34"/><path fill="#FFF" d="M203.956 129.438c-6.673 0-12.08-5.407-12.08-12.08 0-6.67 5.404-12.08 12.08-12.08 6.668 0 12.073 5.408 12.073 12.08s-5.406 12.08-12.074 12.08M295.16 129.438c-6.667 0-12.073-5.407-12.073-12.08 0-6.672 5.406-12.08 12.074-12.08 6.676 0 12.08 5.41 12.08 12.08 0 6.672-5.406 12.08-12.08 12.08"/><path fill="#9FBF3B" d="M126.383 297.598c0 13.45-10.904 24.354-24.355 24.354-13.45 0-24.354-10.904-24.354-24.354V199.09c0-13.45 10.904-24.354 24.354-24.354s24.355 10.904 24.355 24.354v98.508zM140.396 175.49v177.914c0 10.566 8.566 19.133 19.135 19.133h22.634v54.744c0 13.452 10.903 24.355 24.354 24.355 13.45 0 24.355-10.903 24.355-24.354v-54.743h37.37v54.744c0 13.452 10.903 24.355 24.355 24.355s24.354-10.903 24.354-24.354v-54.743h22.633c10.57 0 19.137-8.562 19.137-19.133V175.49H140.396zM372.734 297.598c0 13.45 10.903 24.354 24.354 24.354 13.45 0 24.354-10.904 24.354-24.354V199.09c0-13.45-10.904-24.354-24.354-24.354s-24.354 10.904-24.354 24.354v98.508z"/></svg>
                 </LogoLI>
               </section>
-              <Paper
-                className="form-container"
+              <div
+                className="card-flip"
                 style={{
-                  position: 'relative',
-                  opacity: 0,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  marginBottom: 20,
-                  willChange: 'opacity, transform',
-                  transition: this.state.subscribed ? 'transform 1s ease-in-out' : null,
-                  transform: this.state.subscribed ? 'rotateY( 180deg )' : null,
-                }}
-                zDepth={2}
-                ref={(comingSoon) => { this.comingSoon = comingSoon }}
-                >
-                <div className="card-face">
-                  <h2
-                    style={{
-                      margin: 0,
-                      textAlign: 'center',
-                      fontSize: '1.7em',
-                    }}
-                    >
-                    Coming soon
-                  </h2>
-                  <SubscribeForm
-                    onSubmit={() => this.setState({ subscribed: true })}
-                    />
-                </div>
-                <div
-                  className="card-face"
+                  perspective: 1000,
+                  height: 220,
+                }}>
+                <Paper
+                  className="form-container"
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    transform: 'rotateY( 180deg )',
-                    backgroundColor: 'red',
+                    // marginBottom: 20,
+                    // opacity: 0,
+                    // paddingBottom: 10,
+                    // paddingTop: 10,
+                    height: '100%',
+                    position: 'relative',
+                    transform: this.state.subscribed ? 'rotateY( 180deg )' : 'rotateY( 0deg )',
+                    transformStyle: 'preserve-3d',
+                    transition: this.state.subscribed ? 'transform 1s ease-in-out' : null,
+                    // willChange: 'opacity, transform',
                   }}
+                  ref={(comingSoon) => { this.comingSoon = comingSoon }}
                   >
                   <div
+                    className="card-face card-face--front"
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                    >
-                    <Emoji
-                      name="pray"
-                      />
-                    {'Thank you'}
-                    <Emoji
-                      name="relaxed"
+                      transform: 'rotateY( 0deg )',
+                      zIndex: 2,
+                    }}>
+                    <h2
+                      style={{
+                        margin: 0,
+                        textAlign: 'center',
+                        fontSize: '1.7em',
+                      }}
+                      >
+                      Coming soon
+                    </h2>
+                    <SubscribeForm
+                      onSubmit={() => this.setState({ subscribed: true })}
                       />
                   </div>
-                </div>
-                <style jsx>{`
-                  .card-face {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    height: 100%;
-                    backface-visibility: hidden;
-                  }
-                `}</style>
-              </Paper>
+                  <div
+                    className="card-face card-face--back"
+                    style={{
+                      transform: 'rotateY( 180deg )',
+                    }}
+                    >
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                      >
+                      <Emoji
+                        name="pray"
+                        />
+                      {'Thank you'}
+                      <Emoji
+                        name="relaxed"
+                        />
+                    </div>
+                  </div>
+                  <style jsx>{`
+                    .card-face {
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      justify-content: center;
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      backface-visibility: hidden;
+                    }
+                  `}</style>
+                </Paper>
+              </div>
               <div
                 style={{
                   textAlign: 'center',
