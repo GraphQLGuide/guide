@@ -1,21 +1,129 @@
+/*
+
+Naming convention:
+
+- .ComponentName for the outer tag of a React component
+- .ComponentName-thing for descendants
+- .descriptor for modifier classes. Only defined in conjunction with a 
+component, eg a small title: .ComponentName-title.small
+
+*/
+
+:root {
+  --pink: rgb(225, 0, 152); /* #e10098; */
+  --pink-light: #ff58c9; /*rgba(225, 0, 152, 0.6);*/
+  --pink-dark: #aa006a;
+  /* --blue: #4fc3f7;
+  --blue-light: #8bf6ff; /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=e10098&secondary.color=4FC3F7 */
+  /*  --blue-dark: #0093c4; */
+  --blue: #1da1f2;
+  --blue-light: #6cd2ff;
+  --blue-dark: #0073bf;
+  --gray-light: rgba(0, 0, 0, 0.6);
+  --display-gray: rgba(0, 0, 0, 0.54);
+  --cover-gray: rgb(33, 35, 37);
+  --gray100: #f5f5f5;
+  --gray200: #eeeeee;
+  --gray300: #e0e0e0;
+  --gray400: #bdbdbd;
+  --gray500: #9e9e9e;
+  --gray600: #757575;
+  --gray700: #616161;
+  --purple300: #ba68c8;
+  --purple600: #8e24aa;
+  --green300: #81c784;
+  --green600: #43a047;
+  --text: rgba(0, 0, 0, 0.85);
+  --header-h: 190px;
+  --sidebar-w: 265px; /* wide enough for "Understanding GraphQL" */
+  --font-small: 14px;
+  --font-medium: 16px;
+  --font-large: 20px;
+  --fab: 64px;
+  --code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+    monospace;
+  --vert-spacer: 100px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
+  color: var(--text);
+  background-color: #fafafa;
+  line-height: 1.6em;
 }
 
-.App {
-  text-align: center;
+a {
+  text-decoration: none;
+  color: var(--gray500);
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: var(--pink);
+}
+
+button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+}
+
+button:focus {
+  outline: 0;
+}
+
+code {
+  font-family: monospace;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+  border: 1px solid #e5e5e5;
+  padding: 0 5px;
 }
 
 .App-logo {
   height: 80px;
 }
 
+.App-home-link:hover .App-logo,
+.App-home-link:active .App-logo {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate3d(0, 1, 0, 360deg);
+  }
+}
+
+a.App-home-link {
+  color: white;
+}
+
 .App-header {
-  background-color: #222;
-  height: 150px;
+  position: fixed;
+  z-index: 1;
+  width: 100vw;
+  height: var(--header-h);
   padding: 20px;
+  text-align: center;
+  background-image: linear-gradient(
+    90deg,
+    rgba(34, 34, 34, 1) 0,
+    rgba(34, 34, 34, 0.9) var(--sidebar-w),
+    rgba(34, 34, 34, 1) 100%
+  );
   color: white;
 }
 
@@ -24,5 +132,972 @@ body {
 }
 
 .App-intro {
+  position: absolute;
+  top: var(--header-h);
+  width: 100vw;
+  text-align: center;
   font-size: large;
 }
+
+.StarCount {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 31px; /* line up with .User */
+  color: white;
+  text-decoration: none;
+  transition: transform 200ms;
+}
+
+.StarCount:visited {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.StarCount:hover,
+.StarCount:active,
+.StarCount:focus {
+  transform: scale(1.2);
+  background: radial-gradient(
+    100% 50% ellipse,
+    rgba(255, 255, 255, 0.2),
+    rgba(34, 34, 34, 1) 50%
+  );
+}
+
+.CurrentUser:not(.inline):hover,
+.CurrentUser:not(.inline):active,
+.CurrentUser:not(.inline)focus {
+  transform: scale(1.2);
+  background: radial-gradient(
+    100% 50% ellipse,
+    rgba(255, 255, 255, 0.2),
+    rgba(34, 34, 34, 1) 50%
+  );
+}
+
+.StarCount::before {
+  content: '⭐️';
+  padding-right: 8px;
+  vertical-align: -1px;
+}
+
+.StarCount::after {
+  content: 'stars';
+  padding-left: 5px;
+}
+
+.StarCount.loading {
+  opacity: 0;
+}
+
+/* <Odometer> 3rd-party component */
+.StarCount > .odometer {
+  margin-top: -1px;
+}
+
+.CurrentUser:not(.inline) {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-right: 15px; /* room for scrollbar */
+  transition: transform 200ms;
+}
+
+.CurrentUser.inline {
+  color: var(--pink);
+}
+
+.CurrentUser:not(.inline) > button {
+  padding: 36px; /* line up vertically with StarCount */
+}
+
+.CurrentUser > .Spinner {
+  margin-top: 16px;
+  margin-right: 50px;
+  font-size: 8px;
+}
+
+a.User {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  color: white;
+}
+
+.User > img {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+  border-radius: 25px;
+  padding: 2px;
+  border: 2px solid var(--pink);
+}
+
+.TableOfContents {
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  padding: 30px 15px 30px 45px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  background-image: linear-gradient(
+    200deg,
+    rgba(0, 0, 0, 0.08) 5%,
+    rgba(0, 0, 0, 0.15) 20%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  line-height: normal;
+}
+
+.TableOfContents::-webkit-scrollbar {
+  width: 5px;
+}
+
+.TableOfContents::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.TableOfContents::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.TableOfContents-chapters,
+.TableOfContents-sections {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.TableOfContents-chapter-link,
+.TableOfContents-reviews-link {
+  display: block; /* extend clickable area to right */
+  padding: 3px 0;
+  color: #111;
+  font-weight: 600;
+}
+
+.TableOfContents-reviews-link {
+  padding-top: 1.5em;
+}
+
+li.numbered > .TableOfContents-chapter-link {
+  padding: 1.5em 0 0.5em;
+  font-size: var(--font-medium);
+}
+
+.TableOfContents-chapter-number {
+  position: absolute;
+  left: 26px;
+}
+
+.TableOfContents-chapter-number::after {
+  content: '.';
+  margin-right: 0.3em;
+}
+
+.TableOfContents-section-link {
+  display: block;
+  width: 100%; /* extend clickable range to the right */
+  padding: 1px 0;
+  font-size: var(--font-small);
+  color: #444;
+}
+
+.TableOfContents a.active {
+  color: var(--pink);
+}
+
+.Section,
+.Profile,
+.Reviews {
+  position: absolute;
+  top: var(--header-h);
+  -webkit-overflow-scrolling: touch;
+  font-size: var(--font-large);
+}
+
+.Section-header-wrapper,
+.Profile-header-wrapper,
+.Reviews-header-wrapper {
+  padding: 30px 0;
+  margin-bottom: 60px;
+  background-image: linear-gradient(
+    110deg,
+    rgba(0, 0, 0, 0.02) 5%,
+    rgba(0, 0, 0, 0.06) 20%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+}
+
+.Section-header,
+.Section-content,
+.Profile-header,
+.Profile-content,
+.Reviews-header,
+.Reviews-content {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.Section-header h1,
+.Profile-header h1,
+.Reviews-header h1 {
+  font-size: 2.5em;
+  font-weight: normal;
+}
+
+.Section {
+  left: var(--sidebar-w);
+  right: 0;
+}
+
+.Reviews {
+  left: var(--sidebar-w);
+  right: -17px;
+}
+body {
+  overflow-x: hidden;
+}
+
+.Reviews-header {
+  text-align: center;
+}
+
+.Reviews-favorite-count {
+  position: absolute;
+  left: 50%;
+  /* top: 0;
+  height: 100%; */
+
+  display: flex;
+  align-items: center;
+  margin-left: 160px;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.Reviews-favorite-count > svg {
+  margin-right: 6px;
+}
+
+.Section-header h2 {
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
+.Section-number-divider::after {
+  content: '·';
+  margin: 0 10px;
+}
+
+.Section > footer {
+  text-align: center;
+  font-size: var(--font-small);
+  color: var(--gray-light);
+  padding: 60px 0 30px;
+}
+
+.Profile {
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.Profile {
+  text-align: center;
+}
+
+.Profile-header-wrapper {
+  justify-self: start;
+}
+
+.Profile h1 {
+  font-weight: normal;
+}
+
+.Profile-content {
+  width: 500px;
+}
+
+.Profile > button {
+  height: 20px;
+  color: var(--pink);
+}
+
+.Profile-logout {
+  display: block;
+  color: var(--pink);
+}
+
+.Profile-logout {
+  padding: 20px 0;
+  width: 100%;
+
+  /* prevent padding collapsing */
+  float: left;
+}
+
+.Profile .Spinner {
+  color: var(--text);
+}
+
+.Profile dt {
+  float: left;
+  clear: left;
+  width: 250px; /* half .Profile-contents width */
+  margin-right: 1em;
+  text-align: right;
+}
+
+.Profile dt::after {
+  content: ':';
+}
+
+.Profile dd {
+  padding: 0 0 1em 0;
+  text-align: left;
+}
+
+.Reviews-content {
+  max-width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.Reviews-content > .Spinner,
+.Reviews-list > .Spinner {
+  color: rgba(0, 0, 0, 0.2);
+  /* color: var(--text); */
+  margin-bottom: 80px;
+}
+
+.Reviews-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Review {
+  max-width: 400px;
+  margin-bottom: 60px;
+}
+
+.Review a {
+  color: inherit;
+}
+
+.Review-created {
+  margin: 0 12px !important; /* 16px left margin - 4px padding from CardActions */
+  justify-self: flex-start;
+}
+
+.Review-spacer {
+  flex: 1 1 auto;
+}
+
+.Reviews-add {
+  position: fixed !important;
+  right: var(--fab);
+  bottom: var(--fab);
+}
+
+.AddReview,
+.ReviewForm {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 400px;
+  right: calc(var(--fab) + 48px);
+  bottom: calc(var(--fab) + 48px);
+  padding: 32px;
+  background-color: white;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12); /* theme.shadows[5] */
+}
+
+.ReviewForm.editing {
+  left: calc(50vw - 200px);
+  top: 20vh;
+  bottom: auto;
+}
+
+.AddReview-stars,
+.ReviewForm-stars {
+  padding: 32px 0;
+  align-self: center;
+}
+
+.AddReview-stars svg,
+.ReviewForm-stars svg {
+  width: 32px;
+  height: 32px;
+}
+
+.AddReview-actions,
+.ReviewForm-actions {
+  align-self: flex-end;
+}
+
+.Landing {
+  position: relative;
+  z-index: 2; /* todo not needed after remove header */
+  background-color: var(--gray300);
+}
+
+.BelowFold {
+}
+
+.Authors {
+  padding: var(--vert-spacer) 0;
+  background-image: linear-gradient(
+    345deg,
+    var(--blue-light) 0,
+    var(--blue) 50%,
+    var(--blue-dark) 100%
+  );
+}
+
+.Authors-header {
+  margin-bottom: calc(var(--vert-spacer) + 30px) !important;
+  text-align: center;
+  color: white !important;
+}
+
+.Authors-list {
+  display: flex;
+  justify-content: center;
+}
+
+.Author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40vw;
+  max-width: 500px;
+  padding: 32px;
+  margin: 0 5vw;
+}
+
+.Author-avatar {
+  order: -1;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.Author-name {
+  order: -1;
+  margin-top: 16px !important;
+}
+
+.Author-twitter {
+  display: flex;
+  align-items: center;
+  padding: 8px 40px 20px;
+  margin-right: 7px; /* make feel more balanced w/ avatar */
+  font-family: var(--code);
+}
+
+.Author-twitter > .TwitterLogo {
+  margin-right: 2px;
+}
+
+.Author-twitter:hover + .Author-avatar {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate3d(0, 1, 0, 360deg);
+  }
+}
+
+.Author-description {
+  margin-top: 5px;
+}
+
+.Emoji {
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: -0.35em;
+  margin: 0 0.25em;
+}
+
+.TwitterLogo {
+  width: 30px;
+  height: 30px;
+}
+
+.TwitterLogo * {
+  fill: #1da1f2;
+}
+
+.Pitch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: var(--vert-spacer);
+  font-size: 24px;
+  background-image: linear-gradient(
+    345deg,
+    var(--gray200) 0,
+    var(--gray300) 50%,
+    var(--gray400) 100%
+  );
+}
+
+.Pitch-points {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  width: 90vw;
+  max-width: 800px;
+  margin-bottom: var(--vert-spacer);
+}
+
+.Pitch-point {
+  margin: 28px;
+}
+
+.Pitch-point > .Emoji {
+  margin-right: 15px;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -6px;
+}
+
+.Pitch-graphql {
+  display: flex;
+  justify-content: center;
+  margin-bottom: calc(var(--vert-spacer) - 20px);
+}
+
+.Pitch-term,
+.Pitch-header {
+  font-size: 1.5em !important;
+}
+
+.Pitch-header {
+  margin-bottom: 50px !important;
+}
+
+.Pitch-header > img {
+  margin: 0 20px;
+}
+
+.Pitch-graphql dd {
+  margin-top: -5px; /* align first line of text with dt */
+}
+
+.Pitch-graphql a {
+  margin-left: 20px;
+  font-size: var(--font-large);
+}
+
+.Pricing-individual {
+  margin-top: var(--vert-spacer);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.Pricing-note {
+  margin-right: 20px;
+}
+
+.Pricing-notes {
+  margin-top: 80px;
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.Pricing-team {
+  display: flex;
+  justify-content: center;
+}
+
+.Sup {
+  cursor: pointer;
+}
+
+.Package {
+  position: relative;
+  width: 310px;
+  margin: 0 calc(5px + 1vw);
+  background-color: var(--gray100) !important;
+}
+
+.Package:not(.recommended) {
+  margin-top: 80px;
+}
+.Package.recommended > .Package-header {
+  height: 230px;
+}
+.Package.recommended .Package-name {
+  margin-top: 100px !important; /* 20 normal + extra */
+}
+
+.Package-recommendation {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  z-index: 1;
+  font-size: 24px;
+}
+
+.Package-header {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.Package-header-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: skewY(-5deg);
+  transform-origin: top left;
+}
+
+.Package-header-bg.gray {
+  background-image: linear-gradient(var(--gray600), var(--gray300));
+}
+
+.Package-header-bg.purple {
+  background-image: linear-gradient(var(--purple600), var(--purple300));
+}
+
+.Package-header-bg.blue {
+  background-image: linear-gradient(var(--blue-dark), var(--blue-light));
+}
+
+.Package-header-bg.pink {
+  background-image: linear-gradient(var(--pink), var(--pink-light));
+}
+
+.Package-header-bg.green {
+  background-image: linear-gradient(var(--green600), var(--green300));
+}
+
+.Package-name {
+  position: relative; /* otherwise hidden by header-bg */
+  margin: 20px 0 15px !important;
+  color: white !important;
+}
+
+.Package-price {
+  position: relative;
+  color: white !important;
+}
+
+.Package-price:before {
+  position: absolute;
+  left: calc(50% - 34px);
+  bottom: 5px;
+  content: '$ ';
+  font-size: 0.6em;
+}
+
+.Package-price.two-digits:before {
+  left: calc(50% - 27px);
+}
+
+.Package-price.four-digits:before {
+  left: calc(50% - 41px);
+}
+
+.Package-features {
+  padding: 20px 0;
+  list-style-type: none;
+  line-height: 1.1em;
+}
+
+.Package-features > li,
+.Payment-beta {
+  padding: 10px 20px;
+  font-size: 0.875rem;
+}
+
+.Payment-beta {
+  line-height: 1.3em;
+  margin-bottom: 20px;
+}
+
+.Payment-team {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.Package-features > li:nth-child(even) {
+  background-color: white;
+}
+
+.Package-feature-list {
+  margin-bottom: 0.6em;
+}
+
+.Package-feature-list.full {
+  font-weight: bold;
+}
+
+.Package-extra-item {
+  margin-left: 2em;
+}
+
+.Tshirt {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.Payment {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Payment.full,
+.Payment.team {
+  position: relative;
+}
+
+.Payment > button {
+  margin-bottom: 20px;
+}
+
+.Payment-licenses {
+  width: 200px;
+  margin-bottom: 30px !important;
+}
+
+.Paypal {
+  position: relative;
+  z-index: 2; /* todo not needed after remove header */
+  min-height: 100vh;
+  padding-top: 20vh;
+  display: flex;
+  justify-content: center;
+  background-color: var(--gray300);
+}
+
+.Paypal-content {
+  width: 400px;
+}
+
+.Paypal-content a {
+  color: var(--pink);
+}
+
+.Paypal-step2 {
+  position: relative;
+}
+
+.Paypal-login {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* == VENDOR == */
+
+/* https://github.com/lukehaas/css-loaders */
+
+.Spinner,
+.Spinner:before,
+.Spinner:after {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
+.Spinner {
+  color: #ffffff;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.Spinner:before,
+.Spinner:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+.Spinner:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.Spinner:after {
+  left: 3.5em;
+}
+@-webkit-keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+@keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+
+/* 
+https://raw.githubusercontent.com/HubSpot/odometer/master/themes/odometer-theme-default.css 
+
+Copyright (c) 2013 HubSpot, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+.odometer.odometer-auto-theme,
+.odometer.odometer-theme-default {
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  position: relative;
+}
+.odometer.odometer-auto-theme .odometer-digit,
+.odometer.odometer-theme-default .odometer-digit {
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  position: relative;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer,
+.odometer.odometer-theme-default .odometer-digit .odometer-digit-spacer {
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  visibility: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner,
+.odometer.odometer-theme-default .odometer-digit .odometer-digit-inner {
+  text-align: left;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon,
+.odometer.odometer-theme-default .odometer-digit .odometer-ribbon {
+  display: block;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner,
+.odometer.odometer-theme-default .odometer-digit .odometer-ribbon-inner {
+  display: block;
+  -webkit-backface-visibility: hidden;
+}
+.odometer.odometer-auto-theme .odometer-digit .odometer-value,
+.odometer.odometer-theme-default .odometer-digit .odometer-value {
+  display: block;
+  -webkit-transform: translateZ(0);
+}
+.odometer.odometer-auto-theme
+  .odometer-digit
+  .odometer-value.odometer-last-value,
+.odometer.odometer-theme-default
+  .odometer-digit
+  .odometer-value.odometer-last-value {
+  position: absolute;
+}
+.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner {
+  -webkit-transition: -webkit-transform 2s;
+  -moz-transition: -moz-transform 2s;
+  -ms-transition: -ms-transform 2s;
+  -o-transition: -o-transform 2s;
+  transition: transform 2s;
+}
+.odometer.odometer-auto-theme.odometer-animating-up.odometer-animating
+  .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-up.odometer-animating
+  .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-down
+  .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating
+  .odometer-ribbon-inner,
+.odometer.odometer-theme-default.odometer-animating-down.odometer-animating
+  .odometer-ribbon-inner {
+  -webkit-transition: -webkit-transform 2s;
+  -moz-transition: -moz-transform 2s;
+  -ms-transition: -ms-transform 2s;
+  -o-transition: -o-transform 2s;
+  transition: transform 2s;
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.odometer.odometer-auto-theme,
+.odometer.odometer-theme-default {
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Helvetica Neue', sans-serif; */
+  line-height: 1.1em;
+}
+.odometer.odometer-auto-theme .odometer-value,
+.odometer.odometer-theme-default .odometer-value {
+  text-align: center;
+}
+
+/* end odometer */
