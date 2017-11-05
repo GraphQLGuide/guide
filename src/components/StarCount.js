@@ -6,7 +6,7 @@ import gql from 'graphql-tag'
 const StarCount = ({ githubStars, loading }) => {
   return (
     <a className="StarCount" href="https://github.com/GraphQLGuide/guide">
-      {githubStars} stars
+      {githubStars}
     </a>
   )
 }
