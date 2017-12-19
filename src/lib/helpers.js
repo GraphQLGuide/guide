@@ -18,3 +18,21 @@ export const slugify = (chapter, section) => {
   const sectionSlug = section.number + '-' + withHyphens(section.title)
   return `/${chapterSlug}/${sectionSlug}`
 }
+
+// parse a path:
+// /Introduction
+// -> { chapterTitle: 'Introduction' }
+//
+// /1-Understanding-GraphQL-through-REST/1-Introduction
+// -> { chapterNumber: 1, sectionNumber: 1 }
+export const deslugify = path => {
+  const [, chapterSlug, sectionSlug] = path.split('/')
+  const chapterIsNumbered = !!sectionSlug
+
+  return chapterIsNumbered
+    ? {
+        chapterNumber: parseInt(chapterSlug.split('-')[0], 10),
+        sectionNumber: parseInt(sectionSlug.split('-')[0], 10)
+      }
+    : { chapterTitle: chapterSlug }
+}
