@@ -3,6 +3,14 @@ import logo from '../logo.svg'
 import StarCount from './StarCount'
 import TableOfContents from './TableOfContents'
 import Section from './Section'
+import { Switch, Route, Redirect } from 'react-router'
+
+const Book = () => (
+  <div>
+    <TableOfContents />
+    <Section />
+  </div>
+)
 
 class App extends Component {
   render() {
@@ -13,8 +21,10 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">The GraphQL Guide</h1>
         </header>
-        <TableOfContents />
-        <Section />
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/Preface" />} />
+          <Route component={Book} />
+        </Switch>
       </div>
     )
   }
