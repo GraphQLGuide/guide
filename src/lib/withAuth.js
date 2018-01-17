@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import wrapDisplayName from 'recompose/wrapDisplayName'
-import { graphql } from 'react-apollo'
+import { graphql, withApollo } from 'react-apollo'
 import gql from 'graphql-tag'
 import auth0 from 'auth0-js'
 import { initAuthHelpers, login, logout } from 'auth0-helpers'
@@ -42,10 +42,9 @@ const USER_QUERY = gql`
 `
 
 const withUser = graphql(USER_QUERY, {
-  props: ({ ownProps, data: { currentUser, loading, refetch } }) => ({
+  props: ({ ownProps, data: { currentUser, loading } }) => ({
     currentUser,
     loading,
-    refetch,
     ownProps
   })
 })
@@ -65,7 +64,7 @@ function withAuth(BaseComponent) {
       login({
         onCompleted: (e, t) => {
           e && console.log(e)
-          this.props.refetch()
+          this.props.client.reFetchObservableQueries()
           this.setState({ loggingIn: false })
         }
       })
@@ -73,7 +72,7 @@ function withAuth(BaseComponent) {
 
     logout = () => {
       logout()
-      this.props.refetch()
+      this.props.client.resetStore()
     }
 
     render() {
@@ -104,7 +103,7 @@ function withAuth(BaseComponent) {
   }
 
   WithAuthWrapper.displayName = wrapDisplayName(BaseComponent, 'withAuth')
-  return withUser(WithAuthWrapper)
+  return withApollo(withUser(WithAuthWrapper))
 }
 
 export default withAuth
