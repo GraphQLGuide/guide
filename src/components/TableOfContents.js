@@ -70,6 +70,11 @@ const TableOfContents = ({ chapters, loading }) => (
             </li>
           )
         })}
+        <li>
+          <NavLink className="TableOfContents-reviews-link" to="/reviews">
+            Reviews
+          </NavLink>
+        </li>
       </ul>
     )}
   </nav>
