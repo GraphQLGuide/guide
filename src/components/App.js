@@ -10,11 +10,15 @@ import Section from './Section'
 import CurrentUser from './CurrentUser'
 import Profile from './Profile'
 import withAuth from '../lib/withAuth'
+import Reviews from './Reviews'
 
 const Book = () => (
   <div>
     <TableOfContents />
-    <Section />
+    <Switch>
+      <Route exact path="/reviews" component={Reviews} />
+      <Route component={Section} />
+    </Switch>
   </div>
 )
 
