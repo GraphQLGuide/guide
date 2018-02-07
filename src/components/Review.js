@@ -12,6 +12,8 @@ import StarIcon from 'material-ui-icons/Star'
 import StarBorderIcon from 'material-ui-icons/StarBorder'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import times from 'lodash/times'
+import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 const StarRating = ({ rating }) => (
   <div>
@@ -41,7 +43,10 @@ class Review extends Component {
     this.closeMenu()
   }
 
-  toggleFavorite = () => {}
+  toggleFavorite = () => {
+    const { review: { id, favorited } } = this.props
+    this.props.favorite(id, !favorited)
+  }
 
   render() {
     const {
@@ -111,7 +116,33 @@ Review.propTypes = {
       photo: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired
     })
-  }).isRequired
+  }).isRequired,
+  favorite: PropTypes.func.isRequired
 }
 
-export default Review
+const FAVORITE_REVIEW_MUTATION = gql`
+  mutation FavoriteReview($id: ObjID!, $favorite: Boolean!) {
+    favoriteReview(id: $id, favorite: $favorite) {
+      id
+      favorited
+    }
+  }
+`
+
+const withFavoriteMutation = graphql(FAVORITE_REVIEW_MUTATION, {
+  props: ({ mutate }) => ({
+    favorite: (id, favorite) =>
+      mutate({
+        variables: { id, favorite },
+        optimisticResponse: {
+          favoriteReview: {
+            __typename: 'Review',
+            id,
+            favorited: favorite
+          }
+        }
+      })
+  })
+})
+
+export default withFavoriteMutation(Review)
