@@ -12,11 +12,11 @@ import Profile from './Profile'
 import withAuth from '../lib/withAuth'
 import Reviews from './Reviews'
 
-const Book = () => (
+const Book = ({ user }) => (
   <div>
     <TableOfContents />
     <Switch>
-      <Route exact path="/reviews" component={Reviews} />
+      <Route exact path="/reviews" render={() => <Reviews user={user} />} />
       <Route component={Section} />
     </Switch>
   </div>
@@ -43,7 +43,7 @@ class App extends Component {
             path="/me"
             render={() => <Profile logout={logout} {...authProps} />}
           />
-          <Route component={Book} />
+          <Route render={() => <Book user={this.props.user} />} />
         </Switch>
       </div>
     )

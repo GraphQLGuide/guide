@@ -12,6 +12,7 @@ import StarIcon from 'material-ui-icons/Star'
 import StarBorderIcon from 'material-ui-icons/StarBorder'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import times from 'lodash/times'
+import remove from 'lodash/remove'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
@@ -129,6 +130,16 @@ const FAVORITE_REVIEW_MUTATION = gql`
   }
 `
 
+const READ_USER_FAVORITES = gql`
+  query ReadUserFavorites {
+    currentUser {
+      favoriteReviews {
+        id
+      }
+    }
+  }
+`
+
 const withFavoriteMutation = graphql(FAVORITE_REVIEW_MUTATION, {
   props: ({ mutate }) => ({
     favorite: (id, favorite) =>
@@ -140,6 +151,17 @@ const withFavoriteMutation = graphql(FAVORITE_REVIEW_MUTATION, {
             id,
             favorited: favorite
           }
+        },
+        update: store => {
+          const data = store.readQuery({ query: READ_USER_FAVORITES })
+
+          if (favorite) {
+            data.currentUser.favoriteReviews.push({ id, __typename: 'Review' })
+          } else {
+            remove(data.currentUser.favoriteReviews, { id })
+          }
+
+          store.writeQuery({ query: READ_USER_FAVORITES, data })
         }
       })
   })
