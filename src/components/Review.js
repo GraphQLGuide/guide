@@ -15,6 +15,9 @@ import times from 'lodash/times'
 import remove from 'lodash/remove'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
+import { propType } from 'graphql-anywhere'
+
+import { REVIEW_ENTRY } from '../graphql/Review'
 
 const StarRating = ({ rating }) => (
   <div>
@@ -100,18 +103,7 @@ class Review extends Component {
 }
 
 Review.propTypes = {
-  review: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    stars: PropTypes.number,
-    createdAt: PropTypes.number.isRequired,
-    favorited: PropTypes.boolean,
-    author: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      photo: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired
-    })
-  }).isRequired,
+  review: propType(REVIEW_ENTRY).isRequired,
   favorite: PropTypes.func.isRequired
 }
 
