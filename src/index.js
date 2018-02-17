@@ -10,6 +10,7 @@ import { getMainDefinition } from 'apollo-utilities'
 import { BrowserRouter } from 'react-router-dom'
 import { setContext } from 'apollo-link-context'
 import { getAuthToken } from 'auth0-helpers'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
@@ -58,10 +59,18 @@ const cache = new InMemoryCache()
 
 const client = new ApolloClient({ link, cache })
 
+const GRAPHQL_PINK = '#e10098'
+
+const theme = createMuiTheme({
+  palette: { primary: { main: GRAPHQL_PINK } }
+})
+
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')
