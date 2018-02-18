@@ -14,10 +14,17 @@ import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import times from 'lodash/times'
 import remove from 'lodash/remove'
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import { propType } from 'graphql-anywhere'
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from 'material-ui/Dialog'
+import Button from 'material-ui/Button'
 
-import { REVIEW_ENTRY } from '../graphql/Review'
+import { REVIEW_ENTRY, REVIEWS_QUERY } from '../graphql/Review'
 
 const StarRating = ({ rating }) => (
   <div>
@@ -28,7 +35,8 @@ const StarRating = ({ rating }) => (
 
 class Review extends Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    deleteConfirmationOpen: false
   }
 
   openMenu = event => {
@@ -43,8 +51,18 @@ class Review extends Component {
     this.closeMenu()
   }
 
-  delete = () => {
+  openDeleteConfirmation = () => {
     this.closeMenu()
+    this.setState({ deleteConfirmationOpen: true })
+  }
+
+  closeDeleteConfirmation = () => {
+    this.setState({ deleteConfirmationOpen: false })
+  }
+
+  delete = () => {
+    this.closeDeleteConfirmation()
+    this.props.delete(this.props.review.id)
   }
 
   toggleFavorite = () => {
@@ -89,14 +107,37 @@ class Review extends Component {
             </IconButton>
           </CardActions>
         </Card>
+
         <Menu
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
           onClose={this.closeMenu}
         >
           <MenuItem onClick={this.edit}>Edit</MenuItem>
-          <MenuItem onClick={this.delete}>Delete</MenuItem>
+          <MenuItem onClick={this.openDeleteConfirmation}>Delete</MenuItem>
         </Menu>
+
+        <Dialog
+          open={this.state.deleteConfirmationOpen}
+          onClose={this.closeDeleteConfirmation}
+        >
+          <DialogTitle>{'Delete review?'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              A better UX is probably just letting you single-click delete with
+              an undo toast, but that's harder to code right{' '}
+              <span role="img" aria-label="grinning face">
+                😄
+              </span>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.closeDeleteConfirmation}>Cancel</Button>
+            <Button onClick={this.delete} color="primary" autoFocus>
+              Sudo delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     )
   }
@@ -153,4 +194,31 @@ const withFavoriteMutation = graphql(FAVORITE_REVIEW_MUTATION, {
   })
 })
 
-export default withFavoriteMutation(Review)
+const DELETE_REVIEW_MUTATION = gql`
+  mutation DeleteReview($id: ObjID!) {
+    removeReview(id: $id)
+  }
+`
+
+const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
+  props: ({ mutate }) => ({
+    delete: id =>
+      mutate({
+        variables: { id },
+        optimisticResponse: {
+          removeReview: true
+        },
+        update: store => {
+          let data = store.readQuery({ query: REVIEWS_QUERY })
+          remove(data.reviews, { id })
+          store.writeQuery({ query: REVIEWS_QUERY, data })
+
+          data = store.readQuery({ query: READ_USER_FAVORITES })
+          remove(data.currentUser.favoriteReviews, { id })
+          store.writeQuery({ query: READ_USER_FAVORITES, data })
+        }
+      })
+  })
+})
+
+export default compose(withFavoriteMutation, withDeleteMutation)(Review)
