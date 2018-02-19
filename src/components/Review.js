@@ -13,6 +13,7 @@ import StarBorderIcon from 'material-ui-icons/StarBorder'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import times from 'lodash/times'
 import remove from 'lodash/remove'
+import find from 'lodash/find'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import { propType } from 'graphql-anywhere'
@@ -62,7 +63,11 @@ class Review extends Component {
 
   delete = () => {
     this.closeDeleteConfirmation()
-    this.props.delete(this.props.review.id)
+    this.props.delete(this.props.review.id).catch(e => {
+      if (find(e.graphQLErrors, { message: 'unauthorized' })) {
+        alert('👮‍♀️✋ You can only delete your own reviews!')
+      }
+    })
   }
 
   toggleFavorite = () => {
@@ -71,7 +76,10 @@ class Review extends Component {
   }
 
   render() {
-    const { review: { text, stars, createdAt, favorited, author } } = this.props
+    const {
+      review: { text, stars, createdAt, favorited, author },
+      user
+    } = this.props
 
     const linkToProfile = child => (
       <a href={`https://github.com/${author.username}`} target="_blank">
@@ -87,24 +95,32 @@ class Review extends Component {
               <Avatar alt={author.name} src={author.photo} />
             )}
             action={
-              <IconButton onClick={this.openMenu}>
-                <MoreVertIcon />
-              </IconButton>
+              user && (
+                <IconButton onClick={this.openMenu}>
+                  <MoreVertIcon />
+                </IconButton>
+              )
             }
             title={linkToProfile(author.name)}
             subheader={stars && <StarRating rating={stars} />}
           />
           <CardContent>
-            <Typography component="p">{text}</Typography>
+            {text ? (
+              <Typography component="p">{text}</Typography>
+            ) : (
+              <Typography component="i">Text private</Typography>
+            )}
           </CardContent>
           <CardActions>
             <Typography type="caption" className="Review-created">
               {distanceInWordsToNow(createdAt)}
             </Typography>
             <div className="Review-spacer" />
-            <IconButton onClick={this.toggleFavorite}>
-              {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-            </IconButton>
+            {user && (
+              <IconButton onClick={this.toggleFavorite}>
+                {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </IconButton>
+            )}
           </CardActions>
         </Card>
 
@@ -145,7 +161,8 @@ class Review extends Component {
 
 Review.propTypes = {
   review: propType(REVIEW_ENTRY).isRequired,
-  favorite: PropTypes.func.isRequired
+  favorite: PropTypes.func.isRequired,
+  user: PropTypes.object
 }
 
 const FAVORITE_REVIEW_MUTATION = gql`
