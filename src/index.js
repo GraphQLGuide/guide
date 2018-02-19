@@ -15,6 +15,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
+import { errorLink } from './lib/errorLink'
 
 const httpLink = createHttpLink({
   uri: 'https://api.graphql.guide/graphql'
@@ -46,7 +47,7 @@ const wsLink = new WebSocketLink({
   }
 })
 
-const link = split(
+const networkLink = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query)
     return kind === 'OperationDefinition' && operation === 'subscription'
@@ -54,6 +55,8 @@ const link = split(
   wsLink,
   authedHttpLink
 )
+
+const link = errorLink.concat(networkLink)
 
 const cache = new InMemoryCache()
 
