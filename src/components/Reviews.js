@@ -47,8 +47,10 @@ class Reviews extends Component {
           {loading ? (
             <div className="Spinner" />
           ) : (
-            reviews.map(review => <Review key={review.id} review={review} />)
-          )}
+              reviews.map(review => (
+                <Review key={review.id} review={review} user={user} />
+              ))
+            )}
 
           {user && (
             <div>
@@ -88,7 +90,11 @@ Reviews.propTypes = {
 }
 
 const withReviews = graphql(REVIEWS_QUERY, {
-  props: ({ data: { reviews, loading } }) => ({ reviews, loading })
+  options: { errorPolicy: 'all' },
+  props: ({ data: { reviews, loading } }) => ({
+    reviews,
+    loading
+  })
 })
 
 export default withReviews(Reviews)
