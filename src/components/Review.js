@@ -24,6 +24,9 @@ import Dialog, {
   DialogTitle
 } from 'material-ui/Dialog'
 import Button from 'material-ui/Button'
+import Modal from 'material-ui/Modal'
+
+import ReviewForm from './ReviewForm'
 
 import { REVIEW_ENTRY, REVIEWS_QUERY } from '../graphql/Review'
 
@@ -37,7 +40,8 @@ const StarRating = ({ rating }) => (
 class Review extends Component {
   state = {
     anchorEl: null,
-    deleteConfirmationOpen: false
+    deleteConfirmationOpen: false,
+    editing: false
   }
 
   openMenu = event => {
@@ -50,6 +54,11 @@ class Review extends Component {
 
   edit = () => {
     this.closeMenu()
+    this.setState({ editing: true })
+  }
+
+  doneEditing = () => {
+    this.setState({ editing: false })
   }
 
   openDeleteConfirmation = () => {
@@ -154,6 +163,10 @@ class Review extends Component {
             </Button>
           </DialogActions>
         </Dialog>
+
+        <Modal open={this.state.editing} onClose={this.doneEditing}>
+          <ReviewForm done={this.doneEditing} review={this.props.review} />
+        </Modal>
       </div>
     )
   }

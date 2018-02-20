@@ -6,18 +6,27 @@ import TextField from 'material-ui/TextField'
 import StarIcon from 'material-ui-icons/Star'
 import StarBorderIcon from 'material-ui-icons/StarBorder'
 import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
+import classNames from 'classnames'
 
 import { validateReview } from '../lib/validators'
 import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
 
 const GREY = '#0000008a'
 
-class AddReview extends Component {
-  state = {
-    text: '',
-    stars: null,
-    errorText: null
+class ReviewForm extends Component {
+  constructor(props) {
+    super(props)
+
+    const { review } = props
+
+    this.isEditing = !!review
+
+    this.state = {
+      text: review ? review.text : '',
+      stars: review ? review.stars : null,
+      errorText: null
+    }
   }
 
   updateText = event => {
@@ -38,13 +47,21 @@ class AddReview extends Component {
       return
     }
 
-    this.props.addReview(text, stars)
+    const { review } = this.props
+
+    if (this.isEditing) {
+      this.props.editReview(review.id, text, stars)
+    } else {
+      this.props.addReview(text, stars)
+    }
+
+    this.props.done()
   }
 
   render() {
     return (
       <form
-        className="AddReview"
+        className={classNames('ReviewForm', { editing: this.isEditing })}
         autoComplete="off"
         onSubmit={this.handleSubmit}
       >
@@ -81,7 +98,7 @@ class AddReview extends Component {
           </Button>
 
           <Button type="submit" color="primary" className="AddReview-submit">
-            Add review
+            {this.isEditing ? 'Save' : 'Add review'}
           </Button>
         </div>
       </form>
@@ -89,14 +106,20 @@ class AddReview extends Component {
   }
 }
 
-AddReview.propTypes = {
+ReviewForm.propTypes = {
   done: PropTypes.func.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     photo: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired
-  }).isRequired,
-  addReview: PropTypes.func.isRequired
+  }),
+  addReview: PropTypes.func.isRequired,
+  editReview: PropTypes.func.isRequired,
+  review: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string,
+    stars: PropTypes.number
+  })
 }
 
 const ADD_REVIEW_MUTATION = gql`
@@ -108,7 +131,7 @@ const ADD_REVIEW_MUTATION = gql`
   ${REVIEW_ENTRY}
 `
 
-const withMutation = graphql(ADD_REVIEW_MUTATION, {
+const withAddReview = graphql(ADD_REVIEW_MUTATION, {
   props: ({ ownProps: { user }, mutate }) => ({
     addReview: (text, stars) => {
       mutate({
@@ -143,4 +166,36 @@ const withMutation = graphql(ADD_REVIEW_MUTATION, {
   })
 })
 
-export default withMutation(AddReview)
+const EDIT_REVIEW_MUTATION = gql`
+  mutation EditReview($id: ObjID!, $input: UpdateReviewInput!) {
+    updateReview(id: $id, input: $input) {
+      id
+      text
+      stars
+    }
+  }
+`
+
+const withEditReview = graphql(EDIT_REVIEW_MUTATION, {
+  props: ({ mutate }) => ({
+    editReview: (id, text, stars) => {
+      mutate({
+        variables: {
+          id,
+          input: { text, stars }
+        },
+        optimisticResponse: {
+          updateReview: {
+            __typename: 'Review',
+            id,
+            text,
+            stars,
+            favorite: true
+          }
+        }
+      })
+    }
+  })
+})
+
+export default compose(withAddReview, withEditReview)(ReviewForm)
