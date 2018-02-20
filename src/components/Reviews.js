@@ -9,7 +9,7 @@ import Modal from 'material-ui/Modal'
 import { propType } from 'graphql-anywhere'
 
 import Review from './Review'
-import AddReview from './AddReview'
+import ReviewForm from './ReviewForm'
 
 import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
 
@@ -67,7 +67,7 @@ class Reviews extends Component {
                 open={this.state.addingReview}
                 onClose={this.doneAddingReview}
               >
-                <AddReview done={this.doneAddingReview} user={user} />
+                <ReviewForm done={this.doneAddingReview} user={user} />
               </Modal>
             </div>
           )}
