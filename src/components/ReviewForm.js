@@ -155,11 +155,14 @@ const withAddReview = graphql(ADD_REVIEW_MUTATION, {
           }
         },
         update: (store, { data: { createReview: newReview } }) => {
-          const data = store.readQuery({
-            query: REVIEWS_QUERY
-          })
+          const query = {
+            query: REVIEWS_QUERY,
+            variables: { skip: 0, limit: 10 }
+          }
+
+          const data = store.readQuery(query)
           data.reviews.unshift(newReview)
-          store.writeQuery({ query: REVIEWS_QUERY, data })
+          store.writeQuery({ ...query, data })
         }
       })
     }
