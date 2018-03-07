@@ -17,8 +17,8 @@ export const REVIEW_ENTRY = gql`
 `
 
 export const REVIEWS_QUERY = gql`
-  query ReviewsQuery {
-    reviews(limit: 20) {
+  query ReviewsQuery($skip: Int, $limit: Int) {
+    reviews(skip: $skip, limit: $limit) {
       ...ReviewEntry
     }
   }
