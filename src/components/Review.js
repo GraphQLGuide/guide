@@ -241,12 +241,20 @@ const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
         update: store => {
           const query = {
             query: REVIEWS_QUERY,
-            variables: { skip: 0, limit: 10 }
+            variables: { limit: 10, orderBy: 'createdAt_DESC' }
           }
 
           let data = store.readQuery(query)
           remove(data.reviews, { id })
           store.writeQuery({ ...query, data })
+
+          query.variables.orderBy = 'createdAt_ASC'
+
+          try {
+            data = store.readQuery(query)
+            remove(data.reviews, { id })
+            store.writeQuery({ ...query, data })
+          } catch (e) {}
 
           data = store.readQuery({ query: READ_USER_FAVORITES })
           remove(data.currentUser.favoriteReviews, { id })
