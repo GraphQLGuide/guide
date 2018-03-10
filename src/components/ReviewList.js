@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'react-apollo'
 import { propType } from 'graphql-anywhere'
-import find from 'lodash/find'
 
 import Review from './Review'
 
@@ -51,33 +50,35 @@ class ReviewList extends Component {
 
 ReviewList.propTypes = {
   reviews: PropTypes.arrayOf(propType(REVIEW_ENTRY)),
-  user: PropTypes.object
+  user: PropTypes.object,
+  orderBy: PropTypes.string.isRequired
 }
 
 const withReviews = graphql(REVIEWS_QUERY, {
-  options: {
+  options: ({ orderBy }) => ({
     errorPolicy: 'all',
-    variables: { skip: 0, limit: 10 },
+    variables: { limit: 10, orderBy },
     notifyOnNetworkStatusChange: true
-  },
+  }),
   props: ({ data: { reviews, fetchMore, networkStatus } }) => ({
     reviews,
     networkStatus,
     loadMoreReviews: () => {
+      if (!reviews) {
+        return
+      }
+
+      const lastId = reviews[reviews.length - 1].id
       return fetchMore({
-        variables: { skip: reviews.length - 5, limit: 15 },
+        variables: { after: lastId },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult.reviews) {
             return previousResult
           }
 
-          const newReviews = fetchMoreResult.reviews.filter(
-            ({ id }) => !find(previousResult.reviews, { id })
-          )
-
           return {
             ...previousResult,
-            reviews: [...previousResult.reviews, ...newReviews]
+            reviews: [...previousResult.reviews, ...fetchMoreResult.reviews]
           }
         }
       })
