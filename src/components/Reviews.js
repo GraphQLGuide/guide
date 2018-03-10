@@ -5,13 +5,21 @@ import FavoriteIcon from 'material-ui-icons/Favorite'
 import Button from 'material-ui/Button'
 import AddIcon from 'material-ui-icons/Add'
 import Modal from 'material-ui/Modal'
+import { MenuItem } from 'material-ui/Menu'
+import { FormControl } from 'material-ui/Form'
+import Select from 'material-ui/Select'
 
 import ReviewList from './ReviewList'
 import ReviewForm from './ReviewForm'
 
 class Reviews extends Component {
   state = {
-    addingReview: false
+    addingReview: false,
+    orderBy: 'createdAt_DESC'
+  }
+
+  handleOrderByChange = event => {
+    this.setState({ orderBy: event.target.value })
   }
 
   addReview = () => {
@@ -36,11 +44,23 @@ class Reviews extends Component {
                 {favoriteCount}
               </div>
             )}
+
             <h1>Reviews</h1>
+
+            <FormControl>
+              <Select
+                value={this.state.orderBy}
+                onChange={this.handleOrderByChange}
+                displayEmpty
+              >
+                <MenuItem value="createdAt_DESC">Newest</MenuItem>
+                <MenuItem value="createdAt_ASC">Oldest</MenuItem>
+              </Select>
+            </FormControl>
           </header>
         </div>
 
-        <ReviewList user={user} />
+        <ReviewList user={user} orderBy={this.state.orderBy} />
 
         {user && (
           <div>
