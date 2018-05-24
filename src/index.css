@@ -47,7 +47,13 @@ export const iPadMaxW = 1023
   --fab: 64px;
   --code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
-  --vert-spacer: 100px;
+  --vert-spacer: 80px;
+}
+
+@media screen and (max-width: 500px) {
+  :root {
+    --vert-spacer: 60px;
+  }
 }
 
 * {

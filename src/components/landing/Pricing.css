@@ -1,0 +1,30 @@
+.Pricing {
+  padding: var(--vert-spacer) 0;
+}
+
+.Pricing-individual {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.Pricing-note {
+  margin-right: 20px;
+}
+
+.Pricing-notes {
+  margin: 80px 10vw 0;
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.Pricing-team {
+  display: flex;
+  justify-content: center;
+}
+
+.Sup {
+  cursor: pointer;
+}

@@ -1,66 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { createHttpLink } from 'apollo-link-http'
-import { getMainDefinition } from 'apollo-utilities'
-import { BrowserRouter } from 'react-router-dom'
-import { setContext } from 'apollo-link-context'
-import { getAuthToken } from 'auth0-helpers'
+import { Router } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import { CloudinaryContext } from 'cloudinary-react'
 
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
-import { errorLink } from './lib/errorLink'
-
-const httpLink = createHttpLink({
-  uri: 'https://api.graphql.guide/graphql'
-})
-
-const authLink = setContext(async (_, { headers }) => {
-  const token = await getAuthToken({
-    doLoginIfTokenExpired: true
-  })
-
-  if (token) {
-    return {
-      headers: {
-        ...headers,
-        authorization: `Bearer ${token}`
-      }
-    }
-  } else {
-    return { headers }
-  }
-})
-
-const authedHttpLink = authLink.concat(httpLink)
-
-const wsLink = new WebSocketLink({
-  uri: `wss://api.graphql.guide/subscriptions`,
-  options: {
-    reconnect: true
-  }
-})
-
-const networkLink = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
-  },
-  wsLink,
-  authedHttpLink
-)
-
-const link = errorLink.concat(networkLink)
-
-const cache = new InMemoryCache()
-
-const client = new ApolloClient({ link, cache })
+import { apollo, inDevelopment } from './lib/apollo'
 
 const GRAPHQL_PINK = '#e10098'
 
@@ -68,17 +17,31 @@ const theme = createMuiTheme({
   palette: { primary: { main: GRAPHQL_PINK } }
 })
 
-ReactDOM.render(
-  <BrowserRouter>
-    <ApolloProvider client={client}>
-      <MuiThemeProvider theme={theme}>
-        <App />
-      </MuiThemeProvider>
-    </ApolloProvider>
-  </BrowserRouter>,
-  document.getElementById('root')
-)
+const history = createBrowserHistory()
+history.listen(location => {
+  window.analytics.page(location.pathname)
+})
+
+const render = Component => {
+  ReactDOM.render(
+    <Router history={history}>
+      <ApolloProvider client={apollo}>
+        <MuiThemeProvider theme={theme}>
+          <CloudinaryContext cloudName="graphql">
+            <Component />
+          </CloudinaryContext>
+        </MuiThemeProvider>
+      </ApolloProvider>
+    </Router>,
+    document.getElementById('root')
+  )
+}
+
+render(App)
 
 registerServiceWorker()
 
-module.hot.accept()
+inDevelopment &&
+  module.hot.accept('./components/App', () => {
+    render(App)
+  })

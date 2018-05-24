@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames'
 
-const CurrentUser = ({ user, login, loading }) => {
+const CurrentUser = ({ user, login, loading, inline, buttonText }) => {
   const User = () => (
     <Link to="/me" className="User">
       <img src={user.photo} alt={user.firstName} />
@@ -17,10 +18,10 @@ const CurrentUser = ({ user, login, loading }) => {
   } else if (loading) {
     content = <div className="Spinner" />
   } else {
-    content = <button onClick={login}>Sign in</button>
+    content = <button onClick={login}>{buttonText || 'Sign in'}</button>
   }
 
-  return <div className="CurrentUser">{content}</div>
+  return <div className={classNames('CurrentUser', { inline })}>{content}</div>
 }
 
 CurrentUser.propTypes = {
@@ -29,7 +30,9 @@ CurrentUser.propTypes = {
     photo: PropTypes.string.isRequired
   }),
   login: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  inline: PropTypes.bool,
+  buttonText: PropTypes.string
 }
 
 export default CurrentUser

@@ -1,0 +1,11 @@
+.Privacy,
+.Terms {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.Privacy > div,
+.Terms > div {
+  max-width: 500px;
+}

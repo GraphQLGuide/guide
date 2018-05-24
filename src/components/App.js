@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
-import { Switch, Route, Redirect } from 'react-router'
+import { Switch, Route } from 'react-router'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+import Landing from './landing/Landing'
+import Paypal from './landing/Paypal'
+import Terms from './landing/Terms'
+import Privacy from './landing/Privacy'
+import Tshirt from './landing/Tshirt'
+import Welcome from './landing/Welcome'
 import logo from '../logo.svg'
 import StarCount from './StarCount'
 import TableOfContents from './TableOfContents'
@@ -28,22 +34,45 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <StarCount />
-          <Link className="App-home-link" to="/">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">The GraphQL Guide</h1>
-          </Link>
-          <CurrentUser {...authProps} />
-        </header>
         <Switch>
-          <Route exact path="/" render={() => <Redirect to="/Preface" />} />
+          <Route exact path="/" render={() => <Landing {...authProps} />} />
+          <Route path="/paypal" render={() => <Paypal {...authProps} />} />
           <Route
             exact
-            path="/me"
-            render={() => <Profile logout={logout} {...authProps} />}
+            path="/welcome"
+            render={() => <Welcome {...authProps} />}
           />
-          <Route render={() => <Book user={this.props.user} />} />
+          <Route
+            exact
+            path="/tshirt"
+            render={() => <Tshirt {...authProps} />}
+          />
+          <Route exact path="/terms" component={Terms} />
+          <Route exact path="/privacy" component={Privacy} />
+          <Route exact path="/tshirt" component={Tshirt} />
+          <Route
+            render={() => (
+              <div>
+                <header className="App-header">
+                  <StarCount />
+                  <Link className="App-home-link" to="/Preface">
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <h1 className="App-title">The GraphQL Guide</h1>
+                  </Link>
+                  <CurrentUser {...authProps} />
+                </header>
+                <Switch>
+                  {/* <Route exact path="/" render={() => <Redirect to="/Preface" />} /> */}
+                  <Route
+                    exact
+                    path="/me"
+                    render={() => <Profile logout={logout} {...authProps} />}
+                  />
+                  <Route render={() => <Book user={this.props.user} />} />
+                </Switch>
+              </div>
+            )}
+          />
         </Switch>
       </div>
     )

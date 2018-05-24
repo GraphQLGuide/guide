@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import wrapDisplayName from 'recompose/wrapDisplayName'
-import { graphql, withApollo } from 'react-apollo'
+import { graphql, withApollo, compose } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import gql from 'graphql-tag'
 import auth0 from 'auth0-js'
 import { initAuthHelpers, login, logout } from 'auth0-helpers'
+
+import { associateToken } from '../lib/payment'
 
 const client = new auth0.WebAuth({
   domain: 'graphql.auth0.com',
@@ -41,6 +43,7 @@ const USER_QUERY = gql`
       favoriteReviews {
         id
       }
+      tshirt
     }
   }
 `
@@ -61,6 +64,22 @@ function withAuth(BaseComponent) {
       this.state = {
         loggingIn: false
       }
+
+      this.associateTokenWithUser()
+    }
+
+    componentDidUpdate() {
+      this.associateTokenWithUser()
+    }
+
+    // todo make onUserChange hook registerer
+    associateTokenWithUser = () => {
+      const user = this.props.currentUser
+      if (!user) {
+        return
+      }
+
+      associateToken()
     }
 
     login = () => {
@@ -101,14 +120,15 @@ function withAuth(BaseComponent) {
       username: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
       photo: PropTypes.string.isRequired,
-      hasPurchased: PropTypes.string
+      hasPurchased: PropTypes.string,
+      tshirt: PropTypes.string
     }),
     loading: PropTypes.bool.isRequired,
     client: PropTypes.instanceOf(ApolloClient).isRequired
   }
 
   WithAuthWrapper.displayName = wrapDisplayName(BaseComponent, 'withAuth')
-  return withApollo(withUser(WithAuthWrapper))
+  return compose(withApollo, withUser)(WithAuthWrapper)
 }
 
 export default withAuth
