@@ -1,0 +1,27 @@
+.Paypal {
+  position: relative;
+  z-index: 2; /* todo not needed after remove header */
+  min-height: 100vh;
+  padding-top: 20vh;
+  display: flex;
+  justify-content: center;
+  background-color: var(--gray300);
+}
+
+.Paypal-content {
+  width: 400px;
+}
+
+.Paypal-content a {
+  color: var(--pink);
+}
+
+.Paypal-step2 {
+  position: relative;
+}
+
+.Paypal-login {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}

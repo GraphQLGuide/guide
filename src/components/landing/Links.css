@@ -1,0 +1,63 @@
+.Links {
+  background-image: linear-gradient(var(--green600), var(--green300));
+  color: white;
+}
+
+.Links-text {
+  color: white !important;
+}
+
+.Links a,
+.Links a:active,
+.Links a:visited {
+  color: white;
+}
+
+.Links-body {
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.Links-body > a {
+  margin: 0 2vw;
+  margin-bottom: 50px;
+}
+
+.Links-paper {
+  width: 140px;
+  padding: 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.Links-paper > .TwitterLogo * {
+  fill: var(--white);
+}
+
+.Links-paper > .TwitterLogo,
+.EmailIcon,
+.MediumLogo {
+  margin: 10% 0;
+  width: 50% !important;
+}
+
+.MediumLogo-square {
+  fill: var(--white);
+}
+
+@media only screen and (max-width: 800px) {
+  .Links-paper > .TwitterLogo,
+  .EmailIcon,
+  .MediumLogo {
+    margin: 3vw 0;
+  }
+
+  .Links-body {
+    padding: var(--vert-spacer) 0 0;
+  }
+}

@@ -1,0 +1,134 @@
+.Package {
+  position: relative;
+  width: 310px;
+  margin: 0 calc(5px + 1vw);
+  background-color: var(--gray100) !important;
+  --package-padding: 10px 20px;
+  --package-font: 0.875rem;
+}
+
+.Package:not(.recommended) {
+  margin-top: 80px;
+}
+.Package.recommended > .Package-header {
+  height: 230px;
+}
+.Package.recommended .Package-name {
+  margin-top: 100px !important; /* 20 normal + extra */
+}
+
+.Package-recommendation {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  z-index: 1;
+  font-size: 24px;
+}
+
+.Package-header {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.Package-header-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: skewY(-5deg);
+  transform-origin: top left;
+}
+
+.Package-header-bg.gray {
+  background-image: linear-gradient(var(--gray600), var(--gray300));
+}
+
+.Package-header-bg.purple {
+  background-image: linear-gradient(var(--purple600), var(--purple300));
+}
+
+.Package-header-bg.blue {
+  background-image: linear-gradient(var(--blue-dark), var(--blue-light));
+}
+
+.Package-header-bg.pink {
+  background-image: linear-gradient(var(--pink), var(--pink-light));
+}
+
+.Package-header-bg.green {
+  background-image: linear-gradient(var(--green600), var(--green300));
+}
+
+.Package-name {
+  position: relative; /* otherwise hidden by header-bg */
+  margin: 20px 0 15px !important;
+  color: white !important;
+}
+
+.Package-price {
+  position: relative;
+  color: white !important;
+}
+
+.Package-price:before {
+  position: absolute;
+  left: calc(50% - 34px);
+  bottom: 5px;
+  content: '$ ';
+  font-size: 0.6em;
+}
+
+.Package-price.two-digits:before {
+  left: calc(50% - 27px);
+}
+
+.Package-price.four-digits:before {
+  left: calc(50% - 48px);
+}
+
+.Package-price.four-digits:after {
+  content: '+';
+  margin-left: 3px;
+}
+
+.Package-features {
+  padding: 20px 0;
+  list-style-type: none;
+  line-height: 1.1em;
+}
+
+/* matches .Payment-beta */
+.Package-features > li {
+  padding: var(--package-padding);
+  font-size: var(--package-font);
+}
+
+.Payment-team {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.Package-features > li:nth-child(even) {
+  background-color: white;
+}
+
+.Package-feature-list {
+  margin-bottom: 0.6em;
+}
+
+.Package-feature-list.full {
+  font-weight: bold;
+}
+
+.Package-extra-item {
+  margin-left: 2em;
+}
+
+.Package-tshirt {
+  width: 100%;
+  margin: 10px 0;
+}

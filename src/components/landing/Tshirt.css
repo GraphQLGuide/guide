@@ -1,0 +1,73 @@
+.Tshirt {
+  color: white;
+  background-image: linear-gradient(
+    345deg,
+    var(--pink-light),
+    var(--pink-dark)
+  );
+}
+
+.Tshirt-title {
+  padding: 80px 0;
+  color: white !important;
+  text-align: center;
+}
+
+.Tshirt-modeling {
+  display: flex;
+  justify-content: center;
+}
+
+.Tshirt-image {
+  margin: 0 2vw;
+  height: 600px;
+}
+
+.Tshirt-options {
+  display: flex;
+  justify-content: center;
+}
+
+.Tshirt-option-title {
+  padding: 10px 0;
+  color: white !important;
+}
+
+.Tshirt-option {
+  margin: 0 2vw;
+}
+
+.Tshirt-option .Tshirt-image {
+  margin: 0;
+}
+
+.Tshirt-details {
+  padding: 80px 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Tshirt-action {
+  margin-bottom: 40px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text);
+}
+
+.Tshirt-buy {
+  margin-top: 40px !important;
+}
+
+.Tshirt-login {
+  display: flex;
+  margin-top: 20px;
+  color: var(--display-gray);
+}
+
+.Tshirt-login > button {
+  margin-left: 10px;
+  text-decoration: underline;
+}

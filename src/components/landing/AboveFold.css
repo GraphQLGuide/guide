@@ -1,0 +1,153 @@
+.AboveFold {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--cover-gray);
+  perspective: 2000px;
+}
+
+.AboveFold-hero-container {
+  position: absolute;
+  top: 0;
+  left: 45vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60vw;
+  min-height: 100vh;
+  /* height: 80vh; */
+  /* border: solid white 5px; */
+  /* transform: rotateY(0deg); */
+  background-image: radial-gradient(
+    ellipse 50% 100px at 50% 91%,
+    white,
+    var(--cover-gray)
+  );
+}
+
+.AboveFold-hero {
+  max-width: 90%;
+  max-height: 95vh;
+  transition: transform 3s cubic-bezier(0.32, 0.01, 1, 0.19);
+  transform: scale(0) rotate(-90deg);
+  will-change: transform;
+}
+
+.AboveFold-hero.-transform {
+  transform: scale(1) rotate(360deg);
+}
+
+.AboveFold-main {
+  z-index: 1; /* on top of hero */
+  width: 46vw;
+  margin-right: 35vw;
+  font-size: 32px;
+  color: white;
+}
+
+.AboveFold-buttons {
+  display: flex;
+  justify-content: flex-start;
+  /* justify-content: space-between; */
+  /* width: 300px; */
+  margin-top: 70px;
+
+  opacity: 0;
+  transition: opacity 1s 1.2s ease-in-out;
+}
+
+.AboveFold-buttons > button {
+  margin: 0 3vw;
+}
+
+.AboveFold-typing {
+  font-family: var(--code);
+  white-space: pre;
+  font-size: 32px;
+  line-height: 1.5em;
+}
+
+.typed-cursor {
+  opacity: 1;
+  animation: typedjsBlink 0.7s infinite;
+  -webkit-animation: typedjsBlink 0.7s infinite;
+  animation: typedjsBlink 0.7s infinite;
+}
+@keyframes typedjsBlink {
+  50% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes typedjsBlink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.typed-fade-out {
+  opacity: 0;
+  transition: opacity 0.25s;
+  -webkit-animation: 0;
+  animation: 0;
+}
+
+@media only screen and (max-width: 940px) {
+  .AboveFold {
+    height: auto;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .AboveFold-hero-container {
+    position: relative;
+    left: 0;
+    min-height: 60vh;
+    height: 60vh;
+    width: 100vw;
+    background-image: radial-gradient(
+      ellipse 50% 60px at 50% 87%,
+      white,
+      var(--cover-gray)
+    );
+  }
+
+  .AboveFold-hero {
+    max-width: 70%;
+    max-height: 90%;
+  }
+
+  .AboveFold-main {
+    width: 85vw;
+    margin-right: 0;
+    margin-top: 40px;
+  }
+
+  .AboveFold-buttons {
+    justify-content: center;
+    margin-bottom: 80px;
+    margin-top: 40px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .AboveFold-typing {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .AboveFold-typing-container {
+    margin-left: 20px;
+  }
+  .AboveFold-typing {
+    font-size: 24px;
+  }
+}

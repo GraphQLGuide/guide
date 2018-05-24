@@ -1,0 +1,97 @@
+.Payment {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Payment.full,
+.Payment.team {
+  position: relative;
+}
+
+.Payment > button {
+  margin-bottom: 20px;
+}
+
+.Payment-licenses {
+  width: 200px;
+  margin-bottom: 30px !important;
+}
+
+.Payment-beta {
+  padding: var(--package-padding);
+  font-size: var(--package-font);
+  line-height: 1.3em;
+  margin-bottom: 20px;
+  background-color: #fff176;
+}
+
+/* one column */
+
+/* three columns */
+@media only screen and (max-width: 1407px) {
+  .Package.training {
+    order: 3;
+  }
+  .Package.full {
+    order: 2;
+  }
+  .Package.pro {
+    order: 1;
+  }
+  .Package.basic {
+    order: 4;
+  }
+  .Package.basic .Payment {
+    position: relative;
+  }
+  .Package.basic .Payment-beta {
+    margin-top: -36px;
+  }
+}
+
+/* two columns */
+@media only screen and (max-width: 1037px) {
+  .Package.training {
+    order: 2;
+  }
+  .Package.full {
+    order: 1;
+  }
+  .Package.pro {
+    order: 4;
+    min-height: 860px;
+  }
+  .Package.basic {
+    order: 3;
+  }
+}
+
+@media only screen and (max-width: 682px) {
+  .Package.training {
+    order: 1;
+  }
+  .Package.full {
+    order: 2;
+    margin-top: 80px;
+  }
+  .Package.pro {
+    order: 3;
+  }
+  .Package.basic {
+    order: 4;
+  }
+  .Payment {
+    position: relative;
+  }
+  .Payment-beta {
+    margin-top: -36px;
+  }
+  .Pricing {
+    padding-top: 0;
+  }
+}
