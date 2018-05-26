@@ -1,7 +1,5 @@
 .Landing {
   position: relative;
-  z-index: 2; /* todo not needed after remove header */
   width: 100vw;
   overflow-x: hidden;
-  background-color: var(--gray300);
 }

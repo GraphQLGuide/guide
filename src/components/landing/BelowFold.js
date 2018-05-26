@@ -1,23 +1,19 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import Pitch from './Pitch'
 import Authors from './Authors'
-import LandingToC from './LandingToC'
+import Topics from './Topics'
+import Stats from './Stats'
 import Pricing from './Pricing'
 import Links from './Links'
 
-class BelowFold extends Component {
-  render() {
-    return (
-      <div className="BelowFold">
-        <Authors />
-        <Pitch />
-        <LandingToC />
-        <Pricing />
-        <Links />
-      </div>
-    )
-  }
-}
+const BelowFold = () => (
+  <div className="BelowFold">
+    <Authors />
+    <Topics />
+    <Stats />
+    <Pricing />
+    <Links />
+  </div>
+)
 
 export default BelowFold

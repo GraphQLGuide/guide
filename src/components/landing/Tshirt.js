@@ -136,12 +136,18 @@ const Tshirt = ({ user, login, history }) => {
       </div>
 
       <div className="Tshirt-details">
+        <div className="Tshirt-common-features">
+          <Typography className="Tshirt-option-title" variant="display1">
+            All Options Include
+          </Typography>
+          <ul>
+            <li>Free worldwide shipping</li>
+            <li>Tear-away labels</li>
+            <li>Pre-shrunk</li>
+          </ul>
+        </div>
+
         {action}
-        <ul>
-          <li>Free worldwide shipping</li>
-          <li>Tear-away labels</li>
-          <li>Pre-shrunk</li>
-        </ul>
       </div>
     </section>
   )

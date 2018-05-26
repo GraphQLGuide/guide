@@ -1,0 +1,56 @@
+.Stats {
+  display: flex;
+  justify-content: center;
+  padding: 70px 0;
+  color: white;
+  background-image: linear-gradient(345deg, var(--pink-light), var(--pink));
+}
+
+.Stats-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 80vw;
+  max-width: 1200px;
+}
+
+.Stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25%;
+}
+
+.Stat > svg {
+  height: 48px;
+  width: auto !important;
+}
+
+.Stat-number {
+  position: relative;
+  font-size: 28px;
+  font-weight: 400;
+  margin: 24px 0 12px;
+}
+
+.Stat-number.-with-plus:after {
+  content: '+';
+  font-weight: 300;
+  position: absolute;
+  right: -17px;
+}
+
+.Stat-caption {
+  font-weight: 300;
+}
+
+@media only screen and (max-width: 700px) {
+  .Stats {
+    padding-bottom: 0;
+  }
+
+  .Stat {
+    width: 50%;
+    padding-bottom: 70px;
+  }
+}

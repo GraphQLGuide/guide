@@ -1,6 +1,10 @@
 .Links {
-  background-image: linear-gradient(var(--green600), var(--green300));
+  background-image: linear-gradient(345deg, var(--pink-light), var(--pink));
   color: white;
+}
+/* match bg color */
+.MediumLogo-m {
+  fill: var(--pink-light);
 }
 
 .Links-text {
@@ -32,11 +36,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--pink);
+  /* background-color: rgba(255, 255, 255, 0.1) !important; */
 }
 
 .Links-paper > .TwitterLogo * {
-  fill: var(--white);
+  fill: var(--pink);
+  /* fill: var(--white); */
 }
 
 .Links-paper > .TwitterLogo,
@@ -46,8 +52,13 @@
   width: 50% !important;
 }
 
+.EmailIcon > *,
 .MediumLogo-square {
-  fill: var(--white);
+  fill: var(--pink);
+}
+
+.MediumLogo-m {
+  fill: white;
 }
 
 @media only screen and (max-width: 800px) {

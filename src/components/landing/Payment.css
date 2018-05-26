@@ -13,13 +13,22 @@
   position: relative;
 }
 
-.Payment > button {
-  margin-bottom: 20px;
+.Payment-stripe {
+  margin-bottom: 10px !important;
+}
+
+.Package.team .Payment-stripe {
+  background-color: var(--green600);
+  color: white;
+}
+
+.Payment-type {
+  margin-bottom: 20px !important;
 }
 
 .Payment-licenses {
   width: 200px;
-  margin-bottom: 30px !important;
+  margin-bottom: 50px !important;
 }
 
 .Payment-beta {

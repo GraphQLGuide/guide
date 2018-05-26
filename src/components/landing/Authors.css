@@ -1,15 +1,10 @@
 .Authors {
   padding: var(--vert-spacer) 0;
-  background-image: linear-gradient(
-    345deg,
-    var(--blue-light) 0,
-    var(--blue) 50%,
-    var(--blue-dark) 100%
-  );
+  background-image: linear-gradient(345deg, var(--pink-light), var(--pink));
 }
 
 .Authors-header {
-  margin-bottom: calc(var(--vert-spacer) + 30px) !important;
+  margin-bottom: var(--vert-spacer) !important;
   text-align: center;
   color: white !important;
 }

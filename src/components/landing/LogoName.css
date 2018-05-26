@@ -1,0 +1,8 @@
+.LogoName {
+  width: 130px;
+  height: calc(130px * (1021.775 / 2369.692));
+}
+
+.LogoName-text * {
+  fill: var(--gray800);
+}

@@ -13,10 +13,11 @@ export const iPadMaxW = 1023
 */
 
 :root {
-  --white: rgb(245, 245, 245);
-  --pink: rgb(225, 0, 152); /* #e10098; */
-  --pink-light: #ff58c9; /*rgba(225, 0, 152, 0.6);*/
-  --pink-dark: #aa006a;
+  --white: #f5f5f5;
+  --pink: #df1797; /* old: rgb(225, 0, 152) / #e10098; */
+  --pink-light: #ff5dc8; /* old: #ff58c9 */
+  --pink-dark: #a80069; /* old: #aa006a */
+  --cover-black: #202230;
   /* --blue: #4fc3f7;
   --blue-light: #8bf6ff; /* https://material.io/color/#!/?view.left=0&view.right=0&primary.color=e10098&secondary.color=4FC3F7 */
   /*  --blue-dark: #0093c4; */
@@ -25,7 +26,6 @@ export const iPadMaxW = 1023
   --blue-dark: #0073bf;
   --gray-light: rgba(0, 0, 0, 0.6);
   --display-gray: rgba(0, 0, 0, 0.54);
-  --cover-gray: rgb(33, 35, 37);
   --gray100: #f5f5f5;
   --gray200: #eeeeee;
   --gray300: #e0e0e0;
@@ -33,6 +33,7 @@ export const iPadMaxW = 1023
   --gray500: #9e9e9e;
   --gray600: #757575;
   --gray700: #616161;
+  --gray800: #424242;
   --purple300: #ba68c8;
   --purple600: #8e24aa;
   --green300: #81c784;
@@ -47,7 +48,7 @@ export const iPadMaxW = 1023
   --fab: 64px;
   --code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
-  --vert-spacer: 80px;
+  --vert-spacer: 100px;
 }
 
 @media screen and (max-width: 500px) {

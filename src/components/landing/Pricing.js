@@ -2,7 +2,6 @@ import React from 'react'
 
 import './Pricing.css'
 import Package from './Package'
-import Emoji from './Emoji'
 
 const REST_LIFESPAN = new Date().getFullYear() - 2000
 
@@ -61,16 +60,21 @@ const Pricing = () => (
         <li>
           Everything in the Full edition, plus a day-long IRL training course
         </li>
+        <hr />
         <li>Choose between the beginner course and the advanced course</li>
+        <hr />
         <li>Full-stack Javascript (React & Node)</li>
+        <hr />
         <li>
           Advanced course topics include SSR, subscriptions, DataLoader, and
           Apollo Engine
         </li>
+        <hr />
         <li>
           Taught by our favorite GraphQL teachers around—Xavier and Paul from{' '}
           <i>OK GROW!</i>
         </li>
+        <hr />
         <li>
           Offered periodically in major cities in US and Canada (or if we get 15
           signups in your area, we'll schedule a time to come to you)
@@ -91,24 +95,21 @@ const Pricing = () => (
       </div>
     </div>
 
-    <div className="Pricing-team">
-      <Package team color="green">
-        <li>
-          <p>
-            Get a 30% discount over individual pricing by ordering a group
-            license for your team. With a team license, five coworkers will get
-            access to the Full edition.
-          </p>
-          <p>
-            We can also arrange a day or two of on-site training for your
-            company. Inquire at:
-          </p>
-        </li>
-        <p style={{ textAlign: 'center' }}>
-          <a href="mailto:sales@graphql.guide">sales@graphql.guide</a>
-        </p>
-      </Package>
-    </div>
+    <Package team color="green">
+      <li>
+        Get a 30% discount over individual pricing by ordering a group license
+        for your team. With a team license, five coworkers will get access to
+        the Full edition.
+      </li>{' '}
+      <hr />
+      <li>
+        We can also arrange a day or two of on-site training for your company.
+        Inquire at:
+      </li>
+      <p style={{ textAlign: 'center' }}>
+        <a href="mailto:sales@graphql.guide">sales@graphql.guide</a>
+      </p>
+    </Package>
   </section>
 )
 

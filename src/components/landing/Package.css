@@ -2,7 +2,6 @@
   position: relative;
   width: 310px;
   margin: 0 calc(5px + 1vw);
-  background-color: var(--gray100) !important;
   --package-padding: 10px 20px;
   --package-font: 0.875rem;
 }
@@ -43,23 +42,23 @@
   transform-origin: top left;
 }
 
-.Package-header-bg.gray {
+.Package.gray .Package-header-bg {
   background-image: linear-gradient(var(--gray600), var(--gray300));
 }
 
-.Package-header-bg.purple {
+.Package.purple .Package-header-bg {
   background-image: linear-gradient(var(--purple600), var(--purple300));
 }
 
-.Package-header-bg.blue {
+.Package.blue .Package-header-bg {
   background-image: linear-gradient(var(--blue-dark), var(--blue-light));
 }
 
-.Package-header-bg.pink {
+.Package.pink .Package-header-bg {
   background-image: linear-gradient(var(--pink), var(--pink-light));
 }
 
-.Package-header-bg.green {
+.Package.green .Package-header-bg {
   background-image: linear-gradient(var(--green600), var(--green300));
 }
 
@@ -102,18 +101,50 @@
 }
 
 /* matches .Payment-beta */
-.Package-features > li {
+.Package-features li {
   padding: var(--package-padding);
   font-size: var(--package-font);
+}
+
+.Package-features hr {
+  width: calc(100% - 40px);
+  border-top: none;
+  opacity: 0.5;
+}
+
+.Package.blue hr {
+  border-color: var(--blue);
+  background-color: var(--blue);
+  color: var(--blue);
+}
+
+.Package.gray hr {
+  border-color: var(--gray600);
+  background-color: var(--gray600);
+  color: var(--gray600);
+}
+
+.Package.purple hr {
+  border-color: var(--purple300);
+  background-color: var(--purple300);
+  color: var(--purple300);
+}
+
+.Package.green hr {
+  border-color: var(--green600);
+  background-color: var(--green600);
+  color: var(--green600);
+}
+
+.Package.pink hr {
+  border-color: var(--pink);
+  background-color: var(--pink);
+  color: var(--pink);
 }
 
 .Payment-team {
   text-align: center;
   padding: 0 20px;
-}
-
-.Package-features > li:nth-child(even) {
-  background-color: white;
 }
 
 .Package-feature-list {
@@ -131,4 +162,8 @@
 .Package-tshirt {
   width: 100%;
   margin: 10px 0;
+}
+
+.Package-feature-header.-upon-completion {
+  margin-top: 20px;
 }

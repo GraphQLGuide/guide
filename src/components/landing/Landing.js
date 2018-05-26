@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import './global.css'
 import './Landing.css'
 import AboveFold from './AboveFold'
 import BelowFold from './BelowFold'

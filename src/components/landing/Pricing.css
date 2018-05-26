@@ -1,8 +1,13 @@
 .Pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: var(--vert-spacer) 0;
+  background-image: linear-gradient(345deg, white, var(--gray100));
 }
 
 .Pricing-individual {
+  width: 100vw;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -12,19 +17,23 @@
 
 .Pricing-note {
   margin-right: 20px;
+  margin-top: 16px;
 }
 
 .Pricing-notes {
-  margin: 80px 10vw 0;
+  margin: 80px 16px 0;
+  max-width: 630px; /* don't let last line wrap */
   padding-bottom: 16px;
   text-align: center;
 }
 
-.Pricing-team {
-  display: flex;
-  justify-content: center;
-}
-
 .Sup {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 420px) {
+  .Pricing-notes {
+    margin-top: 60px;
+    padding-bottom: 0;
+  }
 }

@@ -11,10 +11,10 @@ import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
 import { apollo, inDevelopment } from './lib/apollo'
 
-const GRAPHQL_PINK = '#e10098'
+const PINK = '#df1797'
 
 const theme = createMuiTheme({
-  palette: { primary: { main: GRAPHQL_PINK } }
+  palette: { primary: { main: PINK } }
 })
 
 const history = createBrowserHistory()

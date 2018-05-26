@@ -3,15 +3,12 @@ import Typography from 'material-ui/Typography'
 
 import './Authors.css'
 import Author from './Author'
-import Emoji from './Emoji'
 import LinkNewTab from './LinkNewTab'
 
 const Authors = () => (
   <section className="Authors">
     <Typography className="Authors-header" variant="display2" component="h1">
-      <Emoji name="nerd" />
       The Authors
-      <Emoji name="nerd" />
     </Typography>
     <div className="Authors-list">
       <Author
@@ -23,7 +20,6 @@ const Authors = () => (
         Computer Science at Khan Academy. Seven years ago, he stepped back from
         jQuery and wrote his last book. Now, he's coming back out to take
         GraphQL mainstream
-        <Emoji name="smile" />
       </Author>
 
       <Author

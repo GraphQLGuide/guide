@@ -16,6 +16,7 @@
 .Tshirt-modeling {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .Tshirt-image {
@@ -26,6 +27,7 @@
 .Tshirt-options {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .Tshirt-option-title {
@@ -42,10 +44,14 @@
 }
 
 .Tshirt-details {
-  padding: 80px 0 40px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.Tshirt-common-features {
+  margin: 40px 0;
 }
 
 .Tshirt-action {

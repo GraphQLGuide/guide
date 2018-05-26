@@ -38,71 +38,118 @@ const Package = ({
       <ul className="Package-features">{children}</ul>
     ) : (
       <ul className="Package-features">
-        <li>The book in PDF, HTML, ePub, and Kindle formats</li>
+        <li>
+          <Typography className="Package-feature-header" variant="headline">
+            Right now
+          </Typography>
+        </li>
+        <li>Early access to the book in PDF, ePub, and Kindle formats</li>
+        <hr />
         <li>The book's Git repositories, with branches for each section</li>
-        <li>{updatePeriod}</li>
-        {!basic && <li>Interactive exercises in-browser</li>}
-        {!basic && <li>Course completion certificate</li>}
+        {full && (
+          <div>
+            <hr />
+            <li>
+              <b>Technical support</b> if you run into problems following along
+              with the coding chapters
+            </li>
+          </div>
+        )}
+        {full && (
+          <div>
+            <hr />
+            <li>
+              Access to the Guide <b>Slack community</b>
+            </li>
+          </div>
+        )}
+        {full && (
+          <div>
+            <hr />
+            <li>
+              The Guide T-shirt!
+              <Link to="/tshirt">
+                <Image
+                  className="Package-tshirt"
+                  publicId="guide-tshirt"
+                  fetchFormat="auto"
+                  quality="auto"
+                />
+                T-shirt options
+              </Link>
+              <br />
+              <br />
+              Exclusively for Full edition readers.
+              <br />
+              Free worldwide shipping.
+            </li>
+          </div>
+        )}
+        <li>
+          <Typography
+            className="Package-feature-header -upon-completion"
+            variant="headline"
+          >
+            Upon completion
+          </Typography>
+        </li>
+        <li>The full book in ebook and HTML formats</li>
+        {updatePeriod && (
+          <div>
+            <hr />
+            <li>{updatePeriod}</li>
+          </div>
+        )}
+        {!basic && (
+          <div>
+            <hr />
+            <li>Interactive exercises in-browser</li>
+          </div>
+        )}
+        {!basic && (
+          <div>
+            <hr />
+            <li>Course completion certificate</li>
+          </div>
+        )}
         {extraChapters && (
-          <li>
-            <div className={classNames('Package-feature-list', { full })}>
-              {pro ? 'Extra chapters:' : 'More extra chapters:'}
-            </div>
-            {extraChapters.map(chapter => (
-              <div className="Package-extra-item" key={chapter}>
-                {chapter}
+          <div>
+            <hr />
+            <li>
+              <div className={classNames('Package-feature-list', { full })}>
+                {pro ? 'Extra chapters:' : 'More extra chapters:'}
               </div>
-            ))}
-          </li>
+              {extraChapters.map(chapter => (
+                <div className="Package-extra-item" key={chapter}>
+                  {chapter}
+                </div>
+              ))}
+            </li>
+          </div>
         )}
         {videos && (
-          <li>
-            <div className={classNames('Package-feature-list', { full })}>
-              {pro ? 'Videos:' : 'More videos:'}
-            </div>
-            {videos.map(video => (
-              <div className="Package-extra-item" key={video}>
-                {video}
+          <div>
+            <hr />
+            <li>
+              <div className={classNames('Package-feature-list', { full })}>
+                {pro ? 'Videos:' : 'More videos:'}
               </div>
-            ))}
-          </li>
-        )}
-        {full && (
-          <li>
-            <b>Technical support</b> if you run into problems following along
-            with the coding chapters
-          </li>
-        )}
-        {full && (
-          <li>
-            Access to the Guide <b>Slack community</b>
-          </li>
-        )}
-        {full && (
-          <li>
-            The Guide T-shirt!
-            <Link to="/tshirt">
-              <Image
-                className="Package-tshirt"
-                publicId="guide-tshirt"
-                fetchFormat="auto"
-                quality="auto"
-              />
-              T-shirt options
-            </Link>
-            <br />
-            <br />
-            Exclusively for Full edition readers.
-            <br />
-            Free worldwide shipping.
-          </li>
+              {videos.map(video => (
+                <div className="Package-extra-item" key={video}>
+                  {video}
+                </div>
+              ))}
+            </li>
+          </div>
         )}
       </ul>
     )
 
   return (
     <Paper
-      className={classNames('Package', name.toLowerCase(), { recommended })}
+      className={classNames('Package', color, name.toLowerCase(), {
+        recommended
+      })}
       elevation={10}
     >
       <div className="Package-header">
@@ -113,7 +160,7 @@ const Package = ({
             <Emoji name="ok_hand" />
           </div>
         )}
-        <div className={`Package-header-bg ${color}`} />
+        <div className={`Package-header-bg`} />
         <Typography className="Package-name" variant="display1">
           {name}
         </Typography>

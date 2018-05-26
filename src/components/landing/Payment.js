@@ -6,6 +6,7 @@ import Button from 'material-ui/Button'
 import { InputLabel } from 'material-ui/Input'
 import { FormControl } from 'material-ui/Form'
 import Select from 'material-ui/Select'
+import Typography from 'material-ui/Typography'
 
 import './Payment.css'
 import LoadStripe, { stripeCheckout } from '../../lib/payment'
@@ -14,8 +15,6 @@ import {
   calculateTeamPrice,
   formatTeamName
 } from '../../lib/packages'
-
-import Emoji from './Emoji'
 
 class Payment extends Component {
   state = {
@@ -47,7 +46,7 @@ class Payment extends Component {
     const { packageInfo } = this.props
     return (
       <div className={`Payment ${packageInfo.key}`}>
-        {packageInfo.team ? (
+        {packageInfo.team && (
           <FormControl className="Payment-licenses">
             <InputLabel htmlFor="select-licenses">License size</InputLabel>
             <Select
@@ -65,27 +64,20 @@ class Payment extends Component {
               ))}
             </Select>
           </FormControl>
-        ) : (
-          packageInfo.training || (
-            <p className="Payment-beta">
-              <b>Beta includes </b>
-              {(packageInfo.basic || packageInfo.pro) &&
-                ' the current version of the ebook and code. '}
-              {packageInfo.full &&
-                ' the current version of the ebook and code, the T-shirt, tech support, and Slack community. '}
-              We'll send you new chapters as they're written.
-            </p>
-          )
         )}
         <LoadStripe>
           <Button
             variant="raised"
+            className="Payment-stripe"
             color={packageInfo.full && 'primary'}
             onClick={this.checkoutClicked}
           >
-            Stripe Checkout
+            GET THE BETA
           </Button>
         </LoadStripe>
+        <Typography className="Payment-type" variant="caption">
+          via Stripe Checkout
+        </Typography>
         {/* <p>TODO or payment request api</p> */}
         {packageInfo.team ? (
           <div className="Payment-team">
