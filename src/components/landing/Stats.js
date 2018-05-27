@@ -17,7 +17,7 @@ const Stats = () => (
       </div>
       <div className="Stat">
         <FontAwesomeIcon icon={faBookOpen} />
-        <h3 className="Stat-number">11</h3>
+        <h3 className="Stat-number">12</h3>
         <div className="Stat-caption">Chapters</div>
       </div>
       <div className="Stat">
