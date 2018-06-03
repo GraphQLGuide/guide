@@ -46,7 +46,7 @@
     "recompose": "^0.26.0",
     "revalidate": "^1.2.0",
     "scroll-into-view-if-needed": "^2.2.0",
-    "serve": "^6.4.3",
+    "serve": "^7.2.0",
     "subscriptions-transport-ws": "^0.9.7",
     "typed.js": "^2.0.6"
   },
@@ -55,7 +55,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "now-start": "serve --cache 60000 --single ./build",
+    "now-start": "serve --single ./build",
     "deploy": "now --dotenv=.env.production --regions all",
     "alias": "now alias",
     "deploy-ci": "now --token=$NOW_TOKEN --regions all -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
@@ -66,6 +66,6 @@
     "alias": "staging.graphql.guide"
   },
   "devDependencies": {
-    "now": "^11.1.14"
+    "now": "^11.1.16"
   }
 }
