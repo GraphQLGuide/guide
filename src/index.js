@@ -7,6 +7,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import { CloudinaryContext } from 'cloudinary-react'
 
 import './index.css'
+import './lib/logrocket'
 import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
 import { apollo, inDevelopment } from './lib/apollo'
