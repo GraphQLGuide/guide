@@ -64,7 +64,11 @@ const withReviews = graphql(REVIEWS_QUERY, {
     reviews,
     networkStatus,
     loadMoreReviews: () => {
-      const lastId = reviews && reviews[reviews.length - 1].id
+      if (!reviews) {
+        return
+      }
+
+      const lastId = reviews[reviews.length - 1].id
       return fetchMore({
         variables: { after: lastId },
         updateQuery: (previousResult, { fetchMoreResult }) => {
