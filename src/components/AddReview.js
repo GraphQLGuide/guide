@@ -7,6 +7,7 @@ import StarIcon from 'material-ui-icons/Star'
 import StarBorderIcon from 'material-ui-icons/StarBorder'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
+import pick from 'lodash/pick'
 
 import { validateReview } from '../lib/validators'
 import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
@@ -125,12 +126,13 @@ const withMutation = graphql(ADD_REVIEW_MUTATION, {
             stars,
             createdAt: new Date(),
             favorited: false,
-            author: {
-              __typename: 'User',
-              name: user.name,
-              photo: user.photo,
-              username: user.username
-            }
+            author: pick(user, [
+              '__typename',
+              'id',
+              'name',
+              'photo',
+              'username'
+            ])
           }
         },
         update: (store, { data: { createReview: newReview } }) => {
