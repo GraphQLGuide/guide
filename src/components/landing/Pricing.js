@@ -71,7 +71,7 @@ const Pricing = () => (
         </li>
         <hr />
         <li>
-          Taught by our favorite GraphQL teachers around—Xavier and Paul from{' '}
+          Taught by our favorite GraphQL teachers around—Paul and the team at{' '}
           <i>OK GROW!</i>
         </li>
         <hr />

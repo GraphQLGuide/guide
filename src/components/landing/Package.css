@@ -16,6 +16,10 @@
   margin-top: 100px !important; /* 20 normal + extra */
 }
 
+.Package.pro {
+  min-height: 1050px;
+}
+
 .Package-recommendation {
   position: absolute;
   top: 30px;
@@ -100,7 +104,12 @@
   line-height: 1.1em;
 }
 
-/* matches .Payment-beta */
+.Package-features > div,
+.Package-features > {
+  /* needed to make hr visible in prod. no idea why 😆 */
+  margin: 9px 0;
+}
+
 .Package-features li {
   padding: var(--package-padding);
   font-size: var(--package-font);
