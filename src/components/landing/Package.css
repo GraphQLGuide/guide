@@ -105,7 +105,7 @@
 }
 
 .Package-features > div,
-.Package-features > {
+.Package-features > li {
   /* needed to make hr visible in prod. no idea why 😆 */
   margin: 9px 0;
 }
