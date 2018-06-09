@@ -16,10 +16,10 @@ const Authors = () => (
         twitter="jeresig"
         avatar="//pbs.twimg.com/profile_images/709460796259041281/TE5YLrp6_400x400.jpg"
       >
-        John is a JavaScript expert. He created jQuery and works as the Dean of
-        Computer Science at Khan Academy. Seven years ago, he stepped back from
-        jQuery and wrote his last book. Now, he's coming back out to take
-        GraphQL mainstream
+        John is a JavaScript expert. He created jQuery and works as a Frontend Architect
+        at Khan Academy. Seven years ago, he stepped back from
+        jQuery and wrote his last book. He's been exploring the power of GraphQL and
+        is convinced that it's the future of REST APIs.
       </Author>
 
       <Author
