@@ -18,7 +18,7 @@
     "apollo-link-ws": "^1.0.1",
     "apollo-utilities": "^1.0.3",
     "auth0-helpers": "^0.4.2",
-    "auth0-js": "^9.0.2",
+    "auth0-js": "^9.6.1",
     "classnames": "^2.2.5",
     "cloudinary-core": "^2.5.0",
     "cloudinary-react": "^1.0.6",
@@ -56,6 +56,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "now-start-dev": "react-scripts start",
     "now-start": "serve --cache 60000 --single ./build",
     "deploy": "now --dotenv=.env.production --regions all",
     "alias": "now alias",
@@ -67,6 +68,6 @@
     "alias": "staging.graphql.guide"
   },
   "devDependencies": {
-    "now": "^11.1.14"
+    "now": "^11.2.2"
   }
 }

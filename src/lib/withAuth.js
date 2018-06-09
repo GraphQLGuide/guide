@@ -44,7 +44,7 @@ const USER_QUERY = gql`
       favoriteReviews {
         id
       }
-      tshirt
+      hasTshirt
     }
   }
 `
@@ -75,8 +75,7 @@ function withAuth(BaseComponent) {
 
     // todo make onUserChange hook registerer
     associateTokenWithUser = () => {
-      const user = this.props.currentUser
-      if (!user) {
+      if (!this.props.currentUser) {
         return
       }
 
@@ -129,7 +128,10 @@ function withAuth(BaseComponent) {
   }
 
   WithAuthWrapper.displayName = wrapDisplayName(BaseComponent, 'withAuth')
-  return compose(withApollo, withUser)(WithAuthWrapper)
+  return compose(
+    withApollo,
+    withUser
+  )(WithAuthWrapper)
 }
 
 export default withAuth

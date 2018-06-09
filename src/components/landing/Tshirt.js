@@ -61,12 +61,12 @@ const Tshirt = ({ user, login, history }) => {
 
   if (user) {
     if (hasTshirtPackage) {
-      if (user.tshirt) {
+      if (user.hasTshirt) {
         action = (
           <Paper className="Tshirt-action" elevation={24}>
             <Typography variant="headline">T-shirt ordered</Typography>
             <br />
-            {user.tshirt}
+            {user.hasTshirt}
           </Paper>
         )
       } else {
@@ -84,7 +84,7 @@ const Tshirt = ({ user, login, history }) => {
     <section className="Tshirt">
       <ScrollToTopOnMount />
       <Typography className="Tshirt-title" variant="display3">
-        The Guide T-Shirt
+        The Guide <span className="-nowrap">T-Shirt</span>
       </Typography>
       <div className="Tshirt-modeling">
         <LinkedShirt filename="tshirt-angled" />

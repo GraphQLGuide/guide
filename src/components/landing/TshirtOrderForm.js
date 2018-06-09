@@ -24,7 +24,7 @@ const ORDER_TSHIRT = gql`
   mutation OrderTshirt($product: Shirt!, $size: Size!) {
     orderTshirt(product: $product, size: $size) {
       id
-      tshirt
+      hasTshirt
     }
   }
 `

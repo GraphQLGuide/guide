@@ -22,6 +22,8 @@
 .Tshirt-image {
   margin: 0 2vw;
   height: 600px;
+  /* todo fix. this distorts image on mobile (makes it thinner)
+  max-width: 100vw; */
 }
 
 .Tshirt-options {

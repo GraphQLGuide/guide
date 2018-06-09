@@ -18,7 +18,10 @@ const CHARGE_MUTATION = gql`
 
 const ASSOCIATE_TOKEN_MUTATION = gql`
   mutation AssociateToken($stripeToken: String!) {
-    associateToken(stripeToken: $stripeToken)
+    associateToken(stripeToken: $stripeToken) {
+      id
+      hasPurchased
+    }
   }
 `
 
@@ -114,7 +117,13 @@ export const stripeCheckout = (packageInfo, routerHistory) => {
   })
 }
 
+let associatingInProgress = false
+
 export const associateToken = async () => {
+  if (associatingInProgress) {
+    return
+  }
+
   const token = localStorage.getItem('stripe.token')
   if (!token) {
     return
@@ -125,10 +134,12 @@ export const associateToken = async () => {
     return
   }
 
+  associatingInProgress = true
   const response = await apollo.mutate({
     mutation: ASSOCIATE_TOKEN_MUTATION,
     variables: { stripeToken: token }
   })
+  associatingInProgress = false
 
   if (response.data.associateToken) {
     localStorage.setItem('stripe.associatedTokenWithUser', true)

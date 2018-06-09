@@ -9,11 +9,11 @@ import { getMainDefinition } from 'apollo-utilities'
 
 import { errorLink } from './errorLink'
 
-export const inDevelopment = window.location.host.match('localhost')
+export const inDevelopment = process.env.NODE_ENV !== 'production'
 
 const httpLink = createHttpLink({
   uri: inDevelopment
-    ? 'http://localhost:4000/graphql'
+    ? `http://${window.location.hostname}:4000/graphql`
     : 'https://api.graphql.guide/graphql'
 })
 
@@ -38,7 +38,7 @@ const authedHttpLink = authLink.concat(httpLink)
 
 const wsLink = new WebSocketLink({
   uri: inDevelopment
-    ? `ws://localhost:4000/subscriptions`
+    ? `ws://${window.location.hostname}:4000/subscriptions`
     : `wss://api.graphql.guide/subscriptions`,
   options: {
     reconnect: true

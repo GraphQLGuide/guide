@@ -12,20 +12,31 @@ class Welcome extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      offerTshirt:
-        getPackage(localStorage.getItem('package')).tshirt &&
-        !localStorage.getItem('declinedTshirt')
+    this.state = { offerTshirt: null }
+  }
+
+  static getDerivedStateFromProps({ user }) {
+    if (!user) {
+      return { offerTshirt: false }
+    }
+
+    const hasTshirtPackage = getPackage(user.hasPurchased).includesTshirt,
+      declinedTshirt = localStorage.getItem('declinedTshirt')
+
+    return {
+      offerTshirt: hasTshirtPackage && !declinedTshirt
     }
   }
 
   declineTshirt = () => {
-    this.setState({ offerTshirt: false })
     localStorage.setItem('declinedTshirt', true)
+    this.setState({ offerTshirt: false })
   }
 
   render() {
-    const loggedIn = !!this.props.user
+    const { user } = this.props
+    const loggedIn = !!user
+
     return (
       <section className="Welcome">
         <ScrollToTopOnMount />
@@ -33,14 +44,18 @@ class Welcome extends Component {
         <p>
           Thank you for supporting the Guide <Emoji name="smiley" />
         </p>
-        {loggedIn || <p>Please create an account through GitHub OAuth:</p>}
+        {loggedIn || (
+          <p>
+            To receive the book, please create an account through GitHub OAuth:
+          </p>
+        )}
         <CurrentUser {...this.props} buttonText="Create account" inline />
         {loggedIn && (
           <div className="Welcome-user">
             <Emoji name="white_check_mark" /> Account created.
             <p>
-              We're emailing you at {this.props.user.email} with the latest
-              version of the book.
+              We're emailing you at {user.email} with the latest version of the
+              book.
             </p>
             {this.state.offerTshirt && (
               <div className="Welcome-tshirt">
