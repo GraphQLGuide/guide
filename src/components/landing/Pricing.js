@@ -58,12 +58,13 @@ const Pricing = () => (
       />
       <Package training price="749" color="blue">
         <li>
-          Everything in the Full edition, plus a day-long IRL training course
+          Everything in the Full edition, plus a day-long in-person training
+          course
         </li>
         <hr />
         <li>Choose between the beginner course and the advanced course</li>
         <hr />
-        <li>Full-stack Javascript (React & Node)</li>
+        <li>Full-stack JavaScript (React & Node)</li>
         <hr />
         <li>
           Advanced course topics include SSR, subscriptions, DataLoader, and
@@ -76,8 +77,8 @@ const Pricing = () => (
         </li>
         <hr />
         <li>
-          Offered periodically in major cities in US and Canada (or if we get 15
-          signups in your area, we'll schedule a time to come to you)
+          Offered periodically in major cities in the U.S. and Canada (or if we
+          get 15 signups in your area, we'll schedule a time to come to you)
         </li>
       </Package>
     </div>

@@ -39,7 +39,7 @@ const topics = [
     icon: faReact,
     title: 'React',
     text:
-      'React is becoming the lingua franca of modern web dev, so this is our longest client chapter. We go through everything in the React Apollo library, including the render prop API, the HOC api, managing local state, subscriptions, optimistic updates, error handling, pagination, persisting, SSR, and more.'
+      'React is becoming the lingua franca of modern web dev, so this is our longest client chapter. We go through everything in the React Apollo library, including the render prop API, the HOC API, managing local state, subscriptions, optimistic updates, error handling, pagination, persisting, SSR, and more.'
   },
   {
     icon: faVuejs,
@@ -50,7 +50,7 @@ const topics = [
   {
     icon: faAppStoreIos,
     title: 'iOS',
-    text: `In addition to our React Native chapter, we also have a native iOS chapter that uses the Apollo iOS Swift client. Get your query and mutation results in query-specific Swift types, and access an automatically-managed cache of data that you've fetched previously.`
+    text: `In addition to our React Native chapter, we also have a native iOS chapter that uses the Apollo iOS Swift client. Get your query and mutation results in query-specific Swift types, and access an automatically managed cache of data that you've fetched previously.`
   },
   {
     icon: faAndroid,
