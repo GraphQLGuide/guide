@@ -18,7 +18,7 @@ const Authors = () => (
         John is a JavaScript expert. He created jQuery and works as a Frontend
         Architect at Khan Academy. Seven years ago, he stepped back from jQuery
         and wrote his last book. He's been exploring the power of GraphQL and is
-        convinced that it's the future of REST APIs.
+        convinced that it's the future of API development.
       </Author>
 
       <Author
