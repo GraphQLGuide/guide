@@ -513,7 +513,7 @@ body {
 
 .Review {
   max-width: 400px;
-  margin-bottom: 60px;
+  margin: 0 20px 60px;
 }
 
 .Review a {
