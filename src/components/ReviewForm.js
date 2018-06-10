@@ -8,6 +8,7 @@ import StarBorderIcon from 'material-ui-icons/StarBorder'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import classNames from 'classnames'
+import pick from 'lodash/pick'
 
 import { validateReview } from '../lib/validators'
 import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
@@ -146,12 +147,13 @@ const withAddReview = graphql(ADD_REVIEW_MUTATION, {
             stars,
             createdAt: new Date(),
             favorited: false,
-            author: {
-              __typename: 'User',
-              name: user.name,
-              photo: user.photo,
-              username: user.username
-            }
+            author: pick(user, [
+              '__typename',
+              'id',
+              'name',
+              'photo',
+              'username'
+            ])
           }
         },
         update: (store, { data: { createReview: newReview } }) => {
@@ -198,4 +200,7 @@ const withEditReview = graphql(EDIT_REVIEW_MUTATION, {
   })
 })
 
-export default compose(withAddReview, withEditReview)(ReviewForm)
+export default compose(
+  withAddReview,
+  withEditReview
+)(ReviewForm)
