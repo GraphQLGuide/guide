@@ -166,6 +166,7 @@ const FAVORITE_REVIEW_MUTATION = gql`
 const READ_USER_FAVORITES = gql`
   query ReadUserFavorites {
     currentUser {
+      id
       favoriteReviews {
         id
       }
