@@ -32,6 +32,7 @@ initAuthHelpers({
 const USER_QUERY = gql`
   query UserQuery {
     currentUser {
+      id
       firstName
       name
       username
