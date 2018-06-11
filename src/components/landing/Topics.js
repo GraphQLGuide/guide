@@ -72,7 +72,7 @@ const Topic = ({ icon, title, text }) => (
 )
 
 const Topics = () => (
-  <section className="Topics">
+  <section className="Topics" id="topics">
     <Typography className="Topics-header" variant="display2" component="h1">
       Topics We Cover
     </Typography>

@@ -15,7 +15,7 @@ const Sup = ({ children }) => (
 )
 
 const Pricing = () => (
-  <section className="Pricing">
+  <section className="Pricing" id="pricing">
     <div className="Pricing-individual">
       <Package basic color="gray" />
       <Package

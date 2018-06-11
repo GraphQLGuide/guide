@@ -5,7 +5,7 @@ import './Authors.css'
 import Author from './Author'
 
 const Authors = () => (
-  <section className="Authors">
+  <section className="Authors" id="authors">
     <Typography className="Authors-header" variant="display2" component="h1">
       The Authors
     </Typography>
