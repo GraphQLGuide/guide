@@ -23,8 +23,8 @@ const Paypal = ({ user, login, loading, location }) => {
         </p>
         <p>
           <b>Step 1: </b>
-          Send ${price} via Paypal. Put your Github email address in the payment
-          note if it is different from your Paypal email.
+          Send ${price} via Paypal. Put your Github username in the payment
+          note.
         </p>
         <p style={{ textAlign: 'center' }}>
           <LinkNewTab href={`https://www.paypal.me/graphqlguide/${price}`}>
