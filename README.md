@@ -22,7 +22,9 @@ We welcome issues and PRs! For large changes, we recommend opening an issue firs
 
 When editing code that's part of the book, submit the PR to the corresponding step branch (eg branch `3` for step 3) instead of to `master`.
 
-![Github PR creation](https://res.cloudinary.com/graphql/image/upload/v1528687975/PR-base-step.png)
+![Github PR creation](https://res.cloudinary.com/graphql/pr-base.png)
+
+
 
 *Setting the base branch to step `3`*
 
