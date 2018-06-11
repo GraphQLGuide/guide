@@ -6,6 +6,7 @@ import { ApolloClient } from 'apollo-client'
 import gql from 'graphql-tag'
 import auth0 from 'auth0-js'
 import { initAuthHelpers, login, logout } from 'auth0-helpers'
+import pick from 'lodash/pick'
 
 import { associateToken } from '../lib/payment'
 
@@ -66,19 +67,33 @@ function withAuth(BaseComponent) {
         loggingIn: false
       }
 
-      this.associateTokenWithUser()
+      this.onCreateOrUpdate()
     }
 
     componentDidUpdate() {
-      this.associateTokenWithUser()
+      this.onCreateOrUpdate()
     }
 
-    // todo make onUserChange hook registerer
-    associateTokenWithUser = () => {
-      if (!this.props.currentUser) {
+    onCreateOrUpdate() {
+      const { currentUser } = this.props
+      if (!currentUser) {
         return
       }
 
+      if (currentUser === this.lastCurrentUser) {
+        return
+      }
+
+      associateToken()
+      window.analytics.identify(
+        currentUser.id,
+        pick(currentUser, ['name', 'email', 'hasPurchased'])
+      )
+
+      this.lastCurrentUser = currentUser
+    }
+
+    associateTokenWithUser = () => {
       associateToken()
     }
 
