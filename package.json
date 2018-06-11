@@ -64,8 +64,8 @@
     "alias-ci": "now alias --token=$NOW_TOKEN"
   },
   "now": {
-    "name": "guide-staging",
-    "alias": "staging.graphql.guide"
+    "name": "guide",
+    "alias": "graphql.guide"
   },
   "devDependencies": {
     "now": "^11.2.2"
