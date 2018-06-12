@@ -20,6 +20,10 @@
   min-height: 1080px;
 }
 
+.Package.training {
+  min-height: 830px;
+}
+
 .Package-recommendation {
   position: absolute;
   top: 30px;
