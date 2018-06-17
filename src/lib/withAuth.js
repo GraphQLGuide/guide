@@ -6,7 +6,7 @@ import { ApolloClient } from 'apollo-client'
 import gql from 'graphql-tag'
 import auth0 from 'auth0-js'
 import { initAuthHelpers, login, logout } from 'auth0-helpers'
-import pick from 'lodash/pick'
+import LogRocket from 'logrocket'
 
 import { associateToken } from '../lib/payment'
 
@@ -85,10 +85,15 @@ function withAuth(BaseComponent) {
       }
 
       associateToken()
-      window.analytics.identify(
-        currentUser.id,
-        pick(currentUser, ['name', 'email', 'hasPurchased'])
-      )
+      const { id, name, email, hasPurchased } = currentUser
+      const userData = {
+        name,
+        email,
+        hasPurchased
+      }
+
+      window.analytics.identify(id, userData)
+      LogRocket.identify(id, userData)
 
       this.lastCurrentUser = currentUser
     }
