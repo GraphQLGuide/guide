@@ -7,6 +7,8 @@ import gql from 'graphql-tag'
 import auth0 from 'auth0-js'
 import { initAuthHelpers, login, logout } from 'auth0-helpers'
 import LogRocket from 'logrocket'
+import defer from 'lodash/defer'
+import ReactGA from 'react-ga'
 
 import { associateToken } from '../lib/payment'
 
@@ -67,14 +69,14 @@ function withAuth(BaseComponent) {
         loggingIn: false
       }
 
-      this.onCreateOrUpdate()
+      defer(this.onCreateOrUpdate)
     }
 
     componentDidUpdate() {
       this.onCreateOrUpdate()
     }
 
-    onCreateOrUpdate() {
+    onCreateOrUpdate = () => {
       const { currentUser } = this.props
       if (!currentUser) {
         return
@@ -92,7 +94,12 @@ function withAuth(BaseComponent) {
         hasPurchased
       }
 
-      window.analytics.identify(id, userData)
+      window.heap.identify(id, 'ID')
+      window.heap.addUserProperties(userData)
+      ReactGA.set({
+        id,
+        ...userData
+      })
       LogRocket.identify(id, userData)
 
       this.lastCurrentUser = currentUser

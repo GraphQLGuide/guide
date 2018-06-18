@@ -5,10 +5,11 @@ import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import { CloudinaryContext } from 'cloudinary-react'
+import ReactGA from 'react-ga'
 
 import './index.css'
 import './lib/common.css'
-import './lib/logrocket'
+import './startup/'
 import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
 import { apollo, inDevelopment } from './lib/apollo'
@@ -21,7 +22,7 @@ const theme = createMuiTheme({
 
 const history = createBrowserHistory()
 history.listen(location => {
-  window.analytics.page(location.pathname)
+  ReactGA.pageview(location.pathname)
 })
 
 const render = Component => {

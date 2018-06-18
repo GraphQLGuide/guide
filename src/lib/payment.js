@@ -2,6 +2,7 @@ import { Component } from 'react'
 import gql from 'graphql-tag'
 
 import { apollo } from './apollo'
+import track from './track'
 
 // https://stripe.com/docs/checkout#integration-custom
 // https://stripe.com/docs/checkout/express
@@ -90,21 +91,22 @@ export const stripeCheckout = (packageInfo, routerHistory) => {
 
         // todo show spinner
 
+        const { key: packageName, licenses: teamLicenses } = packageInfo
+
         // https://www.apollographql.com/docs/react/api/apollo-client.html#ApolloClient.mutate
         const response = await apollo.mutate({
           mutation: CHARGE_MUTATION,
           variables: {
             input: {
-              package: packageInfo.key,
+              package: packageName,
               stripeToken: id,
-              teamLicenses: packageInfo.licenses,
+              teamLicenses,
               email,
               addresses
             }
           }
         })
 
-        console.log(response)
         // todo switch to thrown error message instead of {charge: false}
         if (!response.data || !response.data.charge) {
           alert('Charge failed 🤷‍♀️. Please try another payment method.')
@@ -112,6 +114,11 @@ export const stripeCheckout = (packageInfo, routerHistory) => {
         }
 
         routerHistory.push('/welcome')
+
+        track('purchase', {
+          packageName,
+          teamLicenses
+        })
       }
     })
   })
