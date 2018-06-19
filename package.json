@@ -62,7 +62,8 @@
     "deploy": "now --dotenv=.env.production --regions all",
     "alias": "now alias",
     "deploy-ci": "now --token=$NOW_TOKEN --regions all -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
-    "alias-ci": "now alias --token=$NOW_TOKEN"
+    "alias-ci": "now alias --token=$NOW_TOKEN",
+    "release": "scripts/release.sh"
   },
   "now": {
     "name": "guide",
