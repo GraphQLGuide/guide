@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 
 import { apollo } from './apollo'
 import track from './track'
+import { fireworks } from './confetti'
 
 // https://stripe.com/docs/checkout#integration-custom
 // https://stripe.com/docs/checkout/express
@@ -89,7 +90,7 @@ export const stripeCheckout = (packageInfo, routerHistory) => {
         localStorage.setItem('package', packageInfo.key)
         localStorage.removeItem('stripe.associatedTokenWithUser')
 
-        // todo show spinner
+        fireworks()
 
         const { key: packageName, licenses: teamLicenses } = packageInfo
 
