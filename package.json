@@ -65,10 +65,6 @@
     "alias-ci": "now alias --token=$NOW_TOKEN",
     "release": "scripts/release.sh"
   },
-  "now": {
-    "name": "guide",
-    "alias": "graphql.guide"
-  },
   "devDependencies": {
     "now": "^11.2.2"
   }
