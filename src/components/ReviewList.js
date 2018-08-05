@@ -32,14 +32,19 @@ class ReviewList extends Component {
   }
 
   render() {
-    const { reviews, user } = this.props
+    const { reviews, user, orderBy } = this.props
 
     return (
       <div className="Reviews-list">
         <div className="Reviews-content">
           {reviews &&
             reviews.map(review => (
-              <Review key={review.id} review={review} user={user} />
+              <Review
+                key={review.id}
+                review={review}
+                user={user}
+                orderBy={orderBy}
+              />
             ))}
         </div>
         <div className="Spinner" />

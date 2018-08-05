@@ -72,7 +72,7 @@ class Review extends Component {
 
   delete = () => {
     this.closeDeleteConfirmation()
-    this.props.delete(this.props.review.id).catch(e => {
+    this.props.delete(this.props.review.id, this.props.orderBy).catch(e => {
       if (find(e.graphQLErrors, { message: 'unauthorized' })) {
         alert('👮‍♀️✋ You can only delete your own reviews!')
       }
@@ -181,7 +181,8 @@ class Review extends Component {
 Review.propTypes = {
   review: propType(REVIEW_ENTRY).isRequired,
   favorite: PropTypes.func.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  orderBy: PropTypes.string.isRequired
 }
 
 const FAVORITE_REVIEW_MUTATION = gql`
@@ -239,7 +240,7 @@ const DELETE_REVIEW_MUTATION = gql`
 
 const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
   props: ({ mutate }) => ({
-    delete: id =>
+    delete: (id, orderBy) =>
       mutate({
         variables: { id },
         optimisticResponse: {
@@ -248,20 +249,12 @@ const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
         update: store => {
           const query = {
             query: REVIEWS_QUERY,
-            variables: { limit: 10, orderBy: 'createdAt_DESC' }
+            variables: { limit: 10, orderBy }
           }
 
           let data = store.readQuery(query)
           remove(data.reviews, { id })
           store.writeQuery({ ...query, data })
-
-          query.variables.orderBy = 'createdAt_ASC'
-
-          try {
-            data = store.readQuery(query)
-            remove(data.reviews, { id })
-            store.writeQuery({ ...query, data })
-          } catch (e) {}
 
           data = store.readQuery({ query: READ_USER_FAVORITES })
           remove(data.currentUser.favoriteReviews, { id })
@@ -271,4 +264,7 @@ const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
   })
 })
 
-export default compose(withFavoriteMutation, withDeleteMutation)(Review)
+export default compose(
+  withFavoriteMutation,
+  withDeleteMutation
+)(Review)
