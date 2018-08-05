@@ -18,21 +18,24 @@ const packages = [
     key: 'full',
     name: 'Full edition',
     price: 289,
-    includesTshirt: true
+    includesTshirt: true,
+    includesSlackAccess: true
   },
   {
     training: true,
     key: 'training',
     name: 'Training',
     price: 749,
-    includesTshirt: true
+    includesTshirt: true,
+    includesSlackAccess: true
   },
   {
     team: true,
     key: 'team',
     name: 'Team license',
     price: 1000,
-    includesTshirt: true
+    includesTshirt: true,
+    includesSlackAccess: true
   }
 ]
 
