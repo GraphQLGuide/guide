@@ -7,6 +7,7 @@ import AddIcon from 'material-ui-icons/Add'
 import Modal from 'material-ui/Modal'
 
 import ReviewList from './ReviewList'
+import { withUser } from '../lib/withUser'
 import ReviewForm from './ReviewForm'
 
 class Reviews extends Component {
@@ -76,4 +77,4 @@ Reviews.propTypes = {
   })
 }
 
-export default Reviews
+export default withUser(Reviews)
