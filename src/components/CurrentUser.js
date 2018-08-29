@@ -2,19 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-const CurrentUser = ({ user, login, loading }) => {
-  const User = () => (
-    <Link to="/me" className="User">
-      <img src={user.photo} alt={user.firstName} />
-      {user.firstName}
-    </Link>
-  )
+import { withUser } from '../lib/withUser'
+import { login } from '../lib/auth'
 
+const CurrentUser = ({ user, loggingIn }) => {
   let content
 
   if (user) {
-    content = <User />
-  } else if (loading) {
+    content = (
+      <Link to="/me" className="User">
+        <img src={user.photo} alt={user.firstName} />
+        {user.firstName}
+      </Link>
+    )
+  } else if (loggingIn) {
     content = <div className="Spinner" />
   } else {
     content = <button onClick={login}>Sign in</button>
@@ -28,8 +29,7 @@ CurrentUser.propTypes = {
     firstName: PropTypes.string.isRequired,
     photo: PropTypes.string.isRequired
   }),
-  login: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loggingIn: PropTypes.bool.isRequired
 }
 
-export default CurrentUser
+export default withUser(CurrentUser)
