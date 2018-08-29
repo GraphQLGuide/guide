@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Profile = ({ user, login, logout, loading }) => {
-  if (loading) {
+import { withUser } from '../lib/withUser'
+import { login, logout } from '../lib/auth'
+
+const Profile = ({ user, loggingIn }) => {
+  if (loggingIn) {
     return (
       <main className="Profile">
         <div className="Spinner" />
@@ -63,9 +66,7 @@ Profile.propTypes = {
     email: PropTypes.string.isRequired,
     hasPurchased: PropTypes.string
   }),
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loggingIn: PropTypes.bool.isRequired
 }
 
-export default Profile
+export default withUser(Profile)

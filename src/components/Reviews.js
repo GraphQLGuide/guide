@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
 import FavoriteIcon from 'material-ui-icons/Favorite'
 
 import Review from './Review'
+import { withUser } from '../lib/withUser'
 
 const Reviews = ({ reviews, loading, user }) => {
   const favoriteCount = get(user, 'favoriteReviews.length')
@@ -68,4 +69,7 @@ const withReviews = graphql(REVIEWS_QUERY, {
   props: ({ data: { reviews, loading } }) => ({ reviews, loading })
 })
 
-export default withReviews(Reviews)
+export default compose(
+  withReviews,
+  withUser
+)(Reviews)
