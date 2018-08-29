@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import FavoriteIcon from 'material-ui-icons/Favorite'
 import Button from 'material-ui/Button'
@@ -9,6 +9,7 @@ import Modal from 'material-ui/Modal'
 import { propType } from 'graphql-anywhere'
 
 import Review from './Review'
+import { withUser } from '../lib/withUser'
 import ReviewForm from './ReviewForm'
 
 import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
@@ -47,10 +48,10 @@ class Reviews extends Component {
           {loading ? (
             <div className="Spinner" />
           ) : (
-              reviews.map(review => (
-                <Review key={review.id} review={review} user={user} />
-              ))
-            )}
+            reviews.map(review => (
+              <Review key={review.id} review={review} user={user} />
+            ))
+          )}
 
           {user && (
             <div>
@@ -97,4 +98,7 @@ const withReviews = graphql(REVIEWS_QUERY, {
   })
 })
 
-export default withReviews(Reviews)
+export default compose(
+  withReviews,
+  withUser
+)(Reviews)

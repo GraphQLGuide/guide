@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 import logo from '../logo.svg'
 import StarCount from './StarCount'
@@ -9,7 +8,6 @@ import TableOfContents from './TableOfContents'
 import Section from './Section'
 import CurrentUser from './CurrentUser'
 import Profile from './Profile'
-import withAuth from '../lib/withAuth'
 import Reviews from './Reviews'
 
 const Book = ({ user }) => (
@@ -24,8 +22,6 @@ const Book = ({ user }) => (
 
 class App extends Component {
   render() {
-    const { logout, ...authProps } = this.props
-
     return (
       <div className="App">
         <header className="App-header">
@@ -34,27 +30,16 @@ class App extends Component {
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">The GraphQL Guide</h1>
           </Link>
-          <CurrentUser {...authProps} />
+          <CurrentUser />
         </header>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/Preface" />} />
-          <Route
-            exact
-            path="/me"
-            render={() => <Profile logout={logout} {...authProps} />}
-          />
-          <Route render={() => <Book user={this.props.user} />} />
+          <Route exact path="/me" component={Profile} />
+          <Route component={Book} />
         </Switch>
       </div>
     )
   }
 }
 
-App.propTypes = {
-  user: PropTypes.object,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
-}
-
-export default withAuth(App)
+export default App
