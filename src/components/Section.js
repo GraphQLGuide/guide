@@ -9,22 +9,28 @@ import get from 'lodash/get'
 import { deslugify } from '../lib/helpers'
 
 class Section extends Component {
-  lastSectionId = null
-
-  componentWillReceiveProps(props) {
-    if (!props.section) {
+  viewedSection = id => {
+    if (!id) {
       return
     }
 
-    const sectionChanged = props.section.id !== this.lastSectionId
+    setTimeout(() => {
+      this.props.viewedSection({
+        variables: { id }
+      })
+    }, 2000)
+  }
+
+  componentDidMount() {
+    this.viewedSection(get(this, 'props.section.id'))
+  }
+
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.section
+    const sectionChanged = get(prevProps, 'section.id') !== id
 
     if (sectionChanged) {
-      setTimeout(() => {
-        props.viewedSection({
-          variables: { id: props.section.id }
-        })
-      }, 2000)
-      this.lastSectionId = props.section.id
+      this.viewedSection(id)
     }
   }
 
