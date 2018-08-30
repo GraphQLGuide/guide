@@ -1,11 +1,12 @@
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { split } from 'apollo-link'
+import { ApolloLink, split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { createHttpLink } from 'apollo-link-http'
 import { getMainDefinition } from 'apollo-utilities'
 import { setContext } from 'apollo-link-context'
 import { getAuthToken } from 'auth0-helpers'
+import { withClientState } from 'apollo-link-state'
 
 import { errorLink } from './errorLink'
 
@@ -48,8 +49,16 @@ const networkLink = split(
   authedHttpLink
 )
 
-const link = errorLink.concat(networkLink)
-
 const cache = new InMemoryCache()
+
+const stateLink = withClientState({
+  cache,
+  defaults: {
+    loginInProgress: false
+  },
+  resolvers: {}
+})
+
+const link = ApolloLink.from([errorLink, stateLink, networkLink])
 
 export const apollo = new ApolloClient({ link, cache })

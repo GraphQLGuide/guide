@@ -30,8 +30,12 @@ initAuthHelpers({
 })
 
 export const login = () => {
+  apollo.writeData({ data: { loginInProgress: true } })
+
   auth0Login({
     onCompleted: e => {
+      apollo.writeData({ data: { loginInProgress: false } })
+
       if (e) {
         console.error(e)
         return

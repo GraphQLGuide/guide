@@ -14,12 +14,13 @@ export const USER_QUERY = gql`
         id
       }
     }
+    loginInProgress @client
   }
 `
 
 export const withUser = graphql(USER_QUERY, {
-  props: ({ data: { currentUser, loading } }) => ({
+  props: ({ data: { currentUser, loading, loginInProgress } }) => ({
     user: currentUser,
-    loggingIn: loading
+    loggingIn: loading || loginInProgress
   })
 })
