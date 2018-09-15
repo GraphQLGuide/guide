@@ -36,7 +36,10 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path="/" render={() => <Landing {...authProps} />} />
-          <Route path="/paypal" render={() => <Paypal {...authProps} />} />
+          <Route
+            path="/paypal/:package?"
+            render={() => <Paypal {...authProps} />}
+          />
           <Route
             exact
             path="/welcome"

@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router'
+import get from 'lodash/get'
 
 import './Paypal.css'
 import { getPackage, calculateTeamPrice } from '../../lib/packages'
@@ -7,9 +8,12 @@ import CurrentUser from '../CurrentUser'
 import Emoji from './Emoji'
 import LinkNewTab from './LinkNewTab'
 
-const Paypal = ({ user, login, loading, location }) => {
-  let { key, name, price } =
-    (location.state && location.state.packageInfo) || getPackage('full')
+const Paypal = ({ user, login, loading, location, match }) => {
+  const packageInfo =
+    get(location, 'state.packageInfo') ||
+    getPackage(match.params.package || 'full')
+
+  let { key, name, price } = packageInfo
 
   if (key === 'team') {
     price = calculateTeamPrice(location.state.licenses)
@@ -28,7 +32,8 @@ const Paypal = ({ user, login, loading, location }) => {
         </p>
         <p style={{ textAlign: 'center' }}>
           <LinkNewTab href={`https://www.paypal.me/graphqlguide/${price}`}>
-            paypal.me/graphqlguide/{price}
+            paypal.me/graphqlguide/
+            {price}
           </LinkNewTab>
         </p>
         <div className="Paypal-step2">
