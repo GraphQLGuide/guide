@@ -5,6 +5,7 @@ import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { withRouter } from 'react-router'
 import get from 'lodash/get'
+import debounce from 'lodash/debounce'
 
 import { deslugify } from '../lib/helpers'
 
@@ -21,16 +22,44 @@ class Section extends Component {
     }, 2000)
   }
 
-  componentDidMount() {
-    this.viewedSection(get(this, 'props.section.id'))
+  updateScrollPosition = () => {
+    window.scrollTo(0, this.props.section.scrollY)
   }
 
+  componentDidMount() {
+    this.viewedSection(get(this, 'props.section.id'))
+    window.addEventListener('scroll', this.handleScroll)
+    this.updateScrollPosition()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll = debounce(() => {
+    if (this.props.section.scrollY === window.scrollY) {
+      return
+    }
+
+    this.props.setScrollPosition({
+      variables: {
+        id: this.props.section.id,
+        scrollY: window.scrollY
+      }
+    })
+  }, 1000)
+
   componentDidUpdate(prevProps) {
+    if (!this.props.section) {
+      return
+    }
+
     const { id } = this.props.section
     const sectionChanged = get(prevProps, 'section.id') !== id
 
     if (sectionChanged) {
       this.viewedSection(id)
+      this.updateScrollPosition()
     }
   }
 
@@ -93,14 +122,16 @@ Section.propTypes = {
     title: PropTypes.string,
     number: PropTypes.number,
     content: PropTypes.string,
-    views: PropTypes.number
+    views: PropTypes.number,
+    scrollY: PropTypes.number
   }),
   chapter: PropTypes.shape({
     title: PropTypes.string,
     number: PropTypes.number
   }),
   loading: PropTypes.bool.isRequired,
-  viewedSection: PropTypes.func.isRequired
+  viewedSection: PropTypes.func.isRequired,
+  setScrollPosition: PropTypes.func.isRequired
 }
 
 const SECTION_BY_ID_QUERY = gql`
@@ -109,6 +140,7 @@ const SECTION_BY_ID_QUERY = gql`
       id
       content
       views
+      scrollY @client
     }
   }
 `
@@ -121,6 +153,7 @@ const SECTION_BY_CHAPTER_TITLE_QUERY = gql`
         id
         content
         views
+        scrollY @client
       }
     }
   }
@@ -136,6 +169,7 @@ const SECTION_BY_NUMBER_QUERY = gql`
         title
         content
         views
+        scrollY @client
       }
     }
   }
@@ -147,6 +181,12 @@ const VIEWED_SECTION_MUTATION = gql`
       id
       views
     }
+  }
+`
+
+const SET_SECTION_SCROLL_MUTATION = gql`
+  mutation SetSectionScroll($id: String!, $scrollY: Int!) {
+    setSectionScroll(id: $id, scrollY: $scrollY) @client
   }
 `
 
@@ -162,7 +202,8 @@ const SectionWithData = ({ location: { state, pathname } }) => {
       section: {
         ...state.section,
         content: get(data, 'section.content'),
-        views: get(data, 'section.views')
+        views: get(data, 'section.views'),
+        scrollY: get(data, 'section.scrollY')
       },
       chapter: state.chapter,
       loading
@@ -193,10 +234,15 @@ const SectionWithData = ({ location: { state, pathname } }) => {
       {queryInfo => (
         <Mutation mutation={VIEWED_SECTION_MUTATION}>
           {viewedSection => (
-            <Section
-              {...createProps(queryInfo)}
-              viewedSection={viewedSection}
-            />
+            <Mutation mutation={SET_SECTION_SCROLL_MUTATION}>
+              {setScrollPosition => (
+                <Section
+                  {...createProps(queryInfo)}
+                  viewedSection={viewedSection}
+                  setScrollPosition={setScrollPosition}
+                />
+              )}
+            </Mutation>
           )}
         </Mutation>
       )}

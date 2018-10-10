@@ -56,7 +56,26 @@ const stateLink = withClientState({
   defaults: {
     loginInProgress: false
   },
-  resolvers: {}
+  typeDefs: `
+    type Query {
+      loginInProgress: Boolean
+    }
+    type Mutation {
+      setSectionScroll(id: String!, scrollY: Int!): Boolean
+    }
+  `,
+  resolvers: {
+    Section: {
+      scrollY: () => 0
+    },
+    Mutation: {
+      setSectionScroll: (_, { id, scrollY }, { cache, getCacheKey }) => {
+        const cacheKey = getCacheKey({ __typename: 'Section', id })
+        cache.writeData({ id: cacheKey, data: { scrollY } })
+        return true
+      }
+    }
+  }
 })
 
 const link = ApolloLink.from([errorLink, stateLink, networkLink])
