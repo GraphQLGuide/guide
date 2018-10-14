@@ -8,7 +8,6 @@ import TableOfContents from './TableOfContents'
 import Section from './Section'
 import CurrentUser from './CurrentUser'
 import Profile from './Profile'
-import Reviews from './Reviews'
 
 const Book = ({ user }) => (
   <div>
