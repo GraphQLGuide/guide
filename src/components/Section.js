@@ -27,9 +27,12 @@ class Section extends Component {
   }
 
   componentDidMount() {
-    this.viewedSection(get(this, 'props.section.id'))
     window.addEventListener('scroll', this.handleScroll)
-    this.updateScrollPosition()
+
+    if (this.props.section) {
+      this.viewedSection(this.props.section.id)
+      this.updateScrollPosition()
+    }
   }
 
   componentWillUnmount() {
