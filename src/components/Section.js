@@ -22,7 +22,9 @@ class Section extends Component {
   }
 
   componentDidMount() {
-    this.viewedSection(get(this, 'props.section.id'))
+    if (this.props.section) {
+      this.viewedSection(this.props.section.id)
+    }
   }
 
   componentDidUpdate(prevProps) {
