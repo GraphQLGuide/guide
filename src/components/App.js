@@ -9,6 +9,7 @@ import Section from './Section'
 import CurrentUser from './CurrentUser'
 import Profile from './Profile'
 import Reviews from './Reviews'
+import CurrentTemperature from './CurrentTemperature'
 
 const Book = ({ user }) => (
   <div>
@@ -31,6 +32,7 @@ class App extends Component {
             <h1 className="App-title">The GraphQL Guide</h1>
           </Link>
           <CurrentUser />
+          <CurrentTemperature />
         </header>
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/Preface" />} />

@@ -7,6 +7,7 @@ import { getMainDefinition } from 'apollo-utilities'
 import { setContext } from 'apollo-link-context'
 import { getAuthToken } from 'auth0-helpers'
 import { withClientState } from 'apollo-link-state'
+import { RestLink } from 'apollo-link-rest'
 
 import { errorLink } from './errorLink'
 
@@ -78,6 +79,10 @@ const stateLink = withClientState({
   }
 })
 
-const link = ApolloLink.from([errorLink, stateLink, networkLink])
+const restLink = new RestLink({
+  uri: 'https://api.openweathermap.org/data/2.5/'
+})
+
+const link = ApolloLink.from([errorLink, stateLink, restLink, networkLink])
 
 export const apollo = new ApolloClient({ link, cache })
