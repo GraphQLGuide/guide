@@ -167,9 +167,12 @@ const withAddReview = graphql(ADD_REVIEW_MUTATION, {
           store.writeQuery({ ...query, data })
 
           query.variables.orderBy = 'createdAt_ASC'
-          data = store.readQuery(query)
-          data.reviews.push(newReview)
-          store.writeQuery({ ...query, data })
+
+          try {
+            data = store.readQuery(query)
+            data.reviews.push(newReview)
+            store.writeQuery({ ...query, data })
+          } catch (e) {}
         }
       })
     }
