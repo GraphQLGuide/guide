@@ -24,3 +24,27 @@ export const REVIEWS_QUERY = gql`
   }
   ${REVIEW_ENTRY}
 `
+
+export const ON_REVIEW_CREATED_SUBSCRIPTION = gql`
+  subscription onReviewCreated {
+    reviewCreated {
+      ...ReviewEntry
+    }
+  }
+  ${REVIEW_ENTRY}
+`
+
+export const ON_REVIEW_UPDATED_SUBSCRIPTION = gql`
+  subscription onReviewUpdated {
+    reviewUpdated {
+      ...ReviewEntry
+    }
+  }
+  ${REVIEW_ENTRY}
+`
+
+export const ON_REVIEW_DELETED_SUBSCRIPTION = gql`
+  subscription onReviewDeleted {
+    reviewDeleted
+  }
+`

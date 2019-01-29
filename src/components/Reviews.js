@@ -12,6 +12,7 @@ import Select from 'material-ui/Select'
 import ReviewList from './ReviewList'
 import { withUser } from '../lib/withUser'
 import ReviewForm from './ReviewForm'
+import ReviewCreatedNotification from './ReviewCreatedNotification'
 
 class Reviews extends Component {
   state = {
@@ -62,6 +63,7 @@ class Reviews extends Component {
         </div>
 
         <ReviewList user={user} orderBy={this.state.orderBy} />
+        <ReviewCreatedNotification />
 
         {user && (
           <div>
