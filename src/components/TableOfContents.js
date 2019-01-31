@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
+import { graphql, withApollo, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import Skeleton from 'react-loading-skeleton'
 import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
+import { ApolloClient } from 'apollo-client'
 
 import { slugify, withHyphens } from '../lib/helpers'
+import { SECTION_BY_ID_QUERY } from './Section'
 
 const LoadingSkeleton = () => (
   <div>
@@ -17,7 +19,7 @@ const LoadingSkeleton = () => (
   </div>
 )
 
-const TableOfContents = ({ chapters, loading }) => (
+const TableOfContents = ({ chapters, loading, client }) => (
   <nav className="TableOfContents">
     {loading ? (
       <LoadingSkeleton />
@@ -41,6 +43,14 @@ const TableOfContents = ({ chapters, loading }) => (
                   const rootPath = location.pathname.split('/')[1]
                   return rootPath.includes(withHyphens(chapter.title))
                 }}
+                onMouseOver={() => {
+                  client.query({
+                    query: SECTION_BY_ID_QUERY,
+                    variables: {
+                      id: chapter.sections[0].id
+                    }
+                  })
+                }}
               >
                 {chapterIsNumbered && (
                   <span className="TableOfContents-chapter-number">
@@ -60,6 +70,14 @@ const TableOfContents = ({ chapters, loading }) => (
                         }}
                         className="TableOfContents-section-link"
                         activeClassName="active"
+                        onMouseOver={() => {
+                          client.query({
+                            query: SECTION_BY_ID_QUERY,
+                            variables: {
+                              id: section.id
+                            }
+                          })
+                        }}
                       >
                         {section.title}
                       </NavLink>
@@ -95,7 +113,8 @@ TableOfContents.propTypes = {
       ).isRequired
     }).isRequired
   ),
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  client: PropTypes.instanceOf(ApolloClient).isRequired
 }
 
 const CHAPTER_QUERY = gql`
@@ -120,4 +139,7 @@ const withData = graphql(CHAPTER_QUERY, {
   })
 })
 
-export default withData(TableOfContents)
+export default compose(
+  withData,
+  withApollo
+)(TableOfContents)

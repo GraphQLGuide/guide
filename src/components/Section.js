@@ -137,7 +137,7 @@ Section.propTypes = {
   setScrollPosition: PropTypes.func.isRequired
 }
 
-const SECTION_BY_ID_QUERY = gql`
+export const SECTION_BY_ID_QUERY = gql`
   query SectionContent($id: String!) {
     section(id: $id) {
       id
