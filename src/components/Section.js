@@ -6,10 +6,26 @@ import gql from 'graphql-tag'
 import { withRouter } from 'react-router'
 import get from 'lodash/get'
 import debounce from 'lodash/debounce'
+import { ApolloClient } from 'apollo-client'
 
 import { deslugify } from '../lib/helpers'
 
 class Section extends Component {
+  onSectionChange = newId => {
+    this.viewedSection(newId)
+    this.updateScrollPosition()
+    this.prefetchNextSection(newId)
+  }
+
+  prefetchNextSection = currentId => {
+    this.props.client.query({
+      query: NEXT_SECTION_QUERY,
+      variables: {
+        id: currentId
+      }
+    })
+  }
+
   viewedSection = id => {
     if (!id) {
       return
@@ -30,8 +46,7 @@ class Section extends Component {
     window.addEventListener('scroll', this.handleScroll)
 
     if (this.props.section) {
-      this.viewedSection(this.props.section.id)
-      this.updateScrollPosition()
+      this.onSectionChange(this.props.section.id)
     }
   }
 
@@ -61,8 +76,7 @@ class Section extends Component {
     const sectionChanged = get(prevProps, 'section.id') !== id
 
     if (sectionChanged) {
-      this.viewedSection(id)
-      this.updateScrollPosition()
+      this.onSectionChange(id)
     }
   }
 
@@ -134,8 +148,23 @@ Section.propTypes = {
   }),
   loading: PropTypes.bool.isRequired,
   viewedSection: PropTypes.func.isRequired,
-  setScrollPosition: PropTypes.func.isRequired
+  setScrollPosition: PropTypes.func.isRequired,
+  client: PropTypes.instanceOf(ApolloClient).isRequired
 }
+
+const NEXT_SECTION_QUERY = gql`
+  query NextSection($id: String!) {
+    section(id: $id) {
+      id
+      next {
+        id
+        content
+        views
+        scrollY @client
+      }
+    }
+  }
+`
 
 export const SECTION_BY_ID_QUERY = gql`
   query SectionContent($id: String!) {
@@ -241,6 +270,7 @@ const SectionWithData = ({ location: { state, pathname } }) => {
               {setScrollPosition => (
                 <Section
                   {...createProps(queryInfo)}
+                  client={queryInfo.client}
                   viewedSection={viewedSection}
                   setScrollPosition={setScrollPosition}
                 />
