@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
+import { persistCache } from 'apollo-cache-persist'
 
 import logo from '../logo.svg'
 import StarCount from './StarCount'
@@ -10,6 +11,7 @@ import CurrentUser from './CurrentUser'
 import Profile from './Profile'
 import Reviews from './Reviews'
 import CurrentTemperature from './CurrentTemperature'
+import { cache } from '../lib/apollo'
 
 const Book = ({ user }) => (
   <div>
@@ -21,8 +23,31 @@ const Book = ({ user }) => (
   </div>
 )
 
+const cacheHasBeenSaved = !!localStorage.getItem('apollo-cache-persist')
+
 class App extends Component {
+  state = {
+    loading: cacheHasBeenSaved
+  }
+
+  async componentDidMount() {
+    await persistCache({
+      cache,
+      storage: window.localStorage,
+      maxSize: 4500000, // little less than 5 MB
+      debug: true
+    })
+
+    this.setState({
+      loading: false
+    })
+  }
+
   render() {
+    if (this.state.loading) {
+      return null
+    }
+
     return (
       <div className="App">
         <header className="App-header">

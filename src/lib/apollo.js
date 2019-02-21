@@ -50,7 +50,7 @@ const networkLink = split(
   authedHttpLink
 )
 
-const cache = new InMemoryCache({
+export const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {
       section: (_, { id }, { getCacheKey }) =>
