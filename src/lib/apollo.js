@@ -93,3 +93,13 @@ const restLink = new RestLink({
 const link = ApolloLink.from([errorLink, stateLink, restLink, networkLink])
 
 export const apollo = new ApolloClient({ link, cache })
+
+export const apolloSpace = new ApolloClient({
+  link: ApolloLink.from([
+    errorLink,
+    createHttpLink({
+      uri: 'https://api.spacex.land/graphql'
+    })
+  ]),
+  cache: new InMemoryCache()
+})
