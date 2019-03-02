@@ -1,12 +1,12 @@
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloLink, split } from 'apollo-link'
+import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { createHttpLink } from 'apollo-link-http'
 import { getMainDefinition } from 'apollo-utilities'
 import { setContext } from 'apollo-link-context'
 import { getAuthToken } from 'auth0-helpers'
-import { withClientState } from 'apollo-link-state'
+import gql from 'graphql-tag'
 
 import { errorLink } from './errorLink'
 
@@ -49,21 +49,23 @@ const networkLink = split(
   authedHttpLink
 )
 
+const link = errorLink.concat(networkLink)
+
 const cache = new InMemoryCache()
 
-const stateLink = withClientState({
+const typeDefs = gql`
+  type Query {
+    loginInProgress: Boolean
+  }
+  type Mutation {
+    setSectionScroll(id: String!, scrollY: Int!): Boolean
+  }
+`
+
+export const apollo = new ApolloClient({
+  link,
   cache,
-  defaults: {
-    loginInProgress: false
-  },
-  typeDefs: `
-    type Query {
-      loginInProgress: Boolean
-    }
-    type Mutation {
-      setSectionScroll(id: String!, scrollY: Int!): Boolean
-    }
-  `,
+  typeDefs,
   resolvers: {
     Section: {
       scrollY: () => 0
@@ -78,6 +80,14 @@ const stateLink = withClientState({
   }
 })
 
-const link = ApolloLink.from([errorLink, stateLink, networkLink])
+const initializeCache = () => {
+  cache.writeData({
+    data: {
+      loginInProgress: false
+    }
+  })
+}
 
-export const apollo = new ApolloClient({ link, cache })
+initializeCache()
+
+apollo.onResetStore(initializeCache)
