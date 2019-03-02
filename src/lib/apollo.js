@@ -6,8 +6,8 @@ import { createHttpLink } from 'apollo-link-http'
 import { getMainDefinition } from 'apollo-utilities'
 import { setContext } from 'apollo-link-context'
 import { getAuthToken } from 'auth0-helpers'
-import { withClientState } from 'apollo-link-state'
 import { RestLink } from 'apollo-link-rest'
+import gql from 'graphql-tag'
 
 import { errorLink } from './errorLink'
 
@@ -50,21 +50,27 @@ const networkLink = split(
   authedHttpLink
 )
 
+const restLink = new RestLink({
+  uri: 'https://api.openweathermap.org/data/2.5/'
+})
+
+const link = ApolloLink.from([errorLink, restLink, networkLink])
+
 const cache = new InMemoryCache()
 
-const stateLink = withClientState({
+const typeDefs = gql`
+  type Query {
+    loginInProgress: Boolean
+  }
+  type Mutation {
+    setSectionScroll(id: String!, scrollY: Int!): Boolean
+  }
+`
+
+export const apollo = new ApolloClient({
+  link,
   cache,
-  defaults: {
-    loginInProgress: false
-  },
-  typeDefs: `
-    type Query {
-      loginInProgress: Boolean
-    }
-    type Mutation {
-      setSectionScroll(id: String!, scrollY: Int!): Boolean
-    }
-  `,
+  typeDefs,
   resolvers: {
     Section: {
       scrollY: () => 0
@@ -79,10 +85,14 @@ const stateLink = withClientState({
   }
 })
 
-const restLink = new RestLink({
-  uri: 'https://api.openweathermap.org/data/2.5/'
-})
+const initializeCache = () => {
+  cache.writeData({
+    data: {
+      loginInProgress: false
+    }
+  })
+}
 
-const link = ApolloLink.from([errorLink, stateLink, restLink, networkLink])
+initializeCache()
 
-export const apollo = new ApolloClient({ link, cache })
+apollo.onResetStore(initializeCache)
