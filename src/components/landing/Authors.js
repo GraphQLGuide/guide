@@ -13,7 +13,7 @@ const Authors = () => (
       <Author
         name="John Resig"
         twitter="jeresig"
-        avatar="//pbs.twimg.com/profile_images/709460796259041281/TE5YLrp6_400x400.jpg"
+        avatar="//res.cloudinary.com/graphql/jeresig.jpg"
       >
         John is a JavaScript expert. He created jQuery and works as a Frontend
         Architect at Khan Academy. Seven years ago, he stepped back from jQuery
