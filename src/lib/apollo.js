@@ -65,6 +65,7 @@ export const cache = new InMemoryCache({
   }
 })
 
+/* eslint-disable graphql/template-strings */
 const typeDefs = gql`
   type Query {
     loginInProgress: Boolean
@@ -73,6 +74,7 @@ const typeDefs = gql`
     setSectionScroll(id: String!, scrollY: Int!): Boolean
   }
 `
+/* eslint-enable graphql/template-strings */
 
 export const apollo = new ApolloClient({
   link,

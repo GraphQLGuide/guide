@@ -1,3 +1,5 @@
+/* eslint-disable graphql/template-strings */
+
 import React, { Component } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import PropTypes from 'prop-types'

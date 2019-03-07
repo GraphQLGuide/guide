@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import spaceql from 'graphql-tag'
 
 import { withUser } from '../lib/withUser'
 import { login, logout } from '../lib/auth'
@@ -150,7 +150,7 @@ Profile.propTypes = {
   loggingIn: PropTypes.bool.isRequired
 }
 
-const LAUNCH_QUERY = gql`
+const LAUNCH_QUERY = spaceql`
   query LaunchQuery {
     launchNext {
       details

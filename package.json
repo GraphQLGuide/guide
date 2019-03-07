@@ -52,6 +52,9 @@
     "eject": "react-scripts eject",
     "now-start": "serve --single ./build",
     "deploy": "now",
-    "alias": "pbpaste | xargs -I % now alias % staging.graphql.guide"
+    "alias": "pbpaste | xargs -I % now alias % staging.graphql.guide",
+    "lint": "eslint src/",
+    "update-schema": "graphql get-schema -e https://api.graphql.guide/graphql -o schema.json",
+    "update-schema-spacex": "graphql get-schema -e https://api.spacex.land/graphql -o spacex.json"
   }
 }
