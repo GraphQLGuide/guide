@@ -326,6 +326,7 @@ li.numbered > .TableOfContents-chapter-link {
 
 .Section,
 .Profile,
+.Team,
 .Reviews {
   position: absolute;
   top: var(--header-h);
@@ -335,6 +336,7 @@ li.numbered > .TableOfContents-chapter-link {
 
 .Section-header-wrapper,
 .Profile-header-wrapper,
+.Team-header-wrapper,
 .Reviews-header-wrapper {
   padding: 30px 0;
   margin-bottom: 60px;
@@ -350,6 +352,8 @@ li.numbered > .TableOfContents-chapter-link {
 .Section-content,
 .Profile-header,
 .Profile-content,
+.Team-header,
+.Team-content,
 .Reviews-header,
 .Reviews-content {
   width: 80%;
@@ -358,6 +362,7 @@ li.numbered > .TableOfContents-chapter-link {
 }
 
 .Section-header h1,
+.Team-header h1,
 .Profile-header h1 {
   font-size: 2.5em;
   font-weight: normal;
@@ -421,26 +426,47 @@ body {
   padding: 60px 0 30px;
 }
 
-.Profile {
+.Profile,
+.Team {
   left: 0;
   right: 0;
   bottom: 0;
 }
 
-.Profile {
+.Profile,
+.Team {
   text-align: center;
 }
 
-.Profile-header-wrapper {
+.Profile-header-wrapper,
+.Team-header-wrapper {
   justify-self: start;
 }
 
-.Profile h1 {
+.Profile h1,
+.Team h1 {
   font-weight: normal;
 }
 
-.Profile-content {
+.Profile-content,
+.Team-content {
   width: 500px;
+}
+
+.Team-member-list {
+  margin: 80px 0;
+  text-align: left;
+}
+
+.Team-claim-seat {
+  margin-left: 20px !important;
+  margin-bottom: 3px !important;
+}
+
+.Team-summary {
+  border-top: 1px solid var(--gray700);
+  margin: 0px 16px;
+  padding: 20px;
 }
 
 .Profile a {
@@ -466,7 +492,8 @@ body {
   margin-top: var(--vert-spacer);
 }
 
-.Profile > .Spinner {
+.Profile > .Spinner,
+.Team > .Spinner {
   margin-left: calc(50% - 12.5px); /* half of spinner width */
   margin-top: var(--vert-spacer);
   color: var(--pink);

@@ -137,7 +137,7 @@ export const associateToken = async () => {
     return
   }
 
-  const done = localStorage.getItem('stripe.associatedTokenWithUser')
+  const done = localStorage.getItem('stripe.associatedTokenWithUser') === 'true'
   if (done) {
     return
   }

@@ -57,6 +57,12 @@ class Welcome extends Component {
               We're emailing you at {user.email} with the latest version of the
               book.
             </p>
+            {user.hasPurchased === 'TEAM' && (
+              <p>
+                We're also sending an email explaining how to use your team
+                license.
+              </p>
+            )}
             {this.state.offerTshirt && (
               <div className="Welcome-tshirt">
                 Would you like a tshirt?

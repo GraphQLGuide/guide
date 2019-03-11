@@ -9,6 +9,7 @@ import Terms from './landing/Terms'
 import Privacy from './landing/Privacy'
 import Tshirt from './landing/Tshirt'
 import Welcome from './landing/Welcome'
+import Team from './landing/Team'
 import logo from '../logo.svg'
 import StarCount from './StarCount'
 import TableOfContents from './TableOfContents'
@@ -66,6 +67,14 @@ class App extends Component {
                 </header>
                 <Switch>
                   {/* <Route exact path="/" render={() => <Redirect to="/Preface" />} /> */}
+                  <Route
+                    path="/team/:token"
+                    render={({
+                      match: {
+                        params: { token }
+                      }
+                    }) => <Team {...authProps} urlToken={token} />}
+                  />
                   <Route
                     exact
                     path="/me"

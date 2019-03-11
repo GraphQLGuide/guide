@@ -89,22 +89,24 @@ class Payment extends Component {
                   state: { packageInfo, licenses: this.state.licenses }
                 }}
               >
-                by Paypal
+                by PayPal
               </Link>
               <br />
               or by check to:
             </p>
             <p>
               The GraphQL Guide
-              <br />2443 Fillmore St #380-2914
-              <br />San Francisco, CA 94115
+              <br />
+              2443 Fillmore St #380-2914
+              <br />
+              San Francisco, CA 94115
             </p>
           </div>
         ) : (
           <p>
             or manually{' '}
             <Link to={{ pathname: '/paypal', state: { packageInfo } }}>
-              via Paypal
+              via PayPal
             </Link>
           </p>
         )}
