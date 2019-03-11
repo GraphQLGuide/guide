@@ -15,7 +15,9 @@ const Team = ({ urlToken, user, login, client, history }) => {
         )
       } else {
         // todo spinner
-        await client.mutate({ mutation: JOIN_TEAM, variables: { urlToken } })
+        await client
+          .mutate({ mutation: JOIN_TEAM, variables: { urlToken } })
+          .catch()
         history.push('/welcome')
       }
       attemptingToClaim = false
