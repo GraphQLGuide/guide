@@ -31,7 +31,7 @@ const ORDER_TSHIRT = gql`
 
 const TshirtOrderForm = () => (
   <Query query={ADDRESS_QUERY}>
-    {({ data: { currentUser: { id, shippingAddress } = {} } }) => (
+    {({ data }) => (
       <Mutation mutation={ORDER_TSHIRT}>
         {orderTshirt => (
           <Formik
@@ -86,6 +86,8 @@ const TshirtOrderForm = () => (
                 }%0D%0ASize: ${
                   values.size
                 }%0D%0AShipping address:%0D%0A%0D%0A%0D%0A%0D%0AUID: ${id}`
+
+              const { id, shippingAddress } = (data && data.currentUser) || {}
 
               return (
                 <form className="TshirtOrderForm" onSubmit={handleSubmit}>
