@@ -6,11 +6,6 @@ import classNames from 'classnames'
 import Odometer from 'react-odometerjs'
 
 class StarCount extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
   componentDidMount() {
     this.props.subscribeToMore({
       document: STARS_SUBSCRIPTION,
