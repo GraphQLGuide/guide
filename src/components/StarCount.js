@@ -27,6 +27,8 @@ class StarCount extends React.Component {
       <a
         className={classNames('StarCount', { loading })}
         href="https://github.com/GraphQLGuide/guide"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         {githubStars && <Odometer value={githubStars} />}
       </a>
