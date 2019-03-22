@@ -31,7 +31,7 @@ class Section extends Component {
       return
     }
 
-    setTimeout(() => {
+    this.timeoutID = setTimeout(() => {
       this.props.viewedSection({
         variables: { id }
       })
@@ -51,6 +51,7 @@ class Section extends Component {
   }
 
   componentWillUnmount() {
+    clearTimeout(this.timeoutID)
     window.removeEventListener('scroll', this.handleScroll)
   }
 
