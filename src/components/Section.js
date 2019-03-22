@@ -14,7 +14,7 @@ class Section extends Component {
       return
     }
 
-    setTimeout(() => {
+    this.timeoutID = setTimeout(() => {
       this.props.viewedSection({
         variables: { id }
       })
@@ -25,6 +25,10 @@ class Section extends Component {
     if (this.props.section) {
       this.viewedSection(this.props.section.id)
     }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutID)
   }
 
   componentDidUpdate(prevProps) {
