@@ -10,6 +10,8 @@ const StarCount = ({ githubStars, loading }) => {
     <a
       className={classNames('StarCount', { loading })}
       href="https://github.com/GraphQLGuide/guide"
+      target="_blank"
+      rel="noopener noreferrer"
     >
       {githubStars && <Odometer value={githubStars} />}
     </a>
