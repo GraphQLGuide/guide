@@ -57,7 +57,9 @@ class Review extends Component {
   }
 
   toggleFavorite = () => {
-    const { review: { id, favorited } } = this.props
+    const {
+      review: { id, favorited }
+    } = this.props
     this.props.favorite(id, !favorited)
   }
 
@@ -145,6 +147,7 @@ const FAVORITE_REVIEW_MUTATION = gql`
 const READ_USER_FAVORITES = gql`
   query ReadUserFavorites {
     currentUser {
+      id
       favoriteReviews {
         id
       }
