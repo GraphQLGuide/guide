@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card'
-import IconButton from 'material-ui/IconButton'
-import Typography from 'material-ui/Typography'
-import Avatar from 'material-ui/Avatar'
-import Menu, { MenuItem } from 'material-ui/Menu'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
-import FavoriteIcon from 'material-ui-icons/Favorite'
-import FavoriteBorderIcon from 'material-ui-icons/FavoriteBorder'
-import StarIcon from 'material-ui-icons/Star'
-import StarBorderIcon from 'material-ui-icons/StarBorder'
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  IconButton,
+  Typography,
+  Avatar,
+  Menu,
+  MenuItem
+} from '@material-ui/core'
+import {
+  MoreVert,
+  Favorite,
+  FavoriteBorder,
+  Star,
+  StarBorder
+} from '@material-ui/icons'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import times from 'lodash/times'
 import remove from 'lodash/remove'
@@ -21,8 +29,12 @@ import { REVIEW_ENTRY } from '../graphql/Review'
 
 const StarRating = ({ rating }) => (
   <div>
-    {times(rating, i => <StarIcon key={i} />)}
-    {times(5 - rating, i => <StarBorderIcon key={i} />)}
+    {times(rating, i => (
+      <Star key={i} />
+    ))}
+    {times(5 - rating, i => (
+      <StarBorder key={i} />
+    ))}
   </div>
 )
 
@@ -48,7 +60,9 @@ class Review extends Component {
   }
 
   toggleFavorite = () => {
-    const { review: { id, favorited } } = this.props
+    const {
+      review: { id, favorited }
+    } = this.props
     this.props.favorite(id, !favorited)
   }
 
@@ -76,7 +90,7 @@ class Review extends Component {
             )}
             action={
               <IconButton onClick={this.openMenu}>
-                <MoreVertIcon />
+                <MoreVert />
               </IconButton>
             }
             title={linkToProfile(author.name)}
@@ -91,7 +105,7 @@ class Review extends Component {
             </Typography>
             <div className="Review-spacer" />
             <IconButton onClick={this.toggleFavorite}>
-              {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              {favorited ? <Favorite /> : <FavoriteBorder />}
             </IconButton>
           </CardActions>
         </Card>
