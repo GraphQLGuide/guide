@@ -1,15 +1,30 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card'
-import IconButton from 'material-ui/IconButton'
-import Typography from 'material-ui/Typography'
-import Avatar from 'material-ui/Avatar'
-import Menu, { MenuItem } from 'material-ui/Menu'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
-import FavoriteIcon from 'material-ui-icons/Favorite'
-import FavoriteBorderIcon from 'material-ui-icons/FavoriteBorder'
-import StarIcon from 'material-ui-icons/Star'
-import StarBorderIcon from 'material-ui-icons/StarBorder'
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  IconButton,
+  Typography,
+  Avatar,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  Modal
+} from '@material-ui/core'
+import {
+  MoreVert,
+  Favorite,
+  FavoriteBorder,
+  Star,
+  StarBorder
+} from '@material-ui/icons'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import times from 'lodash/times'
 import remove from 'lodash/remove'
@@ -17,14 +32,6 @@ import find from 'lodash/find'
 import gql from 'graphql-tag'
 import { graphql, compose } from 'react-apollo'
 import { propType } from 'graphql-anywhere'
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from 'material-ui/Dialog'
-import Button from 'material-ui/Button'
-import Modal from 'material-ui/Modal'
 
 import ReviewForm from './ReviewForm'
 
@@ -32,8 +39,12 @@ import { REVIEW_ENTRY, REVIEWS_QUERY } from '../graphql/Review'
 
 const StarRating = ({ rating }) => (
   <div>
-    {times(rating, i => <StarIcon key={i} />)}
-    {times(5 - rating, i => <StarBorderIcon key={i} />)}
+    {times(rating, i => (
+      <Star key={i} />
+    ))}
+    {times(5 - rating, i => (
+      <StarBorder key={i} />
+    ))}
   </div>
 )
 
@@ -112,7 +123,7 @@ class Review extends Component {
             action={
               user && (
                 <IconButton onClick={this.openMenu}>
-                  <MoreVertIcon />
+                  <MoreVert />
                 </IconButton>
               )
             }
@@ -133,7 +144,7 @@ class Review extends Component {
             <div className="Review-spacer" />
             {user && (
               <IconButton onClick={this.toggleFavorite}>
-                {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                {favorited ? <Favorite /> : <FavoriteBorder />}
               </IconButton>
             )}
           </CardActions>
@@ -263,4 +274,7 @@ const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
   })
 })
 
-export default compose(withFavoriteMutation, withDeleteMutation)(Review)
+export default compose(
+  withFavoriteMutation,
+  withDeleteMutation
+)(Review)

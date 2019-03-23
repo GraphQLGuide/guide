@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import get from 'lodash/get'
-import FavoriteIcon from 'material-ui-icons/Favorite'
-import Button from 'material-ui/Button'
-import AddIcon from 'material-ui-icons/Add'
-import Modal from 'material-ui/Modal'
+import { Favorite, Add } from '@material-ui/icons'
+import { Fab, Modal } from '@material-ui/core'
 
 import ReviewList from './ReviewList'
 import { withUser } from '../lib/withUser'
@@ -33,7 +31,7 @@ class Reviews extends Component {
           <header className="Reviews-header">
             {favoriteCount ? (
               <div className="Reviews-favorite-count">
-                <FavoriteIcon />
+                <Favorite />
                 {favoriteCount}
               </div>
             ) : null}
@@ -45,14 +43,13 @@ class Reviews extends Component {
 
         {user && (
           <div>
-            <Button
+            <Fab
               onClick={this.addReview}
-              variant="fab"
               color="primary"
               className="Reviews-add"
             >
-              <AddIcon />
-            </Button>
+              <Add />
+            </Fab>
 
             <Modal
               open={this.state.addingReview}
