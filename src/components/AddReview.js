@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import StarInput from 'react-star-rating-component'
-import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField'
-import StarIcon from 'material-ui-icons/Star'
-import StarBorderIcon from 'material-ui-icons/StarBorder'
+import { Button, TextField } from '@material-ui/core'
+import { Star, StarBorder } from '@material-ui/icons'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import pick from 'lodash/pick'
@@ -71,7 +69,7 @@ class AddReview extends Component {
           value={this.state.stars}
           onStarClick={this.updateStars}
           renderStarIcon={(currentStar, rating) =>
-            currentStar > rating ? <StarBorderIcon /> : <StarIcon />
+            currentStar > rating ? <StarBorder /> : <Star />
           }
           starColor={GREY}
           emptyStarColor={GREY}
