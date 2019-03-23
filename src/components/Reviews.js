@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
-import FavoriteIcon from 'material-ui-icons/Favorite'
+import { Favorite } from '@material-ui/icons'
 
 import Review from './Review'
 import { withUser } from '../lib/withUser'
@@ -17,7 +17,7 @@ const Reviews = ({ reviews, loading, user }) => {
         <header className="Reviews-header">
           {favoriteCount ? (
             <div className="Reviews-favorite-count">
-              <FavoriteIcon />
+              <Favorite />
               {favoriteCount}
             </div>
           ) : null}
