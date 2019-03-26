@@ -54,7 +54,7 @@ const Team = ({ urlToken, user, login, client, history }) => {
               <div className="Team-content">
                 {seatsLeft && (
                   <p>
-                    {seatsLeft} seats left
+                    {seatsLeft} seat{(seatsLeft > 1) && 's'} left
                     <Button
                       color="primary"
                       variant="raised"
