@@ -79,6 +79,8 @@ const TshirtOrderForm = () => (
               handleSubmit,
               isSubmitting
             }) => {
+              const { id, shippingAddress } = (data && data.currentUser) || {}
+
               const showProductError = !!(touched.product && errors.product),
                 showSizeError = !!(touched.size && errors.size),
                 mailto = `mailto:tshirts@graphql.guide?subject=New Tshirt Order&body=Option: ${
@@ -86,8 +88,6 @@ const TshirtOrderForm = () => (
                 }%0D%0ASize: ${
                   values.size
                 }%0D%0AShipping address:%0D%0A%0D%0A%0D%0A%0D%0AUID: ${id}`
-
-              const { id, shippingAddress } = (data && data.currentUser) || {}
 
               return (
                 <form className="TshirtOrderForm" onSubmit={handleSubmit}>
