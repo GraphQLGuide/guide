@@ -233,7 +233,7 @@ const SectionWithData = ({ location: { state, pathname } }) => {
   if (state) {
     query = SECTION_BY_ID_QUERY
     variables = { id: state.section.id }
-    createProps = ({ data, loading }) => ({
+    createProps = ({ data }) => ({
       section: {
         ...state.section,
         content: get(data, 'section.content'),
@@ -241,31 +241,31 @@ const SectionWithData = ({ location: { state, pathname } }) => {
         scrollY: get(data, 'section.scrollY')
       },
       chapter: state.chapter,
-      loading
+      loading: !data.section
     })
   } else if (page.chapterTitle) {
     query = SECTION_BY_CHAPTER_TITLE_QUERY
     variables = { title: page.chapterTitle }
-    createProps = ({ data, loading }) => ({
+    createProps = ({ data }) => ({
       section: get(data, 'chapterByTitle.section'),
       chapter: {
         ...data.chapterByTitle,
         number: null
       },
-      loading
+      loading: !data.chapterByTitle
     })
   } else if (page.chapterNumber) {
     query = SECTION_BY_NUMBER_QUERY
     variables = page
-    createProps = ({ data, loading }) => ({
+    createProps = ({ data }) => ({
       section: get(data, 'chapterByNumber.section'),
       chapter: data.chapterByNumber,
-      loading
+      loading: !data.chapterByNumber
     })
   }
 
   return (
-    <Query query={query} variables={variables}>
+    <Query query={query} variables={variables} fetchPolicy="cache-and-network">
       {queryInfo => (
         <Mutation mutation={VIEWED_SECTION_MUTATION}>
           {viewedSection => (
