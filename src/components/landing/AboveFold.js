@@ -26,7 +26,7 @@ const AboveFold = () => (
               GraphQL is the <span className="-nowrap">new REST</span>
             </Typography>
             <Typography className="AboveFold-subtitle" variant="body1">
-              GraphQL is the best way to fetch data for your app, and the
+              GraphQL is the best way to fetch data for your app, and The
               GraphQL Guide is the best way to learn how.
             </Typography>
           </div>
