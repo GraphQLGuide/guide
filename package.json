@@ -59,13 +59,13 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "now-start": "serve --single ./build",
-    "deploy": "now --dotenv=.env.production --regions all",
+    "deploy": "now --regions all -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
     "alias": "now alias",
     "deploy-ci": "now --token=$NOW_TOKEN --regions all -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
     "alias-ci": "now alias --token=$NOW_TOKEN",
     "release": "scripts/release.sh"
   },
   "devDependencies": {
-    "now": "^14.0.3"
+    "now": "^16.7.0"
   }
 }
