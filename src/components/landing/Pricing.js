@@ -72,13 +72,9 @@ const Pricing = () => (
         </li>
         <hr />
         <li>
-          Taught by our favorite GraphQL teachers around—Paul and the team at{' '}
-          <i>OK GROW!</i>
-        </li>
-        <hr />
-        <li>
-          Offered periodically in major cities in the U.S. and Canada (or if we
-          get 15 signups in your area, we'll schedule a time to come to you)
+          Once we get 15 signups in your area, we'll schedule a time to come to
+          you. (Alternatively, your company can sponsor a training:{' '}
+          <a href="mailto:sales@graphql.guide">sales@graphql.guide</a>)
         </li>
       </Package>
     </div>
