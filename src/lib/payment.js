@@ -31,7 +31,9 @@ let stripeHandler
 let scriptLoaded = false
 const callbackQueue = []
 
+console.log('stripe', process.env.REACT_APP_STRIPE_PUBLIC_KEY)
 const scriptDidLoad = () => {
+  console.log('stripe loaded', process.env.REACT_APP_STRIPE_PUBLIC_KEY)
   scriptLoaded = true
   stripeHandler = window.StripeCheckout.configure({
     key: process.env.REACT_APP_STRIPE_PUBLIC_KEY,
