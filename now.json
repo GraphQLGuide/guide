@@ -1,4 +1,5 @@
 {
   "name": "guide",
-  "alias": "graphql.guide"
+  "alias": "graphql.guide",
+  "version": 1
 }
