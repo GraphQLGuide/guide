@@ -1,4 +1,5 @@
 {
   "name": "guide",
-  "version": 2
+  "version": 2,
+  "scope": "loren"
 }
