@@ -1,5 +1,11 @@
 {
   "name": "guide",
   "version": 2,
-  "scope": "loren"
+  "scope": "loren",
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "REACT_APP_STRIPE_PUBLIC_KEY": "@guide-stripe-public-key"
+    }
+  }
 }
