@@ -18,7 +18,7 @@
     "apollo-link-ws": "^1.0.1",
     "apollo-utilities": "^1.0.3",
     "auth0-helpers": "^0.4.2",
-    "auth0-js": "^9.6.1",
+    "auth0-js": "^9.13.2",
     "canvas-confetti": "0.0.3",
     "classnames": "^2.2.5",
     "cloudinary-core": "^2.5.0",
