@@ -27,7 +27,7 @@ const Paypal = ({ user, login, loading, location, match }) => {
         </p>
         <p>
           <b>Step 1: </b>
-          Send ${price} via PayPal. Put your Github username in the payment
+          Send ${price} via PayPal, with your Github username in the payment
           note.
         </p>
         <p style={{ textAlign: 'center' }}>
