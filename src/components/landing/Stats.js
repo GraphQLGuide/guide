@@ -12,7 +12,7 @@ const Stats = () => (
     <div className="Stats-list">
       <div className="Stat">
         <FontAwesomeIcon icon={faFileAlt} />
-        <h3 className="Stat-number -with-plus">350</h3>
+        <h3 className="Stat-number -with-plus">500</h3>
         <div className="Stat-caption">Total pages</div>
       </div>
       <div className="Stat">
