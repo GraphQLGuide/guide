@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 import Landing from './landing/Landing'
 import Paypal from './landing/Paypal'
+import Unsubscribe from './Unsubscribe'
 import Terms from './landing/Terms'
 import Privacy from './landing/Privacy'
 import Tshirt from './landing/Tshirt'
@@ -41,6 +42,7 @@ class App extends Component {
             path="/paypal/:package?"
             render={() => <Paypal {...authProps} />}
           />
+          <Route path="/unsubscribe/:token" render={() => <Unsubscribe />} />
           <Route
             exact
             path="/welcome"
@@ -71,8 +73,8 @@ class App extends Component {
                     path="/team/:token"
                     render={({
                       match: {
-                        params: { token }
-                      }
+                        params: { token },
+                      },
                     }) => <Team {...authProps} urlToken={token} />}
                   />
                   <Route
@@ -95,7 +97,7 @@ App.propTypes = {
   user: PropTypes.object,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
 }
 
 export default withAuth(App)

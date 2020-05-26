@@ -6,7 +6,8 @@ import TextField from 'material-ui/TextField'
 import StarIcon from 'material-ui-icons/Star'
 import StarBorderIcon from 'material-ui-icons/StarBorder'
 import gql from 'graphql-tag'
-import { graphql, compose } from 'react-apollo'
+import { graphql } from 'react-apollo'
+import compose from 'recompose/compose'
 import classNames from 'classnames'
 import pick from 'lodash/pick'
 
@@ -26,19 +27,19 @@ class ReviewForm extends Component {
     this.state = {
       text: review ? review.text : '',
       stars: review ? review.stars : null,
-      errorText: null
+      errorText: null,
     }
   }
 
-  updateText = event => {
+  updateText = (event) => {
     this.setState({ text: event.target.value })
   }
 
-  updateStars = stars => {
+  updateStars = (stars) => {
     this.setState({ stars })
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault()
     const { text, stars } = this.state
 
@@ -112,15 +113,15 @@ ReviewForm.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     photo: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired
+    username: PropTypes.string.isRequired,
   }),
   addReview: PropTypes.func.isRequired,
   editReview: PropTypes.func.isRequired,
   review: PropTypes.shape({
     id: PropTypes.string.isRequired,
     text: PropTypes.string,
-    stars: PropTypes.number
-  })
+    stars: PropTypes.number,
+  }),
 }
 
 const ADD_REVIEW_MUTATION = gql`
@@ -137,7 +138,7 @@ const withAddReview = graphql(ADD_REVIEW_MUTATION, {
     addReview: (text, stars) => {
       mutate({
         variables: {
-          input: { text, stars }
+          input: { text, stars },
         },
         optimisticResponse: {
           createReview: {
@@ -152,23 +153,23 @@ const withAddReview = graphql(ADD_REVIEW_MUTATION, {
               'id',
               'name',
               'photo',
-              'username'
-            ])
-          }
+              'username',
+            ]),
+          },
         },
         update: (store, { data: { createReview: newReview } }) => {
           const query = {
             query: REVIEWS_QUERY,
-            variables: { limit: 10, orderBy: 'createdAt_DESC' }
+            variables: { limit: 10, orderBy: 'createdAt_DESC' },
           }
 
           const data = store.readQuery(query)
           data.reviews.unshift(newReview)
           store.writeQuery({ ...query, data })
-        }
+        },
       })
-    }
-  })
+    },
+  }),
 })
 
 const EDIT_REVIEW_MUTATION = gql`
@@ -187,7 +188,7 @@ const withEditReview = graphql(EDIT_REVIEW_MUTATION, {
       mutate({
         variables: {
           id,
-          input: { text, stars }
+          input: { text, stars },
         },
         optimisticResponse: {
           updateReview: {
@@ -195,15 +196,12 @@ const withEditReview = graphql(EDIT_REVIEW_MUTATION, {
             id,
             text,
             stars,
-            favorite: true
-          }
-        }
+            favorite: true,
+          },
+        },
       })
-    }
-  })
+    },
+  }),
 })
 
-export default compose(
-  withAddReview,
-  withEditReview
-)(ReviewForm)
+export default compose(withAddReview, withEditReview)(ReviewForm)

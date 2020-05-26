@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import PropTypes from 'prop-types'
-import { Query, Mutation } from 'react-apollo'
+import { Query, Mutation } from '@apollo/react-components'
 import gql from 'graphql-tag'
 import { withRouter } from 'react-router'
 import get from 'lodash/get'
@@ -21,7 +21,7 @@ class Section extends Component {
     if (sectionChanged) {
       setTimeout(() => {
         props.viewedSection({
-          variables: { id: props.section.id }
+          variables: { id: props.section.id },
         })
       }, 2000)
       this.lastSectionId = props.section.id
@@ -87,14 +87,14 @@ Section.propTypes = {
     title: PropTypes.string,
     number: PropTypes.number,
     content: PropTypes.string,
-    views: PropTypes.number
+    views: PropTypes.number,
   }),
   chapter: PropTypes.shape({
     title: PropTypes.string,
-    number: PropTypes.number
+    number: PropTypes.number,
   }),
   loading: PropTypes.bool.isRequired,
-  viewedSection: PropTypes.func.isRequired
+  viewedSection: PropTypes.func.isRequired,
 }
 
 const SECTION_BY_ID_QUERY = gql`
@@ -156,10 +156,10 @@ const SectionWithData = ({ location: { state, pathname } }) => {
       section: {
         ...state.section,
         content: get(data, 'section.content'),
-        views: get(data, 'section.views')
+        views: get(data, 'section.views'),
       },
       chapter: state.chapter,
-      loading
+      loading,
     })
   } else if (page.chapterTitle) {
     query = SECTION_BY_CHAPTER_TITLE_QUERY
@@ -167,26 +167,26 @@ const SectionWithData = ({ location: { state, pathname } }) => {
     createProps = ({ data, loading }) => ({
       section: get(data, 'chapterByTitle.section'),
       chapter: {
-        ...data.chapterByTitle,
-        number: null
+        ...(data && data.chapterByTitle),
+        number: null,
       },
-      loading
+      loading,
     })
   } else if (page.chapterNumber) {
     query = SECTION_BY_NUMBER_QUERY
     variables = page
     createProps = ({ data, loading }) => ({
       section: get(data, 'chapterByNumber.section'),
-      chapter: data.chapterByNumber,
-      loading
+      chapter: data && data.chapterByNumber,
+      loading,
     })
   }
 
   return (
     <Query query={query} variables={variables}>
-      {queryInfo => (
+      {(queryInfo) => (
         <Mutation mutation={VIEWED_SECTION_MUTATION}>
-          {viewedSection => (
+          {(viewedSection) => (
             <Section
               {...createProps(queryInfo)}
               viewedSection={viewedSection}

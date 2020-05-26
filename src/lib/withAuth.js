@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import wrapDisplayName from 'recompose/wrapDisplayName'
-import { graphql, withApollo, compose } from 'react-apollo'
+import compose from 'recompose/compose'
+import { graphql, withApollo } from '@apollo/react-hoc'
 import { ApolloClient } from 'apollo-client'
 import gql from 'graphql-tag'
 import auth0 from 'auth0-js'
@@ -17,7 +18,7 @@ const client = new auth0.WebAuth({
   clientID: '8fErnZoF3hbzQ2AbMYu5xcS0aVNzQ0PC',
   responseType: 'token',
   audience: 'https://api.graphql.guide',
-  scope: 'openid profile guide'
+  scope: 'openid profile guide',
 })
 
 initAuthHelpers({
@@ -26,12 +27,12 @@ initAuthHelpers({
   authOptions: {
     connection: 'github',
     owp: true,
-    popupOptions: { height: 623 } // make tall enough for content
+    popupOptions: { height: 623 }, // make tall enough for content
   },
   checkSessionOptions: {
-    redirect_uri: window.location.origin
+    redirect_uri: window.location.origin,
   },
-  onError: e => console.error(e)
+  onError: (e) => console.error(e),
 })
 
 const USER_QUERY = gql`
@@ -56,8 +57,8 @@ const withUser = graphql(USER_QUERY, {
   props: ({ ownProps, data: { currentUser, loading } }) => ({
     currentUser,
     loading,
-    ownProps
-  })
+    ownProps,
+  }),
 })
 
 function withAuth(BaseComponent) {
@@ -66,7 +67,7 @@ function withAuth(BaseComponent) {
       super(props)
 
       this.state = {
-        loggingIn: false
+        loggingIn: false,
       }
 
       defer(this.onCreateOrUpdate)
@@ -91,14 +92,14 @@ function withAuth(BaseComponent) {
       const userData = {
         name,
         email,
-        hasPurchased
+        hasPurchased,
       }
 
       window.heap.identify(id, 'ID')
       window.heap.addUserProperties(userData)
       ReactGA.set({
         id,
-        ...userData
+        ...userData,
       })
       LogRocket.identify(id, userData)
 
@@ -116,7 +117,7 @@ function withAuth(BaseComponent) {
           e && console.log(e)
           this.props.client.reFetchObservableQueries()
           this.setState({ loggingIn: false })
-        }
+        },
       })
     }
 
@@ -148,17 +149,14 @@ function withAuth(BaseComponent) {
       email: PropTypes.string.isRequired,
       photo: PropTypes.string.isRequired,
       hasPurchased: PropTypes.string,
-      tshirt: PropTypes.string
+      tshirt: PropTypes.string,
     }),
     loading: PropTypes.bool.isRequired,
-    client: PropTypes.instanceOf(ApolloClient).isRequired
+    client: PropTypes.instanceOf(ApolloClient).isRequired,
   }
 
   WithAuthWrapper.displayName = wrapDisplayName(BaseComponent, 'withAuth')
-  return compose(
-    withApollo,
-    withUser
-  )(WithAuthWrapper)
+  return compose(withApollo, withUser)(WithAuthWrapper)
 }
 
 export default withAuth

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query, Mutation } from 'react-apollo'
+import { Query, Mutation } from '@apollo/react-components'
 import gql from 'graphql-tag'
 import Button from 'material-ui/Button'
 import { Formik } from 'formik'
@@ -33,13 +33,13 @@ const TshirtOrderForm = () => (
   <Query query={ADDRESS_QUERY}>
     {({ data }) => (
       <Mutation mutation={ORDER_TSHIRT}>
-        {orderTshirt => (
+        {(orderTshirt) => (
           <Formik
             initialValues={{
               product: '',
-              size: ''
+              size: '',
             }}
-            validate={values => {
+            validate={(values) => {
               const errors = {}
 
               if (!values.product) {
@@ -55,16 +55,14 @@ const TshirtOrderForm = () => (
               console.log('onSubmit', values)
               orderTshirt({
                 variables: values,
-                onCompleted: () => setSubmitting(false)
-              }).catch(e => {
+                onCompleted: () => setSubmitting(false),
+              }).catch((e) => {
                 const failedError = e.graphQLErrors.find(({ message }) =>
                   message.match('order-failed')
                 )
                 if (failedError) {
                   alert(
-                    `Sorry! There was an error with your order. Please email tshirts@graphql.guide with your tshirt choice and address so we can send it manually 😊\n\n${
-                      failedError.message
-                    }`
+                    `Sorry! There was an error with your order. Please email tshirts@graphql.guide with your tshirt choice and address so we can send it manually 😊\n\n${failedError.message}`
                   )
                 }
               })
@@ -77,17 +75,13 @@ const TshirtOrderForm = () => (
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => {
               const { id, shippingAddress } = (data && data.currentUser) || {}
 
               const showProductError = !!(touched.product && errors.product),
                 showSizeError = !!(touched.size && errors.size),
-                mailto = `mailto:tshirts@graphql.guide?subject=New Tshirt Order&body=Option: ${
-                  values.product
-                }%0D%0ASize: ${
-                  values.size
-                }%0D%0AShipping address:%0D%0A%0D%0A%0D%0A%0D%0AUID: ${id}`
+                mailto = `mailto:tshirts@graphql.guide?subject=New Tshirt Order&body=Option: ${values.product}%0D%0ASize: ${values.size}%0D%0AShipping address:%0D%0A%0D%0A%0D%0A%0D%0AUID: ${id}`
 
               return (
                 <form className="TshirtOrderForm" onSubmit={handleSubmit}>

@@ -15,13 +15,14 @@ import times from 'lodash/times'
 import remove from 'lodash/remove'
 import find from 'lodash/find'
 import gql from 'graphql-tag'
-import { graphql, compose } from 'react-apollo'
+import { graphql } from 'react-apollo'
+import compose from 'recompose/compose'
 import { propType } from 'graphql-anywhere'
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
 } from 'material-ui/Dialog'
 import Button from 'material-ui/Button'
 import Modal from 'material-ui/Modal'
@@ -32,8 +33,12 @@ import { REVIEW_ENTRY, REVIEWS_QUERY } from '../graphql/Review'
 
 const StarRating = ({ rating }) => (
   <div>
-    {times(rating, i => <StarIcon key={i} />)}
-    {times(5 - rating, i => <StarBorderIcon key={i} />)}
+    {times(rating, (i) => (
+      <StarIcon key={i} />
+    ))}
+    {times(5 - rating, (i) => (
+      <StarBorderIcon key={i} />
+    ))}
   </div>
 )
 
@@ -41,10 +46,10 @@ class Review extends Component {
   state = {
     anchorEl: null,
     deleteConfirmationOpen: false,
-    editing: false
+    editing: false,
   }
 
-  openMenu = event => {
+  openMenu = (event) => {
     this.setState({ anchorEl: event.currentTarget })
   }
 
@@ -72,7 +77,7 @@ class Review extends Component {
 
   delete = () => {
     this.closeDeleteConfirmation()
-    this.props.delete(this.props.review.id).catch(e => {
+    this.props.delete(this.props.review.id).catch((e) => {
       if (find(e.graphQLErrors, { message: 'unauthorized' })) {
         alert('👮‍♀️✋ You can only delete your own reviews!')
       }
@@ -81,7 +86,7 @@ class Review extends Component {
 
   toggleFavorite = () => {
     const {
-      review: { id, favorited }
+      review: { id, favorited },
     } = this.props
     this.props.favorite(id, !favorited)
   }
@@ -89,10 +94,10 @@ class Review extends Component {
   render() {
     const {
       review: { text, stars, createdAt, favorited, author },
-      user
+      user,
     } = this.props
 
-    const linkToProfile = child => (
+    const linkToProfile = (child) => (
       <a
         href={`https://github.com/${author.username}`}
         target="_blank"
@@ -181,7 +186,7 @@ class Review extends Component {
 Review.propTypes = {
   review: propType(REVIEW_ENTRY).isRequired,
   favorite: PropTypes.func.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
 }
 
 const FAVORITE_REVIEW_MUTATION = gql`
@@ -213,10 +218,10 @@ const withFavoriteMutation = graphql(FAVORITE_REVIEW_MUTATION, {
           favoriteReview: {
             __typename: 'Review',
             id,
-            favorited: favorite
-          }
+            favorited: favorite,
+          },
         },
-        update: store => {
+        update: (store) => {
           const data = store.readQuery({ query: READ_USER_FAVORITES })
 
           if (favorite) {
@@ -226,9 +231,9 @@ const withFavoriteMutation = graphql(FAVORITE_REVIEW_MUTATION, {
           }
 
           store.writeQuery({ query: READ_USER_FAVORITES, data })
-        }
-      })
-  })
+        },
+      }),
+  }),
 })
 
 const DELETE_REVIEW_MUTATION = gql`
@@ -239,16 +244,16 @@ const DELETE_REVIEW_MUTATION = gql`
 
 const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
   props: ({ mutate }) => ({
-    delete: id =>
+    delete: (id) =>
       mutate({
         variables: { id },
         optimisticResponse: {
-          removeReview: true
+          removeReview: true,
         },
-        update: store => {
+        update: (store) => {
           const query = {
             query: REVIEWS_QUERY,
-            variables: { limit: 10, orderBy: 'createdAt_DESC' }
+            variables: { limit: 10, orderBy: 'createdAt_DESC' },
           }
 
           let data = store.readQuery(query)
@@ -266,9 +271,9 @@ const withDeleteMutation = graphql(DELETE_REVIEW_MUTATION, {
           data = store.readQuery({ query: READ_USER_FAVORITES })
           remove(data.currentUser.favoriteReviews, { id })
           store.writeQuery({ query: READ_USER_FAVORITES, data })
-        }
-      })
-  })
+        },
+      }),
+  }),
 })
 
 export default compose(withFavoriteMutation, withDeleteMutation)(Review)

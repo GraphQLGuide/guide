@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
+import { Query } from '@apollo/react-components'
 import gql from 'graphql-tag'
 import classNames from 'classnames'
 import Odometer from 'react-odometerjs'
@@ -18,10 +18,10 @@ class StarCount extends React.Component {
         previousResult,
         {
           subscriptionData: {
-            data: { githubStars }
-          }
+            data: { githubStars },
+          },
         }
-      ) => ({ githubStars })
+      ) => ({ githubStars }),
     })
   }
 
@@ -42,7 +42,7 @@ class StarCount extends React.Component {
 StarCount.propTypes = {
   githubStars: PropTypes.number,
   loading: PropTypes.bool.isRequired,
-  subscribeToMore: PropTypes.func.isRequired
+  subscribeToMore: PropTypes.func.isRequired,
 }
 
 const STARS_QUERY = gql`
@@ -59,9 +59,9 @@ const STARS_SUBSCRIPTION = gql`
 
 export default () => (
   <Query query={STARS_QUERY}>
-    {({ data: { githubStars }, loading, subscribeToMore }) => (
+    {({ data, loading, subscribeToMore }) => (
       <StarCount
-        githubStars={githubStars}
+        githubStars={data && data.githubStars}
         loading={loading}
         subscribeToMore={subscribeToMore}
       />

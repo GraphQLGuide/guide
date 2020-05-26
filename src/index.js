@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from '@apollo/react-hooks'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -17,15 +17,15 @@ import { apollo, inDevelopment } from './lib/apollo'
 const PINK = '#df1797'
 
 const theme = createMuiTheme({
-  palette: { primary: { main: PINK } }
+  palette: { primary: { main: PINK } },
 })
 
 const history = createBrowserHistory()
-history.listen(location => {
+history.listen((location) => {
   ReactGA.pageview(location.pathname)
 })
 
-const render = Component => {
+const render = (Component) => {
   ReactDOM.render(
     <Router history={history}>
       <ApolloProvider client={apollo}>
