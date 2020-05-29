@@ -38,9 +38,9 @@ const Team = ({ urlToken, user, login, client, history }) => {
         {({ loading, data }) => {
           if (loading) return <div className="Spinner" />
 
-          if (!data.team) return 'No such team'
+          if (!data && data.team) return 'No such team'
           const {
-            team: { name, totalSeats, members }
+            team: { name, totalSeats, members },
           } = data
           const seatsLeft = totalSeats - members.length
 
@@ -54,7 +54,7 @@ const Team = ({ urlToken, user, login, client, history }) => {
               <div className="Team-content">
                 {seatsLeft && (
                   <p>
-                    {seatsLeft} seat{(seatsLeft > 1) && 's'} left
+                    {seatsLeft} seat{seatsLeft > 1 && 's'} left
                     <Button
                       color="primary"
                       variant="raised"
