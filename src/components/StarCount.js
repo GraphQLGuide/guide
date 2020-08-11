@@ -1,20 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-
-const StarCount = ({ githubStars, loading }) => {
-  return (
-    <a className="StarCount" href="https://github.com/GraphQLGuide/guide">
-      {githubStars}
-    </a>
-  )
-}
-
-StarCount.propTypes = {
-  githubStars: PropTypes.number,
-  loading: PropTypes.bool.isRequired
-}
+import { gql, useQuery } from '@apollo/client'
 
 const STARS_QUERY = gql`
   query StarsQuery {
@@ -22,10 +7,17 @@ const STARS_QUERY = gql`
   }
 `
 
-export default () => (
-  <Query query={STARS_QUERY}>
-    {({ data: { githubStars }, loading }) => (
-      <StarCount githubStars={githubStars} loading={loading} />
-    )}
-  </Query>
-)
+export default () => {
+  const { data } = useQuery(STARS_QUERY)
+
+  return (
+    <a
+      className="StarCount"
+      href="https://github.com/GraphQLGuide/guide"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {data && data.githubStars}
+    </a>
+  )
+}

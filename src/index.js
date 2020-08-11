@@ -1,28 +1,28 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  HttpLink,
+} from '@apollo/client'
+
 import './index.css'
 import App from './components/App'
-import registerServiceWorker from './registerServiceWorker'
-import { ApolloClient } from 'apollo-client'
-import { ApolloProvider } from 'react-apollo'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { createHttpLink } from 'apollo-link-http'
 
-const link = createHttpLink({
-  uri: 'https://api.graphql.guide/graphql'
+const link = new HttpLink({
+  uri: 'https://api.graphql.guide/graphql',
 })
 
 const cache = new InMemoryCache()
 
 const client = new ApolloClient({ link, cache })
 
-ReactDOM.render(
+render(
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>,
   document.getElementById('root')
 )
-
-registerServiceWorker()
 
 module.hot.accept()
