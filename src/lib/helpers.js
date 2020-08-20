@@ -1,4 +1,4 @@
-export const withHyphens = string => string.replace(/ /g, '-')
+export const withHyphens = (string) => string.replace(/ /g, '-')
 
 // generate paths of the form:
 // /Preface
