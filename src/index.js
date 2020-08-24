@@ -1,26 +1,28 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import './index.css'
-import App from './components/App'
-import registerServiceWorker from './registerServiceWorker'
-import { ApolloClient } from 'apollo-client'
-import { ApolloProvider } from 'react-apollo'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { createHttpLink } from 'apollo-link-http'
-import { getMainDefinition } from 'apollo-utilities'
+import { render } from 'react-dom'
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  HttpLink,
+  split,
+} from '@apollo/client'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { getMainDefinition } from '@apollo/client/utilities'
 import { BrowserRouter } from 'react-router-dom'
 
-const httpLink = createHttpLink({
-  uri: 'https://api.graphql.guide/graphql'
+import './index.css'
+import App from './components/App'
+
+const httpLink = new HttpLink({
+  uri: 'https://api.graphql.guide/graphql',
 })
 
 const wsLink = new WebSocketLink({
   uri: `wss://api.graphql.guide/subscriptions`,
   options: {
-    reconnect: true
-  }
+    reconnect: true,
+  },
 })
 
 const link = split(
@@ -36,7 +38,7 @@ const cache = new InMemoryCache()
 
 const client = new ApolloClient({ link, cache })
 
-ReactDOM.render(
+render(
   <BrowserRouter>
     <ApolloProvider client={client}>
       <App />
@@ -44,7 +46,5 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById('root')
 )
-
-registerServiceWorker()
 
 module.hot.accept()
