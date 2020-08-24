@@ -1,4 +1,4 @@
-export const withHyphens = string => string.replace(/ /g, '-')
+export const withHyphens = (string) => string.replace(/ /g, '-')
 
 // generate paths of the form:
 // /Preface
@@ -25,14 +25,14 @@ export const slugify = (chapter, section) => {
 //
 // /1-Understanding-GraphQL-through-REST/1-Introduction
 // -> { chapterNumber: 1, sectionNumber: 1 }
-export const deslugify = path => {
+export const deslugify = (path) => {
   const [, chapterSlug, sectionSlug] = path.split('/')
   const chapterIsNumbered = !!sectionSlug
 
   return chapterIsNumbered
     ? {
         chapterNumber: parseInt(chapterSlug.split('-')[0], 10),
-        sectionNumber: parseInt(sectionSlug.split('-')[0], 10)
+        sectionNumber: parseInt(sectionSlug.split('-')[0], 10),
       }
     : { chapterTitle: chapterSlug }
 }

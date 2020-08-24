@@ -1,14 +1,88 @@
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
-import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-import { withRouter } from 'react-router'
+import { gql, useQuery } from '@apollo/client'
+import { useLocation } from 'react-router'
 import get from 'lodash/get'
+import pick from 'lodash/pick'
 
 import { deslugify } from '../lib/helpers'
 
-const Section = ({ loading, section, chapter }) => {
+const SECTION_BY_ID_QUERY = gql`
+  query SectionContent($id: String!) {
+    section(id: $id) {
+      content
+    }
+  }
+`
+
+const SECTION_BY_CHAPTER_TITLE_QUERY = gql`
+  query SectionByChapterTitle($title: String!) {
+    chapterByTitle(title: $title) {
+      title
+      section(number: 1) {
+        content
+      }
+    }
+  }
+`
+
+const SECTION_BY_NUMBER_QUERY = gql`
+  query SectionByNumber($chapterNumber: Int!, $sectionNumber: Int!) {
+    chapterByNumber(number: $chapterNumber) {
+      number
+      section(number: $sectionNumber) {
+        number
+        title
+        content
+      }
+    }
+  }
+`
+
+export default () => {
+  const { state, pathname } = useLocation()
+
+  const page = deslugify(pathname)
+
+  let query, variables
+
+  if (state) {
+    query = SECTION_BY_ID_QUERY
+    variables = { id: state.section.id }
+  } else if (page.chapterTitle) {
+    query = SECTION_BY_CHAPTER_TITLE_QUERY
+    variables = { title: page.chapterTitle }
+  } else {
+    query = SECTION_BY_NUMBER_QUERY
+    variables = pick(page, 'chapterNumber', 'sectionNumber')
+  }
+
+  const { data, loading } = useQuery(query, { variables })
+
+  let section, chapter
+
+  // eslint-disable-next-line default-case
+  switch (query) {
+    case SECTION_BY_ID_QUERY:
+      section = {
+        ...state.section,
+        content: get(data, 'section.content'),
+      }
+      chapter = state.chapter
+      break
+    case SECTION_BY_CHAPTER_TITLE_QUERY:
+      section = get(data, 'chapterByTitle.section')
+      chapter = {
+        ...get(data, 'chapterByTitle'),
+        number: null,
+      }
+      break
+    case SECTION_BY_NUMBER_QUERY:
+      section = get(data, 'chapterByNumber.section')
+      chapter = get(data, 'chapterByNumber')
+      break
+  }
+
   let headerContent = null,
     sectionContent = null
 
@@ -56,94 +130,3 @@ const Section = ({ loading, section, chapter }) => {
     </section>
   )
 }
-
-Section.propTypes = {
-  section: PropTypes.shape({
-    title: PropTypes.string,
-    number: PropTypes.number,
-    content: PropTypes.string
-  }),
-  chapter: PropTypes.shape({
-    title: PropTypes.string,
-    number: PropTypes.number
-  }),
-  loading: PropTypes.bool.isRequired
-}
-
-const SECTION_BY_ID_QUERY = gql`
-  query SectionContent($id: String!) {
-    section(id: $id) {
-      content
-    }
-  }
-`
-
-const SECTION_BY_CHAPTER_TITLE_QUERY = gql`
-  query SectionByChapterTitle($title: String!) {
-    chapterByTitle(title: $title) {
-      title
-      section(number: 1) {
-        content
-      }
-    }
-  }
-`
-
-const SECTION_BY_NUMBER_QUERY = gql`
-  query SectionByNumber($chapterNumber: Int!, $sectionNumber: Int!) {
-    chapterByNumber(number: $chapterNumber) {
-      number
-      section(number: $sectionNumber) {
-        number
-        title
-        content
-      }
-    }
-  }
-`
-
-const SectionWithData = ({ location: { state, pathname } }) => {
-  const page = deslugify(pathname)
-
-  let query, variables, createProps
-
-  if (state) {
-    query = SECTION_BY_ID_QUERY
-    variables = { id: state.section.id }
-    createProps = ({ data, loading }) => ({
-      section: {
-        ...state.section,
-        content: get(data, 'section.content')
-      },
-      chapter: state.chapter,
-      loading
-    })
-  } else if (page.chapterTitle) {
-    query = SECTION_BY_CHAPTER_TITLE_QUERY
-    variables = { title: page.chapterTitle }
-    createProps = ({ data, loading }) => ({
-      section: get(data, 'chapterByTitle.section'),
-      chapter: {
-        ...data.chapterByTitle,
-        number: null
-      },
-      loading
-    })
-  } else if (page.chapterNumber) {
-    query = SECTION_BY_NUMBER_QUERY
-    variables = page
-    createProps = ({ data, loading }) => ({
-      section: get(data, 'chapterByNumber.section'),
-      chapter: data.chapterByNumber,
-      loading
-    })
-  }
-
-  return (
-    <Query query={query} variables={variables}>
-      {queryInfo => <Section {...createProps(queryInfo)} />}
-    </Query>
-  )
-}
-
-export default withRouter(SectionWithData)
