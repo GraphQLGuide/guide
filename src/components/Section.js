@@ -12,9 +12,7 @@ export default () => {
           <h2>Subtitle</h2>
         </header>
       </div>
-      <div className="Section-content">
-        {loading ? <Skeleton count={7} /> : null}
-      </div>
+      <div className="Section-content">{loading && <Skeleton count={7} />}</div>
     </section>
   )
 }
