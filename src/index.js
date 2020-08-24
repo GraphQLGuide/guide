@@ -1,14 +1,13 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { ApolloProvider } from 'react-apollo'
+import { render } from 'react-dom'
+import { ApolloProvider } from '@apollo/client'
 import { BrowserRouter } from 'react-router-dom'
 
 import './index.css'
-import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
 import { apollo } from './lib/apollo'
 
-ReactDOM.render(
+render(
   <BrowserRouter>
     <ApolloProvider client={apollo}>
       <App />
@@ -16,7 +15,5 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById('root')
 )
-
-registerServiceWorker()
 
 module.hot.accept()
