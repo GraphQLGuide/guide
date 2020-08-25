@@ -1,113 +1,11 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import PropTypes from 'prop-types'
-import { Query, Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-import { withRouter } from 'react-router'
+import { gql, useQuery, useMutation } from '@apollo/client'
+import { useLocation } from 'react-router'
 import get from 'lodash/get'
+import pick from 'lodash/pick'
 
 import { deslugify } from '../lib/helpers'
-
-class Section extends Component {
-  viewedSection = id => {
-    if (!id) {
-      return
-    }
-
-    this.timeoutID = setTimeout(() => {
-      this.props.viewedSection({
-        variables: { id }
-      })
-    }, 2000)
-  }
-
-  componentDidMount() {
-    if (this.props.section) {
-      this.viewedSection(this.props.section.id)
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeoutID)
-  }
-
-  componentDidUpdate(prevProps) {
-    const { id } = this.props.section
-    const sectionChanged = get(prevProps, 'section.id') !== id
-
-    if (sectionChanged) {
-      this.viewedSection(id)
-    }
-  }
-
-  render() {
-    const { loading, section, chapter } = this.props
-    let headerContent = null,
-      sectionContent = null,
-      footerContent = null
-
-    if (loading) {
-      headerContent = (
-        <h1>
-          <Skeleton />
-        </h1>
-      )
-      sectionContent = <Skeleton count={7} />
-    } else if (!section) {
-      headerContent = (
-        <h1>
-          <span role="img" aria-label="magnifying glass">
-            🔍
-          </span>{' '}
-          404 page not found
-        </h1>
-      )
-    } else {
-      if (chapter.number !== null) {
-        headerContent = (
-          <div>
-            <h1>{section.title}</h1>
-            <h2>
-              {'Chapter ' + chapter.number}
-              <span className="Section-number-divider" />
-              {'Section ' + section.number}
-            </h2>
-          </div>
-        )
-      } else {
-        headerContent = <h1>{chapter.title}</h1>
-      }
-
-      sectionContent = section.content
-      footerContent = `Viewed ${section.views.toLocaleString()} times`
-    }
-
-    return (
-      <section className="Section">
-        <div className="Section-header-wrapper">
-          <header className="Section-header">{headerContent}</header>
-        </div>
-        <div className="Section-content">{sectionContent}</div>
-        <footer>{footerContent}</footer>
-      </section>
-    )
-  }
-}
-
-Section.propTypes = {
-  section: PropTypes.shape({
-    title: PropTypes.string,
-    number: PropTypes.number,
-    content: PropTypes.string,
-    views: PropTypes.number
-  }),
-  chapter: PropTypes.shape({
-    title: PropTypes.string,
-    number: PropTypes.number
-  }),
-  loading: PropTypes.bool.isRequired,
-  viewedSection: PropTypes.func.isRequired
-}
 
 const SECTION_BY_ID_QUERY = gql`
   query SectionContent($id: String!) {
@@ -156,58 +54,110 @@ const VIEWED_SECTION_MUTATION = gql`
   }
 `
 
-const SectionWithData = ({ location: { state, pathname } }) => {
+export default () => {
+  const { state, pathname } = useLocation()
+
   const page = deslugify(pathname)
 
-  let query, variables, createProps
+  let query, variables
 
   if (state) {
     query = SECTION_BY_ID_QUERY
     variables = { id: state.section.id }
-    createProps = ({ data, loading }) => ({
-      section: {
-        ...state.section,
-        content: get(data, 'section.content'),
-        views: get(data, 'section.views')
-      },
-      chapter: state.chapter,
-      loading
-    })
   } else if (page.chapterTitle) {
     query = SECTION_BY_CHAPTER_TITLE_QUERY
     variables = { title: page.chapterTitle }
-    createProps = ({ data, loading }) => ({
-      section: get(data, 'chapterByTitle.section'),
-      chapter: {
-        ...data.chapterByTitle,
-        number: null
-      },
-      loading
-    })
-  } else if (page.chapterNumber) {
+  } else {
     query = SECTION_BY_NUMBER_QUERY
-    variables = page
-    createProps = ({ data, loading }) => ({
-      section: get(data, 'chapterByNumber.section'),
-      chapter: data.chapterByNumber,
-      loading
-    })
+    variables = pick(page, 'chapterNumber', 'sectionNumber')
+  }
+
+  const { data, loading } = useQuery(query, { variables })
+
+  let section, chapter
+
+  // eslint-disable-next-line default-case
+  switch (query) {
+    case SECTION_BY_ID_QUERY:
+      section = {
+        ...state.section,
+        content: get(data, 'section.content'),
+        views: get(data, 'section.views'),
+      }
+      chapter = state.chapter
+      break
+    case SECTION_BY_CHAPTER_TITLE_QUERY:
+      section = get(data, 'chapterByTitle.section')
+      chapter = {
+        ...get(data, 'chapterByTitle'),
+        number: null,
+      }
+      break
+    case SECTION_BY_NUMBER_QUERY:
+      section = get(data, 'chapterByNumber.section')
+      chapter = get(data, 'chapterByNumber')
+      break
+  }
+
+  const [viewedSection] = useMutation(VIEWED_SECTION_MUTATION)
+
+  const id = get(section, 'id')
+
+  useEffect(() => {
+    const timeoutID = setTimeout(() => {
+      viewedSection({ variables: { id } })
+    }, 2000)
+
+    return () => clearTimeout(timeoutID)
+  }, [id, viewedSection])
+
+  let headerContent = null,
+    sectionContent = null,
+    footerContent = null
+
+  if (loading) {
+    headerContent = (
+      <h1>
+        <Skeleton />
+      </h1>
+    )
+    sectionContent = <Skeleton count={7} />
+  } else if (!section) {
+    headerContent = (
+      <h1>
+        <span role="img" aria-label="magnifying glass">
+          🔍
+        </span>{' '}
+        404 page not found
+      </h1>
+    )
+  } else {
+    if (chapter.number !== null) {
+      headerContent = (
+        <div>
+          <h1>{section.title}</h1>
+          <h2>
+            {'Chapter ' + chapter.number}
+            <span className="Section-number-divider" />
+            {'Section ' + section.number}
+          </h2>
+        </div>
+      )
+    } else {
+      headerContent = <h1>{chapter.title}</h1>
+    }
+
+    sectionContent = section.content
+    footerContent = `Viewed ${section.views.toLocaleString()} times`
   }
 
   return (
-    <Query query={query} variables={variables}>
-      {queryInfo => (
-        <Mutation mutation={VIEWED_SECTION_MUTATION}>
-          {viewedSection => (
-            <Section
-              {...createProps(queryInfo)}
-              viewedSection={viewedSection}
-            />
-          )}
-        </Mutation>
-      )}
-    </Query>
+    <section className="Section">
+      <div className="Section-header-wrapper">
+        <header className="Section-header">{headerContent}</header>
+      </div>
+      <div className="Section-content">{sectionContent}</div>
+      <footer>{footerContent}</footer>
+    </section>
   )
 }
-
-export default withRouter(SectionWithData)

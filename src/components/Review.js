@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import {
   Card,
   CardHeader,
@@ -9,121 +8,104 @@ import {
   Typography,
   Avatar,
   Menu,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core'
 import {
   MoreVert,
   Favorite,
   FavoriteBorder,
   Star,
-  StarBorder
+  StarBorder,
 } from '@material-ui/icons'
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import times from 'lodash/times'
+
+const FavoriteButton = ({ favorited }) => {
+  function toggleFavorite() {}
+
+  return (
+    <IconButton onClick={toggleFavorite}>
+      {favorited ? <Favorite /> : <FavoriteBorder />}
+    </IconButton>
+  )
+}
 
 const StarRating = ({ rating }) => (
   <div>
-    {times(rating, i => (
+    {times(rating, (i) => (
       <Star key={i} />
     ))}
-    {times(5 - rating, i => (
+    {times(5 - rating, (i) => (
       <StarBorder key={i} />
     ))}
   </div>
 )
 
-class Review extends Component {
-  state = {
-    anchorEl: null
+export default ({ review }) => {
+  const { text, stars, createdAt, favorited, author } = review
+
+  const [anchorEl, setAnchorEl] = useState()
+
+  function openMenu(event) {
+    setAnchorEl(event.currentTarget)
   }
 
-  openMenu = event => {
-    this.setState({ anchorEl: event.currentTarget })
+  function closeMenu() {
+    setAnchorEl(null)
   }
 
-  closeMenu = () => {
-    this.setState({ anchorEl: null })
+  function editReview() {
+    closeMenu()
   }
 
-  edit = () => {
-    this.closeMenu()
+  function deleteReview() {
+    closeMenu()
   }
 
-  delete = () => {
-    this.closeMenu()
-  }
+  function toggleFavorite() {}
 
-  toggleFavorite = () => {}
+  const LinkToProfile = ({ children }) => (
+    <a
+      href={`https://github.com/${author.username}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </a>
+  )
 
-  render() {
-    const {
-      review: { text, stars, createdAt, favorited, author }
-    } = this.props
-
-    const linkToProfile = child => (
-      <a
-        href={`https://github.com/${author.username}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {child}
-      </a>
-    )
-
-    return (
-      <div>
-        <Card className="Review">
-          <CardHeader
-            avatar={linkToProfile(
+  return (
+    <div>
+      <Card className="Review">
+        <CardHeader
+          avatar={
+            <LinkToProfile>
               <Avatar alt={author.name} src={author.photo} />
-            )}
-            action={
-              <IconButton onClick={this.openMenu}>
-                <MoreVert />
-              </IconButton>
-            }
-            title={linkToProfile(author.name)}
-            subheader={stars && <StarRating rating={stars} />}
-          />
-          <CardContent>
-            <Typography component="p">{text}</Typography>
-          </CardContent>
-          <CardActions>
-            <Typography className="Review-created">
-              {distanceInWordsToNow(createdAt)} ago
-            </Typography>
-            <div className="Review-spacer" />
-            <IconButton onClick={this.toggleFavorite}>
-              {favorited ? <Favorite /> : <FavoriteBorder />}
+            </LinkToProfile>
+          }
+          action={
+            <IconButton onClick={openMenu}>
+              <MoreVert />
             </IconButton>
-          </CardActions>
-        </Card>
-        <Menu
-          anchorEl={this.state.anchorEl}
-          open={Boolean(this.state.anchorEl)}
-          onClose={this.closeMenu}
-        >
-          <MenuItem onClick={this.edit}>Edit</MenuItem>
-          <MenuItem onClick={this.delete}>Delete</MenuItem>
-        </Menu>
-      </div>
-    )
-  }
+          }
+          title={<LinkToProfile>{author.name}</LinkToProfile>}
+          subheader={stars && <StarRating rating={stars} />}
+        />
+        <CardContent>
+          <Typography component="p">{text}</Typography>
+        </CardContent>
+        <CardActions>
+          <Typography className="Review-created">
+            {formatDistanceToNow(createdAt)} ago
+          </Typography>
+          <div className="Review-spacer" />
+          <FavoriteButton {...review} />
+        </CardActions>
+      </Card>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+        <MenuItem onClick={editReview}>Edit</MenuItem>
+        <MenuItem onClick={deleteReview}>Delete</MenuItem>
+      </Menu>
+    </div>
+  )
 }
-
-Review.propTypes = {
-  review: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    stars: PropTypes.number,
-    createdAt: PropTypes.number.isRequired,
-    favorited: PropTypes.bool,
-    author: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      photo: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired
-    })
-  }).isRequired
-}
-
-export default Review
