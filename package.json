@@ -53,7 +53,7 @@
     "recompose": "^0.26.0",
     "revalidate": "^1.2.0",
     "scroll-into-view-if-needed": "^2.2.0",
-    "serve": "^9.1.0",
+    "serve": "^10.1.2",
     "subscriptions-transport-ws": "^0.9.16",
     "typed.js": "^2.0.6"
   },
