@@ -18,7 +18,7 @@ export const REVIEW_ENTRY = gql`
 
 export const REVIEWS_QUERY = gql`
   query ReviewsQuery {
-    reviews(limit: 20) {
+    reviews(limit: -1) {
       ...ReviewEntry
     }
   }
