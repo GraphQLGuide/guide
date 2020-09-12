@@ -1,77 +1,49 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import get from 'lodash/get'
 import { Favorite, Add } from '@material-ui/icons'
 import { Fab, Modal } from '@material-ui/core'
 
-import ReviewList from './ReviewList'
-import { withUser } from '../lib/withUser'
+import { useUser } from '../lib/useUser'
 import ReviewForm from './ReviewForm'
+import ReviewList from './ReviewList'
 
-class Reviews extends Component {
-  state = {
-    addingReview: false
-  }
+export default () => {
+  const [addingReview, setAddingReview] = useState(false)
 
-  addReview = () => {
-    this.setState({ addingReview: true })
-  }
+  const { user } = useUser()
+  const favoriteCount = get(user, 'favoriteReviews.length')
 
-  doneAddingReview = () => {
-    this.setState({ addingReview: false })
-  }
+  return (
+    <main className="Reviews mui-fixed">
+      <div className="Reviews-header-wrapper">
+        <header className="Reviews-header">
+          {favoriteCount ? (
+            <div className="Reviews-favorite-count">
+              <Favorite />
+              {favoriteCount}
+            </div>
+          ) : null}
+          <h1>Reviews</h1>
+        </header>
+      </div>
 
-  render() {
-    const { user } = this.props
-    const favoriteCount = get(user, 'favoriteReviews.length')
+      <ReviewList />
 
-    return (
-      <main className="Reviews mui-fixed">
-        <div className="Reviews-header-wrapper">
-          <header className="Reviews-header">
-            {favoriteCount ? (
-              <div className="Reviews-favorite-count">
-                <Favorite />
-                {favoriteCount}
-              </div>
-            ) : null}
-            <h1>Reviews</h1>
-          </header>
+      {user && (
+        <div>
+          <Fab
+            onClick={() => setAddingReview(true)}
+            color="primary"
+            className="Reviews-add"
+          >
+            <Add />
+          </Fab>
+
+          <Modal open={addingReview} onClose={() => setAddingReview(false)}>
+            <ReviewForm done={() => setAddingReview(false)} />
+          </Modal>
         </div>
-
-        <ReviewList user={user} />
-
-        {user && (
-          <div>
-            <Fab
-              onClick={this.addReview}
-              color="primary"
-              className="Reviews-add"
-            >
-              <Add />
-            </Fab>
-
-            <Modal
-              open={this.state.addingReview}
-              onClose={this.doneAddingReview}
-            >
-              <ReviewForm done={this.doneAddingReview} user={user} />
-            </Modal>
-          </div>
-        )}
-      </main>
-    )
-  }
+      )}
+    </main>
+  )
 }
-
-Reviews.propTypes = {
-  user: PropTypes.shape({
-    favoriteReviews: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired
-      })
-    )
-  })
-}
-
-export default withUser(Reviews)
