@@ -1,10 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-import { withUser } from '../lib/withUser'
+import { useUser } from '../lib/useUser'
 import { login, logout } from '../lib/auth'
 
-const Profile = ({ user, loggingIn }) => {
+export default () => {
+  const { user, loggingIn } = useUser()
+
   if (loggingIn) {
     return (
       <main className="Profile">
@@ -59,14 +60,3 @@ const Profile = ({ user, loggingIn }) => {
     )
   }
 }
-
-Profile.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    hasPurchased: PropTypes.string
-  }),
-  loggingIn: PropTypes.bool.isRequired
-}
-
-export default withUser(Profile)
