@@ -1,89 +1,47 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
-import { propType } from 'graphql-anywhere'
+import React, { useEffect } from 'react'
+import { useQuery, NetworkStatus } from '@apollo/client'
+import throttle from 'lodash/throttle'
 
 import Review from './Review'
+import { REVIEWS_QUERY } from '../graphql/Review'
 
-import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
-
-const FETCH_MORE = 3
-
-class ReviewList extends Component {
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
-  }
-
-  handleScroll = event => {
-    if (this.props.networkStatus === FETCH_MORE) {
-      return
-    }
-
-    const currentScrollHeight = window.scrollY + window.innerHeight
-    const pixelsFromBottom =
-      document.documentElement.scrollHeight - currentScrollHeight
-    if (pixelsFromBottom < 250) {
-      this.props.loadMoreReviews()
-    }
-  }
-
-  render() {
-    const { reviews, user } = this.props
-
-    return (
-      <div className="Reviews-list">
-        <div className="Reviews-content">
-          {reviews &&
-            reviews.map(review => (
-              <Review key={review.id} review={review} user={user} />
-            ))}
-        </div>
-        <div className="Spinner" />
-      </div>
-    )
-  }
-}
-
-ReviewList.propTypes = {
-  reviews: PropTypes.arrayOf(propType(REVIEW_ENTRY)),
-  user: PropTypes.object,
-  orderBy: PropTypes.string.isRequired
-}
-
-const withReviews = graphql(REVIEWS_QUERY, {
-  options: ({ orderBy }) => ({
-    errorPolicy: 'all',
+export default ({ orderBy }) => {
+  const { data, fetchMore, networkStatus } = useQuery(REVIEWS_QUERY, {
     variables: { limit: 10, orderBy },
-    notifyOnNetworkStatusChange: true
-  }),
-  props: ({ data: { reviews, fetchMore, networkStatus } }) => ({
-    reviews,
-    networkStatus,
-    loadMoreReviews: () => {
-      if (!reviews) {
-        return
-      }
-
-      const lastId = reviews[reviews.length - 1].id
-      return fetchMore({
-        variables: { after: lastId },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult.reviews) {
-            return previousResult
-          }
-
-          return {
-            ...previousResult,
-            reviews: [...previousResult.reviews, ...fetchMoreResult.reviews]
-          }
-        }
-      })
-    }
+    errorPolicy: 'all',
+    notifyOnNetworkStatusChange: true,
   })
-})
 
-export default withReviews(ReviewList)
+  const reviews = (data && data.reviews) || []
+
+  const onScroll = throttle(() => {
+    if (networkStatus !== NetworkStatus.fetchMore) {
+      const currentScrollHeight = window.scrollY + window.innerHeight
+      const pixelsFromBottom =
+        document.documentElement.scrollHeight - currentScrollHeight
+      const closeToBottom = window.scrollY > 0 && pixelsFromBottom < 250
+
+      if (closeToBottom && reviews.length > 0) {
+        const lastId = reviews[reviews.length - 1].id
+
+        fetchMore({ variables: { after: lastId, orderBy } })
+      }
+    }
+  }, 100)
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [onScroll])
+
+  return (
+    <div className="Reviews-content">
+      {reviews.map((review) => (
+        <Review key={review.id} review={review} />
+      ))}
+      <div className="Spinner" />
+    </div>
+  )
+}
