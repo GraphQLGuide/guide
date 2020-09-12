@@ -24,3 +24,13 @@ export const REVIEWS_QUERY = gql`
   }
   ${REVIEW_ENTRY}
 `
+
+export const REVIEW_QUERY_INITIAL_VARIABLES = {
+  skip: 0,
+  limit: 10,
+}
+
+export const REVIEWS_QUERY_FROM_CACHE = {
+  query: REVIEWS_QUERY,
+  variables: REVIEW_QUERY_INITIAL_VARIABLES,
+}
