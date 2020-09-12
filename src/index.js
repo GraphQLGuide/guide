@@ -1,21 +1,21 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { ApolloProvider } from 'react-apollo'
+import { render } from 'react-dom'
+import { ApolloProvider } from '@apollo/client'
 import { BrowserRouter } from 'react-router-dom'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 import './index.css'
-import registerServiceWorker from './registerServiceWorker'
 import App from './components/App'
 import { apollo } from './lib/apollo'
 
 const GRAPHQL_PINK = '#e10098'
 
 const theme = createMuiTheme({
-  palette: { primary: { main: GRAPHQL_PINK } }
+  palette: { primary: { main: GRAPHQL_PINK } },
+  typography: { useNextVariants: true },
 })
 
-ReactDOM.render(
+render(
   <BrowserRouter>
     <ApolloProvider client={apollo}>
       <MuiThemeProvider theme={theme}>
@@ -25,7 +25,5 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById('root')
 )
-
-registerServiceWorker()
 
 module.hot.accept()

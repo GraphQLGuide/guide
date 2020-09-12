@@ -1,4 +1,4 @@
-import { onError } from 'apollo-link-error'
+import { onError } from '@apollo/client/link/error'
 
 const KNOWN_ERRORS = ['unauthorized']
 
@@ -10,7 +10,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
 
   if (graphQLErrors) {
     const unknownErrors = graphQLErrors.filter(
-      error => !KNOWN_ERRORS.includes(error.message)
+      (error) => !KNOWN_ERRORS.includes(error.message)
     )
 
     if (unknownErrors.length) {
