@@ -3,8 +3,8 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { getAuthToken } from 'auth0-helpers'
-
 import { errorLink } from './errorLink'
+import find from 'lodash/find'
 
 const httpLink = new HttpLink({
   uri: 'https://api.graphql.guide/graphql',
@@ -47,6 +47,28 @@ const networkLink = split(
 
 const link = errorLink.concat(networkLink)
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        reviews: {
+          merge(existing = [], incoming, { readField }) {
+            const notAlreadyInCache = (review) =>
+              !find(
+                existing,
+                (existingReview) =>
+                  readField('id', existingReview) === readField('id', review)
+              )
+
+            const newReviews = incoming.filter(notAlreadyInCache)
+
+            return [...existing, ...newReviews]
+          },
+          keyArgs: false,
+        },
+      },
+    },
+  },
+})
 
 export const apollo = new ApolloClient({ link, cache })

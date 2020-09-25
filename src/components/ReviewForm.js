@@ -8,7 +8,7 @@ import classNames from 'classnames'
 
 import { useUser } from '../lib/useUser'
 import { validateReview } from '../lib/validators'
-import { REVIEW_ENTRY, REVIEWS_QUERY_FROM_CACHE } from '../graphql/Review'
+import { REVIEW_ENTRY } from '../graphql/Review'
 
 const GREY = '#0000008a'
 
@@ -39,11 +39,29 @@ export default ({ done, review }) => {
   const { user } = useUser()
 
   const [addReview] = useMutation(ADD_REVIEW_MUTATION, {
-    update: (store, { data: { createReview: newReview } }) => {
-      const { reviews } = store.readQuery(REVIEWS_QUERY_FROM_CACHE)
-      store.writeQuery({
-        ...REVIEWS_QUERY_FROM_CACHE,
-        data: { reviews: [newReview, ...reviews] },
+    update: (cache, { data: { createReview: newReview } }) => {
+      cache.modify({
+        fields: {
+          reviews(existingReviewRefs = []) {
+            const newReviewRef = cache.writeFragment({
+              data: newReview,
+              fragment: gql`
+                fragment NewReview on Review {
+                  id
+                  text
+                  stars
+                  createdAt
+                  favorited
+                  author {
+                    id
+                  }
+                }
+              `,
+            })
+
+            return [newReviewRef, ...existingReviewRefs]
+          },
+        },
       })
     },
   })

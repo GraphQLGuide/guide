@@ -1,17 +1,13 @@
 import React, { useEffect } from 'react'
 import { useQuery, NetworkStatus } from '@apollo/client'
 import throttle from 'lodash/throttle'
-import find from 'lodash/find'
 
 import Review from './Review'
-import {
-  REVIEWS_QUERY,
-  REVIEW_QUERY_INITIAL_VARIABLES,
-} from '../graphql/Review'
+import { REVIEWS_QUERY } from '../graphql/Review'
 
 export default () => {
   const { data, fetchMore, networkStatus } = useQuery(REVIEWS_QUERY, {
-    variables: REVIEW_QUERY_INITIAL_VARIABLES,
+    variables: { skip: 0, limit: 10 },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true,
   })
@@ -25,28 +21,8 @@ export default () => {
         document.documentElement.scrollHeight - currentScrollHeight
       const closeToBottom = window.scrollY > 0 && pixelsFromBottom < 250
 
-      if (closeToBottom) {
-        fetchMore({
-          variables: { skip: reviews.length - 5, limit: 15 },
-          updateQuery: (previousResult, { fetchMoreResult }) => {
-            const noNewResults =
-              !fetchMoreResult ||
-              !fetchMoreResult.reviews ||
-              fetchMoreResult.reviews.length === 0
-
-            if (noNewResults) {
-              return previousResult
-            }
-
-            const newReviews = fetchMoreResult.reviews.filter(
-              ({ id }) => !find(previousResult.reviews, { id })
-            )
-
-            return {
-              reviews: [...previousResult.reviews, ...newReviews],
-            }
-          },
-        })
+      if (closeToBottom && reviews.length > 0) {
+        fetchMore({ variables: { skip: reviews.length } })
       }
     }
   }, 100)

@@ -29,7 +29,6 @@ import times from 'lodash/times'
 import find from 'lodash/find'
 import { gql, useMutation } from '@apollo/client'
 
-import { REVIEWS_QUERY_FROM_CACHE } from '../graphql/Review'
 import { useUser } from '../lib/useUser'
 import ReviewForm from './ReviewForm'
 
@@ -130,24 +129,12 @@ export default ({ review }) => {
   const [editing, setEditing] = useState(false)
 
   const [removeReview] = useMutation(REMOVE_REVIEW_MUTATION, {
-    options: { errorPolicy: 'ignore' },
+    errorPolicy: 'ignore',
     update: (cache) => {
-      const { reviews } = cache.readQuery(REVIEWS_QUERY_FROM_CACHE)
-      cache.writeQuery({
-        ...REVIEWS_QUERY_FROM_CACHE,
-        data: { reviews: reviews.filter((review) => review.id !== id) },
-      })
-
-      const { currentUser } = cache.readQuery({ query: READ_USER_FAVORITES })
-      cache.writeQuery({
-        query: READ_USER_FAVORITES,
-        data: {
-          currentUser: {
-            ...currentUser,
-            favoriteReviews: currentUser.favoriteReviews.filter(
-              (review) => review.id !== id
-            ),
-          },
+      cache.modify({
+        fields: {
+          reviews: (reviewRefs, { readField }) =>
+            reviewRefs.filter((reviewRef) => readField('id', reviewRef) !== id),
         },
       })
     },
