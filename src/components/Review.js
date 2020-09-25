@@ -135,6 +135,16 @@ export default ({ review }) => {
         fields: {
           reviews: (reviewRefs, { readField }) =>
             reviewRefs.filter((reviewRef) => readField('id', reviewRef) !== id),
+          currentUser(currentUserRef) {
+            cache.modify({
+              id: currentUserRef.__ref,
+              fields: {
+                favoriteReviews: (reviews, { readField }) =>
+                  reviews.filter((review) => readField('id', review) !== id),
+              },
+            })
+            return currentUserRef
+          },
         },
       })
     },
