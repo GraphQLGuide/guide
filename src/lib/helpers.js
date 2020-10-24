@@ -36,3 +36,8 @@ export const deslugify = (path) => {
       }
     : { chapterTitle: chapterSlug }
 }
+
+export const countSentences = (text) => {
+  const matches = text.match(/\w[.?!](\s|$)/g)
+  return matches ? matches.length : 1
+}

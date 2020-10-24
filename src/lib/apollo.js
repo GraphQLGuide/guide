@@ -3,8 +3,10 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { getAuthToken } from 'auth0-helpers'
-import { errorLink } from './errorLink'
 import find from 'lodash/find'
+
+import { errorLink } from './errorLink'
+import { countSentences } from './helpers'
 
 const httpLink = new HttpLink({
   uri: 'https://api.graphql.guide/graphql',
@@ -64,7 +66,34 @@ const cache = new InMemoryCache({
 
             return [...existing, ...newReviews]
           },
-          keyArgs: ['orderBy'],
+          keyArgs: false,
+          read(
+            reviewRefs,
+            { args: { orderBy, minStars, minSentences }, readField }
+          ) {
+            if (!reviewRefs) {
+              return reviewRefs
+            }
+
+            const filtered = reviewRefs.filter((reviewRef) => {
+              const stars = readField('stars', reviewRef),
+                text = readField('text', reviewRef)
+              return stars >= minStars && countSentences(text) >= minSentences
+            })
+
+            filtered.sort((reviewRefA, reviewRefB) => {
+              const createdAtA = readField('createdAt', reviewRefA),
+                createdAtB = readField('createdAt', reviewRefB)
+
+              if (orderBy === 'createdAt_DESC') {
+                return createdAtB - createdAtA
+              } else {
+                return createdAtA - createdAtB
+              }
+            })
+
+            return filtered
+          },
         },
       },
     },

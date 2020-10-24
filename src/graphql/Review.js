@@ -17,8 +17,20 @@ export const REVIEW_ENTRY = gql`
 `
 
 export const REVIEWS_QUERY = gql`
-  query ReviewsQuery($after: ObjID, $limit: Int, $orderBy: ReviewOrderBy) {
-    reviews(after: $after, limit: $limit, orderBy: $orderBy) {
+  query ReviewsQuery(
+    $after: ObjID
+    $limit: Int
+    $orderBy: ReviewOrderBy
+    $minStars: Int
+    $minSentences: Int
+  ) {
+    reviews(
+      after: $after
+      limit: $limit
+      orderBy: $orderBy
+      minStars: $minStars
+      minSentences: $minSentences
+    ) {
       ...ReviewEntry
     }
   }

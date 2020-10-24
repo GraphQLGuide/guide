@@ -5,11 +5,20 @@ import throttle from 'lodash/throttle'
 import Review from './Review'
 import { REVIEWS_QUERY } from '../graphql/Review'
 
-export default ({ orderBy }) => {
+export default ({ orderBy, minStars, minSentences }) => {
+  const variables = { limit: 10, orderBy }
+  if (minStars) {
+    variables.minStars = parseInt(minStars)
+  }
+  if (minSentences) {
+    variables.minSentences = parseInt(minSentences)
+  }
+
   const { data, fetchMore, networkStatus } = useQuery(REVIEWS_QUERY, {
-    variables: { limit: 10, orderBy },
+    variables,
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
   })
 
   const reviews = (data && data.reviews) || []
