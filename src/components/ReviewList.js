@@ -1,137 +1,90 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { graphql } from 'react-apollo'
-import { propType } from 'graphql-anywhere'
-import reject from 'lodash/reject'
+import React, { useEffect } from 'react'
+import { useQuery, NetworkStatus, gql } from '@apollo/client'
+import throttle from 'lodash/throttle'
 
 import Review from './Review'
-
 import {
   REVIEWS_QUERY,
-  REVIEW_ENTRY,
   ON_REVIEW_CREATED_SUBSCRIPTION,
-  ON_REVIEW_UPDATED_SUBSCRIPTION,
-  ON_REVIEW_DELETED_SUBSCRIPTION
 } from '../graphql/Review'
+import { cache } from '../lib/apollo'
 
-const FETCH_MORE = 3
-
-class ReviewList extends Component {
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-    this.props.subscribeToReviewUpdates()
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
-  }
-
-  handleScroll = event => {
-    if (this.props.networkStatus === FETCH_MORE) {
-      return
+export default ({ orderBy }) => {
+  const { data, fetchMore, networkStatus, subscribeToMore } = useQuery(
+    REVIEWS_QUERY,
+    {
+      variables: { limit: 10, orderBy },
+      errorPolicy: 'all',
+      notifyOnNetworkStatusChange: true,
     }
+  )
 
-    const currentScrollHeight = window.scrollY + window.innerHeight
-    const pixelsFromBottom =
-      document.documentElement.scrollHeight - currentScrollHeight
-    if (pixelsFromBottom < 250) {
-      this.props.loadMoreReviews()
-    }
-  }
+  useEffect(() => {
+    subscribeToMore({
+      document: ON_REVIEW_CREATED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        cache.modify({
+          fields: {
+            reviews(existingReviewRefs = [], { storeFieldName }) {
+              if (!storeFieldName.includes('createdAt_DESC')) {
+                return existingReviewRefs
+              }
 
-  render() {
-    const { reviews, user } = this.props
+              const newReview = subscriptionData.data.reviewCreated
 
-    return (
-      <div className="Reviews-list">
-        <div className="Reviews-content">
-          {reviews &&
-            reviews.map(review => (
-              <Review key={review.id} review={review} user={user} />
-            ))}
-        </div>
-        <div className="Spinner" />
-      </div>
-    )
-  }
-}
+              const newReviewRef = cache.writeFragment({
+                data: newReview,
+                fragment: gql`
+                  fragment NewReview on Review {
+                    id
+                    text
+                    stars
+                    createdAt
+                    favorited
+                    author {
+                      id
+                    }
+                  }
+                `,
+              })
 
-ReviewList.propTypes = {
-  reviews: PropTypes.arrayOf(propType(REVIEW_ENTRY)),
-  user: PropTypes.object,
-  orderBy: PropTypes.string.isRequired
-}
+              return [newReviewRef, ...existingReviewRefs]
+            },
+          },
+        })
+        return prev
+      },
+    })
+  }, [orderBy, subscribeToMore])
 
-const withReviews = graphql(REVIEWS_QUERY, {
-  options: ({ orderBy }) => ({
-    errorPolicy: 'all',
-    variables: { limit: 10, orderBy },
-    notifyOnNetworkStatusChange: true
-  }),
-  props: ({
-    data: { reviews, fetchMore, networkStatus, subscribeToMore },
-    ownProps: { orderBy }
-  }) => ({
-    reviews,
-    networkStatus,
-    loadMoreReviews: () => {
-      if (!reviews) {
-        return
+  const reviews = (data && data.reviews) || []
+
+  const onScroll = throttle(() => {
+    if (networkStatus !== NetworkStatus.fetchMore) {
+      const currentScrollHeight = window.scrollY + window.innerHeight
+      const pixelsFromBottom =
+        document.documentElement.scrollHeight - currentScrollHeight
+      const closeToBottom = window.scrollY > 0 && pixelsFromBottom < 250
+
+      if (closeToBottom && reviews.length > 0) {
+        const lastId = reviews[reviews.length - 1].id
+
+        fetchMore({ variables: { after: lastId, orderBy } })
       }
-
-      const lastId = reviews[reviews.length - 1].id
-      return fetchMore({
-        variables: { after: lastId },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult.reviews) {
-            return previousResult
-          }
-
-          return {
-            ...previousResult,
-            reviews: [...previousResult.reviews, ...fetchMoreResult.reviews]
-          }
-        }
-      })
-    },
-    subscribeToReviewUpdates: () => {
-      subscribeToMore({
-        document: ON_REVIEW_CREATED_SUBSCRIPTION,
-        updateQuery: (prev, { subscriptionData }) => {
-          // Assuming infinite reviews, we don't need to add new reviews to
-          // Oldest list
-          if (orderBy === 'createdAt_ASC') {
-            return prev
-          }
-
-          const newReview = subscriptionData.data.reviewCreated
-          return {
-            reviews: [newReview, ...prev.reviews]
-          }
-        }
-      })
-      subscribeToMore({
-        document: ON_REVIEW_UPDATED_SUBSCRIPTION,
-        updateQuery: (prev, { subscriptionData }) => {
-          const updatedReview = subscriptionData.data.reviewUpdated
-          return {
-            reviews: prev.reviews.map(review =>
-              review.id === updatedReview.id ? updatedReview : review
-            )
-          }
-        }
-      })
-      subscribeToMore({
-        document: ON_REVIEW_DELETED_SUBSCRIPTION,
-        updateQuery: (prev, { subscriptionData }) => {
-          const deletedId = subscriptionData.data.reviewDeleted
-          return {
-            reviews: reject(prev.reviews, { id: deletedId })
-          }
-        }
-      })
     }
-  })
-})
+  }, 100)
 
-export default withReviews(ReviewList)
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [onScroll])
+
+  return (
+    <div className="Reviews-content">
+      {reviews.map((review) => (
+        <Review key={review.id} review={review} />
+      ))}
+      <div className="Spinner" />
+    </div>
+  )
+}
