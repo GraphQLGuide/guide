@@ -1,98 +1,41 @@
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloLink, split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { createHttpLink } from 'apollo-link-http'
-import { getMainDefinition } from 'apollo-utilities'
-import { setContext } from 'apollo-link-context'
-import { getAuthToken } from 'auth0-helpers'
-import { RestLink } from 'apollo-link-rest'
-import gql from 'graphql-tag'
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
+import find from 'lodash/find'
 
-import { errorLink } from './errorLink'
+import link from './link'
 
-const httpLink = createHttpLink({
-  uri: 'https://api.graphql.guide/graphql'
-})
+export const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        reviews: {
+          merge(existing = [], incoming, { readField }) {
+            const notAlreadyInCache = (review) =>
+              !find(
+                existing,
+                (existingReview) =>
+                  readField('id', existingReview) === readField('id', review)
+              )
 
-const authLink = setContext(async (_, { headers }) => {
-  const token = await getAuthToken({
-    doLoginIfTokenExpired: true
-  })
+            const newReviews = incoming.filter(notAlreadyInCache)
 
-  if (token) {
-    return {
-      headers: {
-        ...headers,
-        authorization: `Bearer ${token}`
-      }
-    }
-  } else {
-    return { headers }
-  }
-})
-
-const authedHttpLink = authLink.concat(httpLink)
-
-const wsLink = new WebSocketLink({
-  uri: `wss://api.graphql.guide/subscriptions`,
-  options: {
-    reconnect: true
-  }
-})
-
-const networkLink = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
+            return [...existing, ...newReviews]
+          },
+          keyArgs: ['orderBy'],
+        },
+      },
+    },
+    Section: {
+      fields: {
+        scrollY: (scrollY) => scrollY || 0,
+      },
+    },
   },
-  wsLink,
-  authedHttpLink
-)
-
-const restLink = new RestLink({
-  uri: 'https://api.openweathermap.org/data/2.5/'
 })
-
-const link = ApolloLink.from([errorLink, restLink, networkLink])
-
-const cache = new InMemoryCache()
 
 const typeDefs = gql`
-  type Query {
-    loginInProgress: Boolean
-  }
-  type Mutation {
-    setSectionScroll(id: String!, scrollY: Int!): Boolean
+  extend type Section {
+    scrollY: Int
   }
 `
 
-export const apollo = new ApolloClient({
-  link,
-  cache,
-  typeDefs,
-  resolvers: {
-    Section: {
-      scrollY: () => 0
-    },
-    Mutation: {
-      setSectionScroll: (_, { id, scrollY }, { cache, getCacheKey }) => {
-        const cacheKey = getCacheKey({ __typename: 'Section', id })
-        cache.writeData({ id: cacheKey, data: { scrollY } })
-        return true
-      }
-    }
-  }
-})
-
-const initializeCache = () => {
-  cache.writeData({
-    data: {
-      loginInProgress: false
-    }
-  })
-}
-
-initializeCache()
-
-apollo.onResetStore(initializeCache)
+export const apollo = new ApolloClient({ link, cache, typeDefs })
