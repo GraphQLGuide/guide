@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Switch, Route, Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
 
@@ -21,27 +21,21 @@ const Book = ({ user }) => (
   </div>
 )
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <StarCount />
-          <Link className="App-home-link" to="/">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">The GraphQL Guide</h1>
-          </Link>
-          <CurrentUser />
-          <CurrentTemperature />
-        </header>
-        <Switch>
-          <Route exact path="/" render={() => <Redirect to="/Preface" />} />
-          <Route exact path="/me" component={Profile} />
-          <Route component={Book} />
-        </Switch>
-      </div>
-    )
-  }
-}
-
-export default App
+export default () => (
+  <div className="App">
+    <header className="App-header">
+      <StarCount />
+      <Link className="App-home-link" to="/">
+        <img src={logo} className="App-logo" alt="logo" />
+        <h1 className="App-title">The GraphQL Guide</h1>
+      </Link>
+      <CurrentUser />
+      <CurrentTemperature />
+    </header>
+    <Switch>
+      <Route exact path="/" render={() => <Redirect to="/Preface" />} />
+      <Route exact path="/me" component={Profile} />
+      <Route component={Book} />
+    </Switch>
+  </div>
+)
