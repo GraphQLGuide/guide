@@ -1,125 +1,16 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import StarInput from 'react-star-rating-component'
 import { Button, TextField } from '@material-ui/core'
 import { Star, StarBorder } from '@material-ui/icons'
-import gql from 'graphql-tag'
-import { graphql, compose } from 'react-apollo'
-import classNames from 'classnames'
+import { gql, useMutation } from '@apollo/client'
 import pick from 'lodash/pick'
+import classNames from 'classnames'
 
+import { useUser } from '../lib/useUser'
 import { validateReview } from '../lib/validators'
-import { REVIEWS_QUERY, REVIEW_ENTRY } from '../graphql/Review'
+import { REVIEW_ENTRY } from '../graphql/Review'
 
 const GREY = '#0000008a'
-
-class ReviewForm extends Component {
-  constructor(props) {
-    super(props)
-
-    const { review } = props
-
-    this.isEditing = !!review
-
-    this.state = {
-      text: review ? review.text : '',
-      stars: review ? review.stars : null,
-      errorText: null
-    }
-  }
-
-  updateText = event => {
-    this.setState({ text: event.target.value })
-  }
-
-  updateStars = stars => {
-    this.setState({ stars })
-  }
-
-  handleSubmit = event => {
-    event.preventDefault()
-    const { text, stars } = this.state
-
-    const errors = validateReview({ text, stars })
-    if (errors.text) {
-      this.setState({ errorText: errors.text })
-      return
-    }
-
-    const { review } = this.props
-
-    if (this.isEditing) {
-      this.props.editReview(review.id, text, stars)
-    } else {
-      this.props.addReview(text, stars)
-    }
-
-    this.props.done()
-  }
-
-  render() {
-    return (
-      <form
-        className={classNames('ReviewForm', { editing: this.isEditing })}
-        autoComplete="off"
-        onSubmit={this.handleSubmit}
-      >
-        <TextField
-          className="AddReview-text"
-          label="Review text"
-          value={this.state.text}
-          onChange={this.updateText}
-          helperText={this.state.errorText}
-          error={!!this.state.errorText}
-          multiline
-          rowsMax="10"
-          margin="normal"
-          autoFocus={true}
-        />
-
-        <StarInput
-          className="AddReview-stars"
-          starCount={5}
-          editing={true}
-          value={this.state.stars}
-          onStarClick={this.updateStars}
-          renderStarIcon={(currentStar, rating) =>
-            currentStar > rating ? <StarBorder /> : <Star />
-          }
-          starColor={GREY}
-          emptyStarColor={GREY}
-          name="stars"
-        />
-
-        <div className="AddReview-actions">
-          <Button className="AddReview-cancel" onClick={this.props.done}>
-            Cancel
-          </Button>
-
-          <Button type="submit" color="primary" className="AddReview-submit">
-            {this.isEditing ? 'Save' : 'Add review'}
-          </Button>
-        </div>
-      </form>
-    )
-  }
-}
-
-ReviewForm.propTypes = {
-  done: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    photo: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired
-  }),
-  addReview: PropTypes.func.isRequired,
-  editReview: PropTypes.func.isRequired,
-  review: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    text: PropTypes.string,
-    stars: PropTypes.number
-  })
-}
 
 const ADD_REVIEW_MUTATION = gql`
   mutation AddReview($input: CreateReviewInput!) {
@@ -130,12 +21,87 @@ const ADD_REVIEW_MUTATION = gql`
   ${REVIEW_ENTRY}
 `
 
-const withAddReview = graphql(ADD_REVIEW_MUTATION, {
-  props: ({ ownProps: { user }, mutate }) => ({
-    addReview: (text, stars) => {
-      mutate({
+const EDIT_REVIEW_MUTATION = gql`
+  mutation EditReview($id: ObjID!, $input: UpdateReviewInput!) {
+    updateReview(id: $id, input: $input) {
+      id
+      text
+      stars
+    }
+  }
+`
+
+export default ({ done, review }) => {
+  const [text, setText] = useState(review ? review.text : ''),
+    [stars, setStars] = useState(review ? review.stars : null),
+    [errorText, setErrorText] = useState()
+
+  const { user } = useUser()
+
+  const [addReview] = useMutation(ADD_REVIEW_MUTATION, {
+    update: (cache, { data: { createReview: newReview } }) => {
+      cache.modify({
+        fields: {
+          reviews(existingReviewRefs = [], { storeFieldName }) {
+            if (!storeFieldName.includes('createdAt_DESC')) {
+              return existingReviewRefs
+            }
+
+            const newReviewRef = cache.writeFragment({
+              data: newReview,
+              fragment: gql`
+                fragment NewReview on Review {
+                  id
+                  text
+                  stars
+                  createdAt
+                  favorited
+                  author {
+                    id
+                  }
+                }
+              `,
+            })
+
+            return [newReviewRef, ...existingReviewRefs]
+          },
+        },
+      })
+    },
+  })
+
+  const [editReview] = useMutation(EDIT_REVIEW_MUTATION)
+
+  const isEditing = !!review
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    const errors = validateReview({ text, stars })
+    if (errors.text) {
+      setErrorText(errors.text)
+      return
+    }
+
+    if (isEditing) {
+      editReview({
         variables: {
-          input: { text, stars }
+          id: review.id,
+          input: { text, stars },
+        },
+        optimisticResponse: {
+          updateReview: {
+            __typename: 'Review',
+            id: review.id,
+            text,
+            stars,
+          },
+        },
+      })
+    } else {
+      addReview({
+        variables: {
+          input: { text, stars },
         },
         optimisticResponse: {
           createReview: {
@@ -150,66 +116,58 @@ const withAddReview = graphql(ADD_REVIEW_MUTATION, {
               'id',
               'name',
               'photo',
-              'username'
-            ])
-          }
+              'username',
+            ]),
+          },
         },
-        update: (store, { data: { createReview: newReview } }) => {
-          const query = {
-            query: REVIEWS_QUERY,
-            variables: { limit: 10, orderBy: 'createdAt_DESC' }
-          }
-
-          let data = store.readQuery(query)
-          data.reviews.unshift(newReview)
-          store.writeQuery({ ...query, data })
-
-          query.variables.orderBy = 'createdAt_ASC'
-
-          try {
-            data = store.readQuery(query)
-            data.reviews.push(newReview)
-            store.writeQuery({ ...query, data })
-          } catch (e) {}
-        }
       })
     }
-  })
-})
 
-const EDIT_REVIEW_MUTATION = gql`
-  mutation EditReview($id: ObjID!, $input: UpdateReviewInput!) {
-    updateReview(id: $id, input: $input) {
-      id
-      text
-      stars
-    }
+    done()
   }
-`
 
-const withEditReview = graphql(EDIT_REVIEW_MUTATION, {
-  props: ({ mutate }) => ({
-    editReview: (id, text, stars) => {
-      mutate({
-        variables: {
-          id,
-          input: { text, stars }
-        },
-        optimisticResponse: {
-          updateReview: {
-            __typename: 'Review',
-            id,
-            text,
-            stars,
-            favorite: true
-          }
+  return (
+    <form
+      className={classNames('ReviewForm', { editing: isEditing })}
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        className="AddReview-text"
+        label="Review text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        helperText={errorText}
+        error={!!errorText}
+        multiline
+        rowsMax="10"
+        margin="normal"
+        autoFocus={true}
+      />
+
+      <StarInput
+        className="AddReview-stars"
+        starCount={5}
+        editing={true}
+        value={stars}
+        onStarClick={(newStars) => setStars(newStars)}
+        renderStarIcon={(currentStar, rating) =>
+          currentStar > rating ? <StarBorder /> : <Star />
         }
-      })
-    }
-  })
-})
+        starColor={GREY}
+        emptyStarColor={GREY}
+        name="stars"
+      />
 
-export default compose(
-  withAddReview,
-  withEditReview
-)(ReviewForm)
+      <div className="AddReview-actions">
+        <Button className="AddReview-cancel" onClick={done}>
+          Cancel
+        </Button>
+
+        <Button type="submit" color="primary" className="AddReview-submit">
+          {isEditing ? 'Save' : 'Add review'}
+        </Button>
+      </div>
+    </form>
+  )
+}
