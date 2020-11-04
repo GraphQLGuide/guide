@@ -1,115 +1,51 @@
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloLink, split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { createHttpLink } from 'apollo-link-http'
-import { getMainDefinition } from 'apollo-utilities'
-import { setContext } from 'apollo-link-context'
-import { getAuthToken } from 'auth0-helpers'
-import { RestLink } from 'apollo-link-rest'
-import gql from 'graphql-tag'
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
+import find from 'lodash/find'
 
-import { errorLink } from './errorLink'
-
-const httpLink = createHttpLink({
-  uri: 'https://api.graphql.guide/graphql'
-})
-
-const authLink = setContext(async (_, { headers }) => {
-  const token = await getAuthToken({
-    doLoginIfTokenExpired: true
-  })
-
-  if (token) {
-    return {
-      headers: {
-        ...headers,
-        authorization: `Bearer ${token}`
-      }
-    }
-  } else {
-    return { headers }
-  }
-})
-
-const authedHttpLink = authLink.concat(httpLink)
-
-const wsLink = new WebSocketLink({
-  uri: `wss://api.graphql.guide/subscriptions`,
-  options: {
-    reconnect: true
-  }
-})
-
-const networkLink = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
-  },
-  wsLink,
-  authedHttpLink
-)
-
-const restLink = new RestLink({
-  uri: 'https://api.openweathermap.org/data/2.5/'
-})
-
-const link = ApolloLink.from([errorLink, restLink, networkLink])
+import link, { spaceXLink } from './link'
 
 export const cache = new InMemoryCache({
-  cacheRedirects: {
+  typePolicies: {
     Query: {
-      section: (_, { id }, { getCacheKey }) =>
-        getCacheKey({ __typename: 'Section', id })
-    }
-  }
+      fields: {
+        reviews: {
+          merge(existing = [], incoming, { readField }) {
+            const notAlreadyInCache = (review) =>
+              !find(
+                existing,
+                (existingReview) =>
+                  readField('id', existingReview) === readField('id', review)
+              )
+
+            const newReviews = incoming.filter(notAlreadyInCache)
+
+            return [...existing, ...newReviews]
+          },
+          keyArgs: ['orderBy'],
+        },
+        section: (_, { args: { id }, toReference }) =>
+          toReference({
+            __typename: 'Section',
+            id,
+          }),
+      },
+    },
+    Section: {
+      fields: {
+        scrollY: (scrollY) => scrollY || 0,
+      },
+    },
+  },
 })
 
 const typeDefs = gql`
-  type Query {
-    loginInProgress: Boolean
-  }
-  type Mutation {
-    setSectionScroll(id: String!, scrollY: Int!): Boolean
+  extend type Section {
+    scrollY: Int
   }
 `
 
-export const apollo = new ApolloClient({
-  link,
-  cache,
-  typeDefs,
-  resolvers: {
-    Section: {
-      scrollY: () => 0
-    },
-    Mutation: {
-      setSectionScroll: (_, { id, scrollY }, { cache, getCacheKey }) => {
-        const cacheKey = getCacheKey({ __typename: 'Section', id })
-        cache.writeData({ id: cacheKey, data: { scrollY } })
-        return true
-      }
-    }
-  }
-})
-
-const initializeCache = () => {
-  cache.writeData({
-    data: {
-      loginInProgress: false
-    }
-  })
-}
-
-initializeCache()
-
-apollo.onResetStore(initializeCache)
+export const apollo = new ApolloClient({ link, cache, typeDefs })
 
 export const apolloSpace = new ApolloClient({
-  link: ApolloLink.from([
-    errorLink,
-    createHttpLink({
-      uri: 'https://api.spacex.land/graphql'
-    })
-  ]),
-  cache: new InMemoryCache()
+  link: spaceXLink,
+  cache: new InMemoryCache(),
 })
