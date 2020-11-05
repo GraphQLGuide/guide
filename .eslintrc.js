@@ -7,13 +7,13 @@ module.exports = {
       'error',
       {
         env: 'apollo',
-        schemaJson: require('./schema.json')
+        schemaJson: require('./schema.json'),
       },
       {
         env: 'apollo',
         tagName: 'spaceql',
-        schemaJson: require('./spacex.json')
-      }
-    ]
-  }
+        schemaJson: require('./spacex.json'),
+      },
+    ],
+  },
 }
