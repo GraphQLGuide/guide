@@ -1,173 +1,14 @@
 /* eslint-disable graphql/template-strings */
-
-import React, { Component } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import PropTypes from 'prop-types'
-import { Query, Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-import { withRouter } from 'react-router'
+import { gql, useQuery, useMutation, useApolloClient } from '@apollo/client'
+import { useLocation } from 'react-router'
 import get from 'lodash/get'
+import pick from 'lodash/pick'
 import debounce from 'lodash/debounce'
-import { ApolloClient } from 'apollo-client'
 
 import { deslugify } from '../lib/helpers'
-
-class Section extends Component {
-  onSectionChange = newId => {
-    this.viewedSection(newId)
-    this.updateScrollPosition()
-    this.prefetchNextSection(newId)
-  }
-
-  prefetchNextSection = currentId => {
-    this.props.client.query({
-      query: NEXT_SECTION_QUERY,
-      variables: {
-        id: currentId
-      }
-    })
-  }
-
-  viewedSection = id => {
-    if (!id) {
-      return
-    }
-
-    this.timeoutID = setTimeout(() => {
-      this.props.viewedSection({
-        variables: { id }
-      })
-    }, 2000)
-  }
-
-  updateScrollPosition = () => {
-    window.scrollTo(0, this.props.section.scrollY)
-  }
-
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-
-    if (this.props.section) {
-      this.onSectionChange(this.props.section.id)
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeoutID)
-    window.removeEventListener('scroll', this.handleScroll)
-  }
-
-  handleScroll = debounce(() => {
-    if (this.props.section.scrollY === window.scrollY) {
-      return
-    }
-
-    this.props.setScrollPosition({
-      variables: {
-        id: this.props.section.id,
-        scrollY: window.scrollY
-      }
-    })
-  }, 1000)
-
-  componentDidUpdate(prevProps) {
-    if (!this.props.section) {
-      return
-    }
-
-    const { id } = this.props.section
-    const sectionChanged = get(prevProps, 'section.id') !== id
-
-    if (sectionChanged) {
-      this.onSectionChange(id)
-    }
-  }
-
-  render() {
-    const { loading, section, chapter } = this.props
-    let headerContent = null,
-      sectionContent = null,
-      footerContent = null
-
-    if (loading) {
-      headerContent = (
-        <h1>
-          <Skeleton />
-        </h1>
-      )
-      sectionContent = <Skeleton count={7} />
-    } else if (!section) {
-      headerContent = (
-        <h1>
-          <span role="img" aria-label="magnifying glass">
-            🔍
-          </span>{' '}
-          404 page not found
-        </h1>
-      )
-    } else {
-      if (chapter.number !== null) {
-        headerContent = (
-          <div>
-            <h1>{section.title}</h1>
-            <h2>
-              {'Chapter ' + chapter.number}
-              <span className="Section-number-divider" />
-              {'Section ' + section.number}
-            </h2>
-          </div>
-        )
-      } else {
-        headerContent = <h1>{chapter.title}</h1>
-      }
-
-      sectionContent = section.content
-      footerContent = `Viewed ${section.views.toLocaleString()} times`
-    }
-
-    return (
-      <section className="Section">
-        <div className="Section-header-wrapper">
-          <header className="Section-header">{headerContent}</header>
-        </div>
-        <div className="Section-content">{sectionContent}</div>
-        <footer>{footerContent}</footer>
-      </section>
-    )
-  }
-}
-
-Section.propTypes = {
-  section: PropTypes.shape({
-    title: PropTypes.string,
-    number: PropTypes.number,
-    content: PropTypes.string,
-    views: PropTypes.number,
-    scrollY: PropTypes.number
-  }),
-  chapter: PropTypes.shape({
-    title: PropTypes.string,
-    number: PropTypes.number
-  }),
-  loading: PropTypes.bool.isRequired,
-  viewedSection: PropTypes.func.isRequired,
-  setScrollPosition: PropTypes.func.isRequired,
-  client: PropTypes.instanceOf(ApolloClient).isRequired
-}
-
-const NEXT_SECTION_QUERY = gql`
-  query NextSection($id: String!) {
-    section(id: $id) {
-      id
-      next {
-        id
-        content
-        views
-        scrollY @client
-      }
-    }
-  }
-`
+import { cache } from '../lib/apollo'
 
 export const SECTION_BY_ID_QUERY = gql`
   query SectionContent($id: String!) {
@@ -219,71 +60,185 @@ const VIEWED_SECTION_MUTATION = gql`
   }
 `
 
-const SET_SECTION_SCROLL_MUTATION = gql`
-  mutation SetSectionScroll($id: String!, $scrollY: Int!) {
-    setSectionScroll(id: $id, scrollY: $scrollY) @client
+const NEXT_SECTION_QUERY = gql`
+  query NextSection($id: String!) {
+    section(id: $id) {
+      id
+      next {
+        id
+        content
+        views
+        scrollY @client
+      }
+    }
   }
 `
 
-const SectionWithData = ({ location: { state, pathname } }) => {
+export default () => {
+  const { state, pathname } = useLocation()
+
   const page = deslugify(pathname)
 
-  let query, variables, createProps
+  let query, variables
 
   if (state) {
     query = SECTION_BY_ID_QUERY
     variables = { id: state.section.id }
-    createProps = ({ data }) => ({
-      section: {
-        ...state.section,
-        content: get(data, 'section.content'),
-        views: get(data, 'section.views'),
-        scrollY: get(data, 'section.scrollY')
-      },
-      chapter: state.chapter,
-      loading: !data.section
-    })
   } else if (page.chapterTitle) {
     query = SECTION_BY_CHAPTER_TITLE_QUERY
     variables = { title: page.chapterTitle }
-    createProps = ({ data }) => ({
-      section: get(data, 'chapterByTitle.section'),
-      chapter: {
-        ...data.chapterByTitle,
-        number: null
-      },
-      loading: !data.chapterByTitle
-    })
-  } else if (page.chapterNumber) {
+  } else {
     query = SECTION_BY_NUMBER_QUERY
-    variables = page
-    createProps = ({ data }) => ({
-      section: get(data, 'chapterByNumber.section'),
-      chapter: data.chapterByNumber,
-      loading: !data.chapterByNumber
+    variables = pick(page, 'chapterNumber', 'sectionNumber')
+  }
+
+  const { data } = useQuery(query, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+  })
+
+  let section, chapter, loading
+
+  // eslint-disable-next-line default-case
+  switch (query) {
+    case SECTION_BY_ID_QUERY:
+      section = {
+        ...state.section,
+        content: get(data, 'section.content'),
+        views: get(data, 'section.views'),
+        scrollY: get(data, 'section.scrollY'),
+      }
+      chapter = state.chapter
+      loading = !get(data, 'section')
+      break
+    case SECTION_BY_CHAPTER_TITLE_QUERY:
+      section = get(data, 'chapterByTitle.section')
+      chapter = {
+        ...get(data, 'chapterByTitle'),
+        number: null,
+      }
+      loading = !get(data, 'chapterByTitle')
+      break
+    case SECTION_BY_NUMBER_QUERY:
+      section = get(data, 'chapterByNumber.section')
+      chapter = get(data, 'chapterByNumber')
+      loading = !get(data, 'chapterByNumber')
+      break
+  }
+
+  const [viewedSection] = useMutation(VIEWED_SECTION_MUTATION)
+
+  const id = get(section, 'id')
+
+  const client = useApolloClient()
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+
+    client.query({
+      query: NEXT_SECTION_QUERY,
+      variables: { id },
     })
+  }, [id, client])
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+
+    const timeoutID = setTimeout(() => {
+      viewedSection({ variables: { id } })
+    }, 1000)
+
+    return () => clearTimeout(timeoutID)
+  }, [id, viewedSection])
+
+  const updateScrollY = debounce((scrollY) => {
+    const scrollHasChangedSinceLastEvent = scrollY !== window.scrollY
+    const scrollNeedsToBeUpdated = scrollY !== section.scrollY
+
+    if (scrollHasChangedSinceLastEvent || !scrollNeedsToBeUpdated) {
+      return
+    }
+
+    cache.writeFragment({
+      id: `Section:${id}`,
+      fragment: gql`
+        fragment SectionScrollBy on Section {
+          scrollY
+        }
+      `,
+      data: {
+        scrollY,
+      },
+    })
+  }, 1000)
+
+  useLayoutEffect(() => {
+    const onScroll = () => updateScrollY(window.scrollY)
+
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [updateScrollY])
+
+  const currentScrollY = get(section, 'scrollY')
+  useLayoutEffect(() => {
+    if (currentScrollY === undefined || currentScrollY === window.scrollY) {
+      return
+    }
+
+    window.scrollTo(0, currentScrollY)
+  }, [currentScrollY])
+
+  let headerContent = null,
+    sectionContent = null,
+    footerContent = null
+
+  if (loading) {
+    headerContent = (
+      <h1>
+        <Skeleton />
+      </h1>
+    )
+    sectionContent = <Skeleton count={7} />
+  } else if (!section) {
+    headerContent = (
+      <h1>
+        <span role="img" aria-label="magnifying glass">
+          🔍
+        </span>{' '}
+        404 page not found
+      </h1>
+    )
+  } else {
+    if (chapter.number !== null) {
+      headerContent = (
+        <div>
+          <h1>{section.title}</h1>
+          <h2>
+            {'Chapter ' + chapter.number}
+            <span className="Section-number-divider" />
+            {'Section ' + section.number}
+          </h2>
+        </div>
+      )
+    } else {
+      headerContent = <h1>{chapter.title}</h1>
+    }
+
+    sectionContent = section.content
+    footerContent = `Viewed ${section.views.toLocaleString()} times`
   }
 
   return (
-    <Query query={query} variables={variables} fetchPolicy="cache-and-network">
-      {queryInfo => (
-        <Mutation mutation={VIEWED_SECTION_MUTATION}>
-          {viewedSection => (
-            <Mutation mutation={SET_SECTION_SCROLL_MUTATION}>
-              {setScrollPosition => (
-                <Section
-                  {...createProps(queryInfo)}
-                  client={queryInfo.client}
-                  viewedSection={viewedSection}
-                  setScrollPosition={setScrollPosition}
-                />
-              )}
-            </Mutation>
-          )}
-        </Mutation>
-      )}
-    </Query>
+    <section className="Section">
+      <div className="Section-header-wrapper">
+        <header className="Section-header">{headerContent}</header>
+      </div>
+      <div className="Section-content">{sectionContent}</div>
+      <footer>{footerContent}</footer>
+    </section>
   )
 }
-
-export default withRouter(SectionWithData)

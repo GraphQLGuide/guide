@@ -1,44 +1,27 @@
-import React, { Component } from 'react'
-import { Subscription } from 'react-apollo'
-import Snackbar from '@material-ui/core/Snackbar'
+import React, { useState } from 'react'
+import { useSubscription } from '@apollo/client'
+import { Snackbar } from '@material-ui/core'
+import get from 'lodash/get'
 
 import { ON_REVIEW_CREATED_SUBSCRIPTION } from '../graphql/Review'
 
-class ReviewCreatedNotification extends Component {
-  state = {
-    isOpen: false
-  }
+export default () => {
+  const [isOpen, setIsOpen] = useState(false)
 
-  close = () => {
-    this.setState({ isOpen: false })
-  }
+  const { data } = useSubscription(ON_REVIEW_CREATED_SUBSCRIPTION, {
+    onSubscriptionData: () => {
+      setIsOpen(true)
+      setTimeout(() => setIsOpen(false), 5000)
+    },
+  })
 
-  open = () => {
-    this.setState({ isOpen: true })
-    setTimeout(this.close, 5000)
-  }
-
-  render() {
-    return (
-      <Subscription
-        subscription={ON_REVIEW_CREATED_SUBSCRIPTION}
-        onSubscriptionData={this.open}
-      >
-        {({ data }) =>
-          data && data.reviewCreated ? (
-            <Snackbar
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              open={this.state.isOpen}
-              onClose={this.close}
-              message={`New review from ${data.reviewCreated.author.name}: ${
-                data.reviewCreated.text
-              }`}
-            />
-          ) : null
-        }
-      </Subscription>
-    )
-  }
+  const review = get(data, 'reviewCreated')
+  return review ? (
+    <Snackbar
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
+      message={`New review from ${review.author.name}: ${review.text}`}
+    />
+  ) : null
 }
-
-export default ReviewCreatedNotification
