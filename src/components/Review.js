@@ -130,27 +130,14 @@ export default ({ review }) => {
   const [editing, setEditing] = useState(false)
 
   const [removeReview] = useMutation(REMOVE_REVIEW_MUTATION, {
-    options: { errorPolicy: 'ignore' },
-    update: (cache) => {
-      const { reviews } = cache.readQuery({ query: REVIEWS_QUERY })
-      cache.writeQuery({
-        query: REVIEWS_QUERY,
-        data: { reviews: reviews.filter((review) => review.id !== id) },
-      })
-
-      const { currentUser } = cache.readQuery({ query: READ_USER_FAVORITES })
-      cache.writeQuery({
-        query: READ_USER_FAVORITES,
-        data: {
-          currentUser: {
-            ...currentUser,
-            favoriteReviews: currentUser.favoriteReviews.filter(
-              (review) => review.id !== id
-            ),
-          },
-        },
-      })
-    },
+    update: (cache) => cache.evict({ id: cache.identify(review) }),
+    // update: (cache) => {
+    //   const { reviews } = cache.readQuery({ query: REVIEWS_QUERY })
+    //   cache.writeQuery({
+    //     query: REVIEWS_QUERY,
+    //     data: { reviews: reviews.filter((review) => review.id !== id) },
+    //   })
+    // },
   })
 
   function openMenu(event) {
