@@ -127,7 +127,6 @@ export default ({ review }) => {
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
   const [removeReview] = useMutation(REMOVE_REVIEW_MUTATION, {
-    options: { errorPolicy: 'ignore' },
     update: (cache) => {
       const { reviews } = cache.readQuery({ query: REVIEWS_QUERY })
       cache.writeQuery({
