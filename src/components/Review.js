@@ -112,7 +112,6 @@ export default ({ review }) => {
   const [editing, setEditing] = useState(false)
 
   const [removeReview] = useMutation(REMOVE_REVIEW_MUTATION, {
-    errorPolicy: 'ignore',
     update: (cache) => cache.evict({ id: cache.identify(review) }),
   })
 
