@@ -203,7 +203,11 @@ export default () => {
         <Skeleton />
       </h1>
     )
-    sectionContent = <Skeleton count={7} />
+    sectionContent = (
+      <div role="status">
+        <Skeleton count={7} />
+      </div>
+    )
   } else if (!section) {
     headerContent = (
       <h1>

@@ -99,6 +99,19 @@ code {
   padding: 0 5px;
 }
 
+/* hidden, for screen readers only */
+/* https://stackoverflow.com/a/19758620/627729 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .App-logo {
   height: 80px;
 }

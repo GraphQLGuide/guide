@@ -163,7 +163,7 @@ export default ({ review }) => {
           }
           action={
             user && (
-              <IconButton onClick={openMenu}>
+              <IconButton aria-label="Open menu" onClick={openMenu}>
                 <MoreVert />
               </IconButton>
             )

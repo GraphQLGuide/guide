@@ -9,6 +9,9 @@ import { SECTION_BY_ID_QUERY } from './Section'
 
 const LoadingSkeleton = () => (
   <div>
+    <div className="sr-only" role="status">
+      Loading...
+    </div>
     <h1>
       <Skeleton />
     </h1>
@@ -16,7 +19,7 @@ const LoadingSkeleton = () => (
   </div>
 )
 
-const CHAPTER_QUERY = gql`
+export const CHAPTER_QUERY = gql`
   query ChapterQuery {
     chapters {
       id
