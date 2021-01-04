@@ -435,7 +435,7 @@ body {
 }
 
 .Profile-content {
-  width: var(--profile-content-width);
+  max-width: var(--profile-content-width);
   padding-bottom: 20px;
 }
 
@@ -494,7 +494,7 @@ body {
 
 .Profile dd.-non-code {
   float: right;
-  width: 880px;
+  max-width: 880px;
   margin-left: 0;
 }
 
