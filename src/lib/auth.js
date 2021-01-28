@@ -16,20 +16,6 @@ const client = new auth0.WebAuth({
   scope: 'openid profile guide',
 })
 
-initAuthHelpers({
-  client,
-  usePopup: true,
-  authOptions: {
-    connection: 'github',
-    owp: true,
-    popupOptions: { height: 623 }, // make tall enough for content
-  },
-  checkSessionOptions: {
-    redirect_uri: window.location.origin,
-  },
-  onError: (e) => console.error(e),
-})
-
 export const loginInProgressVar = makeVar(false)
 
 export const login = () => {
