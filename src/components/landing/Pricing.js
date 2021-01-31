@@ -31,7 +31,7 @@ const Pricing = () => (
           'Server-side rendering',
           'Offline data and mutations',
           'Serverless',
-          'Stripe integration'
+          'Stripe integration',
         ]}
         videos={['Meet the authors', 'Introduction to the codebases']}
       />
@@ -49,31 +49,34 @@ const Pricing = () => (
           'Using the GitHub GraphQL API',
           'Schema stitching',
           'Rate limiting',
-          'Caching with Redis'
+          'Caching with Redis',
         ]}
         videos={[
           'Code run-throughs of Chapters 6–11',
-          'Interview with TBD interesting person'
+          'Interview with TBD interesting person',
         ]}
       />
       <Package training price="749" color="blue">
-        <li>
-          Everything in the Full edition, plus a day-long in-person training
-          course
-        </li>
-        <hr />
-        <li>Choose between the beginner course and the advanced course</li>
-        <hr />
-        <li>Full-stack JavaScript (React & Node)</li>
+        <li>Everything in the Full edition, plus a day-long training course</li>
         <hr />
         <li>
-          Advanced course topics include SSR, subscriptions, DataLoader, and
-          Apollo Engine
+          Choose between three courses: Intro to GraphQL, Intro to Fullstack
+          Apollo, and Advanced Dev. All use JavaScript (React & Node).
         </li>
         <hr />
         <li>
-          Once we get 15 signups in your area, we'll schedule a time to come to
-          you. (Alternatively, your company can sponsor a training:{' '}
+          Advanced course topics include auth, subscriptions, caching, batching,
+          and federation
+        </li>
+        <hr />
+        <li>
+          Taught by Eve and Alex, our excellent education partners at Moon
+          Highway
+        </li>
+        <hr />
+        <li>
+          Offered periodically online (Alternatively, your company can sponsor
+          and schedule a training:{' '}
           <a href="mailto:sales@graphql.guide">sales@graphql.guide</a>)
         </li>
       </Package>
@@ -85,7 +88,7 @@ const Pricing = () => (
         updates during the beta).
       </div>
       <div className="Pricing-note">
-        <sup>2</sup> Free updates for the lifetime of the book. We'll keep it up
+        <sup>2</sup> Free updates for the lifetime of the book. We’ll keep it up
         to date for at least 4 years, but we hope to continue for as long as
         GraphQL is the best data-fetching system out there. (Which is probably a
         long time—REST has been around for {REST_LIFESPAN} years!)
@@ -97,7 +100,7 @@ const Pricing = () => (
         Get a 30% discount over individual pricing by ordering a group license
         for your team. With a team license, five coworkers will get access to
         the Full edition.
-      </li>{' '}
+      </li>
       <hr />
       <li>
         We can also arrange a day or two of on-site training for your company.

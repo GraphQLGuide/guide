@@ -52,7 +52,7 @@ const Paypal = ({ user, login, loading, location, match }) => {
         </div>
         <p>
           <b>Step 3: </b>
-          Within a day or two, we'll manually add the package you bought to your
+          Within a day or two, we’ll manually add the package you bought to your
           user record in the database.
         </p>
       </div>

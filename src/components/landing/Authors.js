@@ -15,10 +15,10 @@ const Authors = () => (
         twitter="jeresig"
         avatar="//res.cloudinary.com/graphql/jeresig.jpg"
       >
-        John is a JavaScript expert. He created jQuery and works as a Frontend
-        Architect at Khan Academy. Seven years ago, he stepped back from jQuery
-        and wrote his last book. He's been exploring the power of GraphQL and is
-        convinced that it's the future of API development.
+        John is a JavaScript expert. He created jQuery and is Chief Software
+        Architect at Khan Academy. Eight years ago, he stepped back from jQuery
+        and wrote his last book. He’s been exploring the power of GraphQL and is
+        convinced that it’s the future of API development.
       </Author>
 
       <Author
@@ -26,10 +26,10 @@ const Authors = () => (
         twitter="lorendsr"
         avatar="//res.cloudinary.com/graphql/loren.png"
       >
-        Loren is a freelancer who loves teaching and writing. He has worked on
-        Apollo and the Meteor Guide, coded full-stack web and mobile apps for
-        eight years, founded startups, and TA'ed Computer Science courses at
-        Dartmouth.
+        Loren is a consultant who loves teaching and writing. He has worked on
+        Apollo and the Meteor Guide, built full-stack web and mobile apps for
+        over a decade, founded startups, and TA’ed many Computer Science courses
+        at Dartmouth.
       </Author>
     </div>
   </section>

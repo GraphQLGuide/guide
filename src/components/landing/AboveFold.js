@@ -7,11 +7,11 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 import './AboveFold.css'
 import LogoName from './LogoName'
 
-const scrollTo = selector => () => {
+const scrollTo = (selector) => () => {
   scrollIntoView(document.querySelector(selector), {
     behavior: 'smooth',
     block: 'start',
-    inline: 'nearest'
+    inline: 'nearest',
   })
 }
 
@@ -41,11 +41,6 @@ const AboveFold = () => (
             >
               Get the beta
             </Button>
-          </div>
-          <div className="AboveFold-format-list">
-            <Typography variant="caption">
-              * Beta chapters available in PDF, ePub, and Kindle.
-            </Typography>
           </div>
         </div>
       </div>

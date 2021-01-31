@@ -21,7 +21,7 @@ const Package = ({
   updatePeriod,
   extraChapters,
   videos,
-  children
+  children,
 }) => {
   const packageInfo = getPackage({ basic, pro, full, training, team })
   const { price, name } = packageInfo
@@ -45,7 +45,7 @@ const Package = ({
         </li>
         <li>Early access to the book in PDF, ePub, and Kindle formats</li>
         <hr />
-        <li>The book's Git repositories, with branches for each section</li>
+        <li>The book’s Git repositories, with branches for each section</li>
         {full && (
           <div>
             <hr />
@@ -119,7 +119,7 @@ const Package = ({
               <div className={classNames('Package-feature-list', { full })}>
                 {pro ? 'Extra chapters:' : 'More extra chapters:'}
               </div>
-              {extraChapters.map(chapter => (
+              {extraChapters.map((chapter) => (
                 <div className="Package-extra-item" key={chapter}>
                   {chapter}
                 </div>
@@ -134,7 +134,7 @@ const Package = ({
               <div className={classNames('Package-feature-list', { full })}>
                 {pro ? 'Videos:' : 'More videos:'}
               </div>
-              {videos.map(video => (
+              {videos.map((video) => (
                 <div className="Package-extra-item" key={video}>
                   {video}
                 </div>
@@ -148,7 +148,7 @@ const Package = ({
   return (
     <Paper
       className={classNames('Package', color, name.toLowerCase(), {
-        recommended
+        recommended,
       })}
       elevation={10}
     >
