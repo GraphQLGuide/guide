@@ -24,7 +24,7 @@ const topics = [
     icon: faGraduationCap,
     title: 'Advanced topics',
     text:
-      'In the client chapters, we cover topics like infinite scrolling, local state, performance, and working offline. In our server chapter we cover seven data sources, including Elasticsearch, Rethink, and Prisma. We also cover security and various performance improvements.',
+      'In the client chapters, we cover topics like infinite scrolling, local state, performance, and working offline. In our server chapter, we cover four different data sources, as well as how to create your own. We also cover security and various performance improvements.',
   },
   {
     icon: faDesktop,
@@ -34,7 +34,7 @@ const topics = [
   {
     icon: faServer,
     title: 'Backend',
-    text: `If you’re a backend dev, we’ve got you covered. Chapter 11 is our longest chapter, and it goes through all the server topics you could want: server structure, connecting to different databases and APIs, subscriptions, authentication, authorization, caching, testing, and more.`,
+    text: `If you’re a backend dev, we’ve got you covered. Chapter 11 is our longest chapter, and it goes through all the server topics you could want: server structure, connecting to databases and APIs, subscriptions, authentication, authorization, caching, testing, and more.`,
   },
   {
     icon: faReact,

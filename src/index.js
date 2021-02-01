@@ -10,7 +10,7 @@ import ReactGA from 'react-ga'
 import './index.css'
 import './lib/common.css'
 import './startup/'
-import registerServiceWorker from './registerServiceWorker'
+import { unregister } from './registerServiceWorker'
 import App from './components/App'
 import { apollo, inDevelopment } from './lib/apollo'
 
@@ -42,7 +42,8 @@ const render = (Component) => {
 
 render(App)
 
-registerServiceWorker()
+// registerServiceWorker()
+unregister()
 
 inDevelopment &&
   module.hot.accept('./components/App', () => {
