@@ -63,23 +63,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "now-start": "serve --single ./build",
-    "deploy": "now --prod --regions all -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
-    "deploy-ci": "now --prod --token=$NOW_TOKEN --regions all -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
+    "deploy": "now --prod -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
+    "deploy-ci": "now --prod --token=$NOW_TOKEN -e NODE_ENV=production -e REACT_APP_STRIPE_PUBLIC_KEY=@guide-stripe-public-key",
     "release": "scripts/release.sh"
   },
   "devDependencies": {
     "now": "^16.7.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
