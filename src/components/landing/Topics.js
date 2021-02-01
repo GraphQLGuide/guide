@@ -9,6 +9,7 @@ import faReact from '@fortawesome/fontawesome-free-brands/faReact'
 import faVuejs from '@fortawesome/fontawesome-free-brands/faVuejs'
 import faAppStoreIos from '@fortawesome/fontawesome-free-brands/faAppStoreIos'
 import faAndroid from '@fortawesome/fontawesome-free-brands/faAndroid'
+import { Image } from 'cloudinary-react'
 
 import './Topics.css'
 
@@ -81,6 +82,29 @@ const Topics = () => (
       {topics.map((topic, i) => (
         <Topic {...topic} key={i} />
       ))}
+    </div>
+
+    <div className="Topics-reviews">
+      <Image
+        className="Topics-review"
+        publicId="enno"
+        fetchFormat="auto"
+        quality="auto"
+      />
+      <Image
+        className="Topics-review"
+        publicId="glover"
+        fetchFormat="auto"
+        quality="auto"
+      />
+      {/* <Image
+        className="Topics-review"
+        publicId="malek"
+        fetchFormat="auto"
+        quality="auto"
+      /> */}
+
+      {/* todo link to /reviews */}
     </div>
   </section>
 )

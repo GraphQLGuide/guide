@@ -1,0 +1,7 @@
+.Testimonials {
+  display: flex;
+  justify-content: center;
+  padding: 70px 0;
+  color: white;
+  background-image: linear-gradient(345deg, var(--pink-light), var(--pink));
+}

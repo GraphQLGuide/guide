@@ -54,6 +54,20 @@
   margin-bottom: 24px;
 }
 
+.Topics-reviews {
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 40px 0 -20px;
+}
+
+.Topics-review {
+  align-self: center;
+  width: 550px;
+  max-width: 120vw;
+}
+
 @media only screen and (max-width: 800px) {
   .Topic {
     width: 100%;
