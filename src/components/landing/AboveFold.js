@@ -25,7 +25,8 @@ const AboveFold = () => (
           <ElonLanding />
           <div className="AboveFold-text">
             <Typography className="AboveFold-title" variant="display1">
-              GraphQL is <span className="-nowrap">pain-free</span> REST
+              GraphQL is the new <span className="-nowrap">(pain-free)</span>{' '}
+              REST
             </Typography>
             <Typography className="AboveFold-subtitle" variant="body1">
               GraphQL is the best way to fetch data for your app, and The

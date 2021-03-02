@@ -104,7 +104,8 @@ const Pricing = () => (
 
     <div className="Pricing-notes" id="pricing-notes">
       <div className="Pricing-note">
-        <sup>1</sup> Two years after v1.0 is released (ETA March 2021).
+        <sup>1</sup> Two years after v1.0 is released (release estimated March
+        2021).
       </div>
       <div className="Pricing-note">
         <sup>2</sup> Free updates for the lifetime of the book. We’ll keep it up
