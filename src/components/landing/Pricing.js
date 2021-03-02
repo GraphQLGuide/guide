@@ -57,7 +57,7 @@ const Pricing = () => (
           <span>
             Interview with{' '}
             <a
-              href="https://www.scotttolinski.com/"
+              href="https://www.scotttolinski.com/?ref=guide"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -67,7 +67,7 @@ const Pricing = () => (
           <span>
             Interview with{' '}
             <a
-              href="https://www.swyx.io/"
+              href="https://www.swyx.io/?ref=guide"
               target="_blank"
               rel="noopener noreferrer"
             >
