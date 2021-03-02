@@ -28,12 +28,15 @@ const Pricing = () => (
           </span>
         }
         extraChapters={[
-          'Server-side rendering',
-          'Offline data and mutations',
-          'Serverless',
-          'Stripe integration',
+          'Server-Side Rendering',
+          'Apollo Federation',
+          'Server Analytics',
         ]}
-        videos={['Meet the authors', 'Introduction to the codebases']}
+        videos={[
+          'Introduction to the codebases',
+          'Apollo Devtools',
+          'Apollo Studio',
+        ]}
       />
       <Package
         full
@@ -46,14 +49,31 @@ const Pricing = () => (
           </span>
         }
         extraChapters={[
-          'Using the GitHub GraphQL API',
-          'Schema stitching',
-          'Rate limiting',
-          'Caching with Redis',
+          'Stripe and Service Integrations',
+          'Preventing DoS Attacks',
         ]}
         videos={[
           'Code run-throughs of Chapters 6–11',
-          'Interview with TBD interesting person',
+          <span>
+            Interview with{' '}
+            <a
+              href="https://www.scotttolinski.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Scott Tolinski
+            </a>
+          </span>,
+          <span>
+            Interview with{' '}
+            <a
+              href="https://www.swyx.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Shawn “swyx” Wang
+            </a>
+          </span>,
         ]}
       />
       <Package training price="749" color="blue">
@@ -84,8 +104,7 @@ const Pricing = () => (
 
     <div className="Pricing-notes" id="pricing-notes">
       <div className="Pricing-note">
-        <sup>1</sup> Two years after v1.0 is released (all packages get free
-        updates during the beta).
+        <sup>1</sup> Two years after v1.0 is released (ETA March 2021).
       </div>
       <div className="Pricing-note">
         <sup>2</sup> Free updates for the lifetime of the book. We’ll keep it up

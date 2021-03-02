@@ -6,6 +6,7 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 
 import './AboveFold.css'
 import LogoName from './LogoName'
+import ElonLanding from './ElonLanding'
 
 const scrollTo = (selector) => () => {
   scrollIntoView(document.querySelector(selector), {
@@ -21,9 +22,10 @@ const AboveFold = () => (
       <div className="AboveFold-main-container">
         <LogoName />
         <div className="AboveFold-main">
+          <ElonLanding />
           <div className="AboveFold-text">
-            <Typography className="AboveFold-title" variant="display3">
-              GraphQL is the <span className="-nowrap">new REST</span>
+            <Typography className="AboveFold-title" variant="display1">
+              GraphQL is <span className="-nowrap">pain-free</span> REST
             </Typography>
             <Typography className="AboveFold-subtitle" variant="body1">
               GraphQL is the best way to fetch data for your app, and The

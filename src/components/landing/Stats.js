@@ -12,7 +12,7 @@ const Stats = () => (
     <div className="Stats-list">
       <div className="Stat">
         <FontAwesomeIcon icon={faFileAlt} />
-        <h3 className="Stat-number -with-plus">500</h3>
+        <h3 className="Stat-number -with-plus">550</h3>
         <div className="Stat-caption">Total pages</div>
       </div>
       <div className="Stat">
@@ -27,7 +27,7 @@ const Stats = () => (
       </div>
       <div className="Stat">
         <FontAwesomeIcon icon={faVideo} />
-        <h3 className="Stat-number">9</h3>
+        <h3 className="Stat-number">11</h3>
         <div className="Stat-caption">Videos</div>
       </div>
     </div>

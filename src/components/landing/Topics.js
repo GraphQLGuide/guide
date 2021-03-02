@@ -18,13 +18,13 @@ const topics = [
     icon: faChalkboardTeacher,
     title: 'Beginner introduction',
     text:
-      'We start out in Chapter 1 by introducing the basics of GraphQL in contrast to REST. Then in Chapters 2–4 we go through the whole GraphQL specification from its basic building blocks. We also have an extensive Background chapter that covers everything from JSON to HTTP to server-side rendering.',
+      'We start out in Chapter 1 by introducing the basics of GraphQL in contrast to REST. Then in Chapters 2–4 we go through the whole GraphQL specification from its basic building blocks. We also have an extensive Background chapter that covers everything from JSON to databases to server-side rendering.',
   },
   {
     icon: faGraduationCap,
     title: 'Advanced topics',
     text:
-      'In the client chapters, we cover topics like infinite scrolling, local state, performance, and working offline. In our server chapter, we cover four different data sources, as well as how to create your own. We also cover security and various performance improvements.',
+      'In the client chapters, we cover topics like infinite scrolling, local state, prefetching, and persisting. In our server chapter, we cover schema design, four different data sources (as well as how to create your own), security, performance, and more.',
   },
   {
     icon: faDesktop,
@@ -40,13 +40,13 @@ const topics = [
     icon: faReact,
     title: 'React',
     text:
-      'React is becoming the lingua franca of modern web dev, so this is our longest client chapter. We go through everything in the React Apollo library, including the render prop API, the HOC API, managing local state, subscriptions, optimistic updates, error handling, pagination, persisting, SSR, and more.',
+      'React is becoming the lingua franca of modern web dev, so this is our longest client chapter. We go through everything in the Apollo Client library, including hooks, managing local state, subscriptions, optimistic updates, error handling, pagination, batching, linting, testing, and more.',
   },
   {
     icon: faVuejs,
     title: 'Vue',
     text:
-      'From getting set up to implementing infinite scroll, our Vue chapter teaches the Apollo Vue library. Add a provider to your root component, add a query when creating a component, and access the loading state and response data in the template. Or use the ApolloQuery component directly in your template.',
+      'Our Vue chapter teaches Apollo Vue’s composition API. Provide an ApolloClient instance and query inside a component’s setup function to get refs with the data, loading status, and error status. Query with variables and options, send mutations, and watch subscription results.',
   },
   {
     icon: faAppStoreIos,
@@ -57,7 +57,7 @@ const topics = [
     icon: faAndroid,
     title: 'Android',
     text:
-      'In addition to our React Native chapter, we also have a native Android chapter based on the Apollo-Android library. Get typed Java models generated from your queries and mutations, make your own custom scalars, save query responses in the cache, or get RxJava Observables.',
+      'In addition to our React Native chapter, we also have a native Android chapter based on the Apollo Android library. Get typed Kotlin models generated from your queries and mutations, configure caching, and use coroutines, ViewModel, and Flow.',
   },
 ]
 

@@ -134,8 +134,8 @@ const Package = ({
               <div className={classNames('Package-feature-list', { full })}>
                 {pro ? 'Videos:' : 'More videos:'}
               </div>
-              {videos.map((video) => (
-                <div className="Package-extra-item" key={video}>
+              {videos.map((video, i) => (
+                <div className="Package-extra-item" key={i}>
                   {video}
                 </div>
               ))}
