@@ -73,17 +73,17 @@
 
 @media only screen and (max-width: 667px) {
   .Package.training {
-    order: 1;
+    order: 4;
   }
   .Package.full {
-    order: 2;
+    order: 1;
     margin-top: 80px;
   }
   .Package.pro {
-    order: 3;
+    order: 2;
   }
   .Package.basic {
-    order: 4;
+    order: 3;
   }
   .Payment {
     position: relative;
