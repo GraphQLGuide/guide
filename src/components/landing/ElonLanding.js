@@ -10,15 +10,15 @@ const ElonLanding = () => (
       As recommended by Elon Musk!
     </Typography> */}
 
-    <Typography className="ElonLanding-quote" variant="display1">
-      “The future is all… GraphQL.”
-    </Typography>
-
     <a
-      href="https://twitter.com/boredelonmusk"
+      href="https://twitter.com/BoredElonMusk/status/1366887300844584961"
       target="_blank"
       rel="noopener noreferrer"
     >
+      <Typography className="ElonLanding-quote" variant="display1">
+        “The future is all robo-colonoscopies and GraphQL.”
+      </Typography>
+
       <Image
         className="ElonLanding-avatar"
         publicId="bored-elon-musk"
