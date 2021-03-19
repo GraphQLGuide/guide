@@ -18,7 +18,7 @@ const topics = [
     icon: faChalkboardTeacher,
     title: 'Beginner introduction',
     text:
-      'We start out in Chapter 1 by introducing the basics of GraphQL in contrast to REST. Then in Chapters 2–4 we go through the whole GraphQL specification from its basic building blocks. We also have an extensive Background chapter that covers everything from JSON to databases to server-side rendering.',
+      'We start out in Chapter 1 by introducing the basics of GraphQL in contrast to REST. Then in Chapters 2–4, we go through the whole GraphQL specification from its basic building blocks. We also have an extensive Background chapter that covers everything from JSON to databases to server-side rendering.',
   },
   {
     icon: faGraduationCap,

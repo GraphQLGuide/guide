@@ -81,7 +81,7 @@ const Pricing = () => (
         <hr />
         <li>
           Choose between three courses: Intro to GraphQL, Intro to Fullstack
-          Apollo, and Advanced Dev. All use JavaScript (React & Node).
+          Apollo, and Advanced Dev. All use JavaScript (React and Node).
         </li>
         <hr />
         <li>
