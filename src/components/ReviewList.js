@@ -6,6 +6,8 @@ import Review from './Review'
 import {
   REVIEWS_QUERY,
   ON_REVIEW_CREATED_SUBSCRIPTION,
+  ON_REVIEW_UPDATED_SUBSCRIPTION,
+  ON_REVIEW_DELETED_SUBSCRIPTION,
 } from '../graphql/Review'
 import { cache } from '../lib/apollo'
 
@@ -51,6 +53,51 @@ export default ({ orderBy }) => {
               return [newReviewRef, ...existingReviewRefs]
             },
           },
+        })
+        return prev
+      },
+    })
+  }, [orderBy, subscribeToMore])
+
+  useEffect(() => {
+    subscribeToMore({
+      document: ON_REVIEW_DELETED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        cache.modify({
+          fields: {
+            reviews(existingReviewRefs = [], { readField }) {
+              const deletedId = subscriptionData.data.reviewDeleted
+              return existingReviewRefs.filter(
+                (reviewRef) => deletedId !== readField('id', reviewRef)
+              )
+            },
+          },
+        })
+        return prev
+      },
+    })
+  }, [orderBy, subscribeToMore])
+
+  useEffect(() => {
+    subscribeToMore({
+      document: ON_REVIEW_UPDATED_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        const updatedReview = subscriptionData.data.reviewUpdated
+        cache.writeFragment({
+          id: cache.identify(updatedReview),
+          data: updatedReview,
+          fragment: gql`
+            fragment UpdatedReview on Review {
+              id
+              text
+              stars
+              createdAt
+              favorited
+              author {
+                id
+              }
+            }
+          `,
         })
         return prev
       },
