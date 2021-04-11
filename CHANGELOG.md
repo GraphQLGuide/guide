@@ -13,6 +13,31 @@ Releases are done with tags in the form `[step]_[version]`, so for instance step
 ### Changed
 ### Fixed -->
 
+## [1.0.0] - 2021-04-06
+Released with [`r6`](https://github.com/GraphQLGuide/book/releases/tag/r6)
+
+### Added 
+- Branch `28` for "Testing" section
+- Branch `ssr` through `ssr4` for "Server-side rendering" extra chapter
+
+### Updated
+- From render props and HOCs to hooks
+- Updated packages from:
+
+```
+react-apollo 2.5
+graphql 0.14
+react 16.8
+```
+
+to:
+
+```
+@apollo/client 3.3.6
+graphql 15.4.0
+react 17.0.1
+```
+
 ## [0.2.0] - 2019-04-10
 Released with [`r3`](https://github.com/GraphQLGuide/book/releases/tag/r3)
 
