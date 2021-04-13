@@ -4,7 +4,7 @@ If you'd like to read the GraphQL Guide, and if you can afford to purchase it or
 
 ## Chapter 6
 
-Numbered branches (`0` and up) have the most up-to-date code (often newer than the most recent published revision of the book). When code has changed between book revisions, a new code version is created, and each branch is tagged, with the naming format `[step]_[version]`. For instance, r1 of the book was published with version `0.1.0` of this repo, so the tag for step 5 was [`5_0.1.0`](https://github.com/GraphQLGuide/guide/releases/tag/5_0.1.0).
+Numbered branches (`0` and up) have the most up-to-date code (often newer than the most recent published revision of the book). When code has changed between book revisions, a new code version is created, and each branch is tagged, with the naming format `[step]_[version]`. For instance, version `r1` of the book was published with version `0.1.0` of this repo, so the tag for step 5 was [`5_0.1.0`](https://github.com/GraphQLGuide/guide/releases/tag/5_0.1.0).
 
 ## Contributors
 
